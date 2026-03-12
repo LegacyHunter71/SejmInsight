@@ -1,52 +1,48 @@
-spring:
-  application:
-    name: SejmInsight
+version: '3.8'
 
-  datasource:
-    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:parliament_db}
-    username: ${DB_USER:root}
-    password: ${DB_PASS:root}
-    driver-class-name: org.postgresql.Driver
+services:
+  # Baza danych dla aplikacji i Keycloaka
+  postgres:
+    image: postgres:15-alpine
+    container_name: sejm-postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: parliament_db
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
 
-  jpa:
-    database-platform: org.hibernate.dialect.PostgreSQLDialect
-    hibernate:
-      ddl-auto: update
-    show-sql: true
-    properties:
-      hibernate:
-        format_sql: true
-        highlight_sql: true
-        jdbc:
-          batch_size: 25
-          order_inserts: true
+  # Keycloak - Tożsamość i Role
+  keycloak:
+    image: quay.io/keycloak/keycloak:22.0.1
+    container_name: sejm-keycloak
+    command: start-dev
+    environment:
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://postgres:5432/parliament_db
+      KC_DB_USERNAME: admin
+      KC_DB_PASSWORD: password
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+      KC_FEATURES: token-exchange
+    ports:
+      - "8081:8080"
+    depends_on:
+      - postgres
 
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          issuer-uri: ${KC_ISSUER_URL:http://localhost:8081/realms/parliament-realm}
+  # pgAdmin - Webowy interfejs do bazy danych
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: sejm-pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@sejm.pl
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "5050:80"
+    depends_on:
+      - postgres
 
-  jackson:
-    property-naming-strategy: SNAKE_CASE
-    default-property-inclusion: non_null
-
-server:
-  port: ${SERVER_PORT:8080}
-
-parliament:
-  url: ${SEJM_API_URL:https://api.sejm.gov.pl/sejm/}
-  term: ${SEJM_API_TERM:term10/MP}
-  auth:
-    server-url: ${KC_SERVER_URL:http://localhost:8081}
-    realm: ${KC_REALM:parliament-realm}
-    admin:
-      client-id: ${KC_ADMIN_CLIENT_ID:parliament-admin-client}
-      client-secret: ${KC_ADMIN_CLIENT_SECRET:your_secret_here}
-
-logging:
-  level:
-    root: INFO
-    org.hibernate.SQL: DEBUG
-    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
-    com.parliament: DEBUG
+volumes:
+  postgres_data:

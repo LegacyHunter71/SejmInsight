@@ -23,7 +23,8 @@
 		<module>app</module>
 		<module>sync</module>
 		<module>deputy</module>
-	</modules>
+        <module>iam</module>
+    </modules>
 
 	<properties>
 		<java.version>21</java.version>
