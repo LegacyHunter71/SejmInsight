@@ -29,10 +29,7 @@ services:
     image: quay.io/keycloak/keycloak:22.0.1
     container_name: sejm-keycloak
     restart: always
-    command:
-      - start-dev
-      - --proxy=edge
-      - --http-relative-path=/auth
+    command: [ "start-dev", "--proxy=edge", "--http-relative-path=/auth" ]
     environment:
       KC_DB: postgres
       KC_DB_URL: jdbc:postgresql://postgres:5432/parliament_db
@@ -41,7 +38,7 @@ services:
       KEYCLOAK_ADMIN: ${KC_ADMIN_USER:-admin}
       KEYCLOAK_ADMIN_PASSWORD: ${KC_ADMIN_PASS:-admin}
       KC_HOSTNAME_STRICT: "false"
-      KC_FEATURES: token-exchange
+      KC_HOSTNAME_PATH: /auth
     depends_on:
       - postgres
 
