@@ -11,7 +11,7 @@ spring:
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
-      ddl-auto: update
+      ddl-auto: validate
     show-sql: true
     properties:
       hibernate:
@@ -20,7 +20,12 @@ spring:
         jdbc:
           batch_size: 25
           order_inserts: true
-
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+    locations:
+      - classpath:db/migration/iam
+      - classpath:db/migration/deputy
   security:
     oauth2:
       resourceserver:
@@ -41,11 +46,11 @@ parliament:
   url: ${SEJM_API_URL:https://api.sejm.gov.pl/sejm/}
   term: ${SEJM_API_TERM:term10/MP}
   iam:
-    keycloak: # I ten
+    keycloak:
       server-url: ${KC_SERVER_URL:http://localhost:8081}
       realm: ${KC_REALM:parliament-realm}
       admin-client-id: ${KC_ADMIN_CLIENT_ID:parliament-admin-client}
-      admin-client-secret: ${KC_ADMIN_CLIENT_SECRET:kSLkQ0oE8I2w11TdOnAMZ0NBf1JVuYFk}
+      admin-client-secret: ${KC_ADMIN_CLIENT_SECRET:9fuEM51vNfTV9YfzY600B0kkAa2olj1s}
 springdoc:
   api-docs:
     enabled: true
@@ -53,9 +58,13 @@ springdoc:
   swagger-ui:
     enabled: true
     path: /swagger-ui.html
+
 logging:
   level:
     root: INFO
     org.hibernate.SQL: DEBUG
     org.hibernate.type.descriptor.sql.BasicBinder: TRACE
     com.parliament: DEBUG
+app:
+  cors:
+    allowed-origins: "http://localhost:5173,http://127.0.0.1:5173"

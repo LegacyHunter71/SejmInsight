@@ -1,46 +1,44 @@
 version: '3.8'
 
 services:
-  # Baza danych dla aplikacji i Keycloaka
   postgres:
     image: postgres:15-alpine
     container_name: sejm-postgres
     ports:
-      - "5432:5432"
+      - "${DB_PORT:-5432}:5432"
     environment:
-      POSTGRES_DB: parliament_db
-      POSTGRES_USER: admin
-      POSTGRES_PASSWORD: password
+      POSTGRES_DB: ${DB_NAME:-parliament_db}
+      POSTGRES_USER: ${DB_USER:-admin}
+      POSTGRES_PASSWORD: ${DB_PASS:-password}
     volumes:
       - postgres_data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
 
-  # Keycloak - Tożsamość i Role
   keycloak:
     image: quay.io/keycloak/keycloak:22.0.1
     container_name: sejm-keycloak
     command: start-dev
     environment:
       KC_DB: postgres
-      KC_DB_URL: jdbc:postgresql://postgres:5432/parliament_db
-      KC_DB_USERNAME: admin
-      KC_DB_PASSWORD: password
-      KEYCLOAK_ADMIN: admin
-      KEYCLOAK_ADMIN_PASSWORD: admin
+      KC_DB_URL: jdbc:postgresql://postgres:5432/${KC_DB_NAME:-keycloak_db}
+      KC_DB_USERNAME: ${DB_USER:-admin}
+      KC_DB_PASSWORD: ${DB_PASS:-password}
+      KEYCLOAK_ADMIN: ${KC_ADMIN_USER:-admin}
+      KEYCLOAK_ADMIN_PASSWORD: ${KC_ADMIN_PASS:-admin}
       KC_FEATURES: token-exchange
     ports:
-      - "8081:8080"
+      - "${KC_PORT:-8081}:8080"
     depends_on:
       - postgres
 
-  # pgAdmin - Webowy interfejs do bazy danych
   pgadmin:
     image: dpage/pgadmin4
     container_name: sejm-pgadmin
     environment:
-      PGADMIN_DEFAULT_EMAIL: admin@sejm.pl
-      PGADMIN_DEFAULT_PASSWORD: admin
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL:-admin@sejm.pl}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASS:-admin}
     ports:
-      - "5050:80"
+      - "${PGADMIN_PORT:-5050}:80"
     depends_on:
       - postgres
 
