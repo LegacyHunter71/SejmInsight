@@ -1,9 +1,11 @@
 version: '3.8'
 
 services:
+  # 1. Baza Danych
   postgres:
     image: postgres:15-alpine
     container_name: sejm-postgres
+    restart: always
     ports:
       - "${DB_PORT:-5432}:5432"
     environment:
@@ -14,9 +16,11 @@ services:
       - postgres_data:/var/lib/postgresql/data
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
 
+  # 2. Keycloak
   keycloak:
     image: quay.io/keycloak/keycloak:22.0.1
     container_name: sejm-keycloak
+    restart: always
     command: start-dev
     environment:
       KC_DB: postgres
@@ -31,9 +35,11 @@ services:
     depends_on:
       - postgres
 
+  # 3. Interfejs do bazy
   pgadmin:
     image: dpage/pgadmin4
     container_name: sejm-pgadmin
+    restart: always
     environment:
       PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL:-admin@sejm.pl}
       PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASS:-admin}
@@ -41,6 +47,25 @@ services:
       - "${PGADMIN_PORT:-5050}:80"
     depends_on:
       - postgres
+
+  # 4. APLIKACJA (SejmInsight)
+  backend:
+    build: ./backend
+    container_name: sejm-backend
+    restart: on-failure
+    ports:
+      - "${SERVER_PORT:-8080}:8080"
+    environment:
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_NAME=${DB_NAME:-parliament_db}
+      - DB_USER=${DB_USER:-admin}
+      - DB_PASS=${DB_PASS:-password}
+      - KC_SERVER_URL=http://keycloak:8080
+      - KC_ISSUER_URL=http://keycloak:8080/realms/parliament-realm
+    depends_on:
+      - postgres
+      - keycloak
 
 volumes:
   postgres_data:

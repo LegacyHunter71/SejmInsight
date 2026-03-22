@@ -1,0 +1,64 @@
+name: Deploy SejmInsight to Contabo
+
+on:
+  push:
+    branches:
+      - test
+
+jobs:
+  deploy:
+    name: Build & Deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout repository
+        uses: actions/checkout@v4
+
+      - name: ☕ Setup Java 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: 🔨 Build Backend with Maven
+        run: |
+          cd backend
+          chmod +x mvnw
+          ./mvnw clean package -DskipTests
+
+      - name: 📁 Create directory on VPS
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: mkdir -p /home/${{ secrets.USERNAME }}/sejm-infra
+
+      - name: 🚀 Copy files & JAR to VPS via SCP
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          source: "docker-compose.yml,init.sql,backend/Dockerfile,backend/app/target/*.jar"
+          target: "/home/${{ secrets.USERNAME }}/sejm-infra"
+          strip_components: 0
+
+      - name: 🐳 Build Image and Run Docker Compose on VPS
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd /home/${{ secrets.USERNAME }}/sejm-infra
+            
+            echo "DB_PASS=${{ secrets.DB_PASS }}" > .env
+            echo "KC_ADMIN_PASS=${{ secrets.KC_ADMIN_PASS }}" >> .env
+            
+            sudo docker compose down
+            sudo docker compose build backend
+            sudo docker compose up -d
+            
+            sudo docker image prune -f
