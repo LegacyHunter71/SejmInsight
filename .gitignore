@@ -24,11 +24,6 @@ desktop.ini
 *.sh
 *.bat
 
-# Maven wrapper
-**/mvnw
-**/mvnw.cmd
-.mvn/wrapper/maven-wrapper.jar
-
 # ====================================================================
 # FRONTEND - NODE.JS (React / Vue / Angular)
 # ====================================================================
