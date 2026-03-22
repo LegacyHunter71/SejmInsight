@@ -29,7 +29,7 @@ services:
     image: quay.io/keycloak/keycloak:22.0.1
     container_name: sejm-keycloak
     restart: always
-    command: start-dev --proxy edge --http-relative-path /auth
+    command: start-dev --proxy=edge --http-relative-path=/auth
     environment:
       KC_DB: postgres
       KC_DB_URL: jdbc:postgresql://postgres:5432/parliament_db # Korzystamy z głównej bazy lub zmień na dedykowaną
