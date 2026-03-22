@@ -6,14 +6,13 @@ services:
     container_name: sejm-proxy
     restart: always
     ports:
-      - '80:80'   # Publiczny HTTP
-      - '443:443' # Publiczny HTTPS
-      - '81:81'   # Panel administracyjny NPM
+      - '80:80'
+      - '443:443'
+      - '81:81'
     volumes:
       - ./npm_data:/data
       - ./npm_letsencrypt:/etc/letsencrypt
 
-  # 2. Baza Danych (Postgres)
   postgres:
     image: postgres:15-alpine
     container_name: sejm-postgres
@@ -26,7 +25,6 @@ services:
       - postgres_data:/var/lib/postgresql/data
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
 
-  # 3. Keycloak
   keycloak:
     image: quay.io/keycloak/keycloak:22.0.1
     container_name: sejm-keycloak
@@ -34,7 +32,7 @@ services:
     command: start-dev --proxy edge --http-relative-path /auth
     environment:
       KC_DB: postgres
-      KC_DB_URL: jdbc:postgresql://postgres:5432/${KC_DB_NAME:-keycloak_db}
+      KC_DB_URL: jdbc:postgresql://postgres:5432/parliament_db # Korzystamy z głównej bazy lub zmień na dedykowaną
       KC_DB_USERNAME: ${DB_USER:-admin}
       KC_DB_PASSWORD: ${DB_PASS:-password}
       KEYCLOAK_ADMIN: ${KC_ADMIN_USER:-admin}
@@ -44,7 +42,6 @@ services:
     depends_on:
       - postgres
 
-  # 4. PgAdmin (Opcjonalnie)
   pgadmin:
     image: dpage/pgadmin4
     container_name: sejm-pgadmin
@@ -58,7 +55,6 @@ services:
     depends_on:
       - postgres
 
-  # 5. Aplikacja SejmInsight
   backend:
     build: ./backend
     container_name: sejm-backend
@@ -66,16 +62,26 @@ services:
     ports:
       - "8080:8080"
     environment:
-      - DB_HOST=postgres
-      - DB_PORT=5432
-      - DB_NAME=${DB_NAME:-parliament_db}
-      - DB_USER=${DB_USER:-admin}
-      - DB_PASS=${DB_PASS:-password}
-      - KC_SERVER_URL=http://keycloak:8080/auth
-      - KC_ISSUER_URL=http://keycloak:8080/auth/realms/parliament-realm
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: ${DB_NAME:-parliament_db}
+      DB_USER: ${DB_USER:-admin}
+      DB_PASS: ${DB_PASS:-password}
+      KC_SERVER_URL: http://keycloak:8080/auth
+      KC_ISSUER_URL: http://keycloak:8080/auth/realms/parliament-realm
+      SERVER_SERVLET_CONTEXT_PATH: /api
     depends_on:
       - postgres
       - keycloak
 
+  portainer:
+    image: portainer/portainer-ce:latest
+    container_name: sejm-portainer
+    restart: always
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer_data:/data
+
 volumes:
   postgres_data:
+  portainer_data:
