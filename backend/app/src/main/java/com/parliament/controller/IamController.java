@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/iam")
+@RequestMapping("/iam")
 @RequiredArgsConstructor
 class IamController {
 
