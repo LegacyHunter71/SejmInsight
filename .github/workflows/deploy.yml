@@ -53,6 +53,18 @@ jobs:
     needs: build-and-push
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Copy docker-compose.yml to VPS
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          source: "docker-compose.yml"
+          target: "~/sejm-infra"
+
       - name: Deploy to VPS via SSH
         uses: appleboy/ssh-action@master
         with:
@@ -62,8 +74,12 @@ jobs:
           script: |
             cd ~/sejm-infra
             IMAGE_LOWER=$(echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:]')
+            
+            # Logowanie i pobranie obrazu
             echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
             docker pull ghcr.io/$IMAGE_LOWER:latest
+            
+            # Generowanie .env
             cat <<EOF > .env
             DB_NAME=${{ vars.DB_NAME }}
             DB_USER=${{ vars.DB_USER }}
@@ -79,4 +95,15 @@ jobs:
             KC_REALM=${{ vars.KC_REALM }}
             GITHUB_REPOSITORY_LOWER=$IMAGE_LOWER
             EOF
+            
+            # Restart kontenerów (z nowym plikiem yml i .env)
             docker compose up -d --force-recreate
+            
+            # ELEGANCKI TRICK: Automatyczne tworzenie bazy Keycloaka
+            echo "Czekam na start Postgresa..."
+            sleep 5
+            docker exec sejm-postgres psql -U ${{ vars.DB_USER }} -d postgres -c "SELECT 1 FROM pg_database WHERE datname = '${{ vars.KC_DB_NAME }}'" | grep -q 1 || \
+            docker exec sejm-postgres psql -U ${{ vars.DB_USER }} -d postgres -c "CREATE DATABASE ${{ vars.KC_DB_NAME }};"
+            
+            # Restart Keycloaka, żeby zobaczył nową bazę
+            docker restart sejm-keycloak
