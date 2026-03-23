@@ -23,7 +23,7 @@ import java.util.List;
 @EnableWebSecurity
 @EnableMethodSecurity
 @RequiredArgsConstructor
-class SecurityConfig {
+public class SecurityConfig {
 
     @Value("${app.cors.allowed-origins}")
     private List<String> allowedOrigins;
