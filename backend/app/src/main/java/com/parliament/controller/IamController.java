@@ -6,7 +6,6 @@ import com.parliament.api.UserDto;
 import com.parliament.api.UserProfileUpdate;
 import com.parliament.enums.UserRole;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/iam")
+@RequestMapping("/iam")
 @RequiredArgsConstructor
 class IamController {
 
