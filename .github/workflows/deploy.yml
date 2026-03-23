@@ -1,64 +1,91 @@
-name: Deploy SejmInsight to Contabo
+name: Deploy SejmInsight to VPS
 
 on:
   push:
-    branches:
-      - test
+    branches: [ test ]
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
 
 jobs:
-  deploy:
-    name: Build & Deploy
+  build-and-push:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
 
     steps:
-      - name: 📥 Checkout repository
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: ☕ Setup Java 21
+      - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
-          java-version: '21'
+          java-version: '17'
           distribution: 'temurin'
-          cache: maven
+          cache: 'maven'
 
-      - name: 🔨 Build Backend with Maven
-        working-directory: ./backend
+      - name: Build with Maven (Skip Tests dla szybkości)
+        run: mvn clean package -DskipTests
+
+      - name: Log in to the Container registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Lowercase Registry Image Name
         run: |
-          chmod +x mvnw
-          ./mvnw clean package -DskipTests
+          echo "IMAGE_NAME_LOWER=$(echo ${{ env.IMAGE_NAME }} | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
 
-      - name: 📁 Create directory on VPS
-        uses: appleboy/ssh-action@v1.0.3
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
         with:
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.USERNAME }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          script: mkdir -p /home/${{ secrets.USERNAME }}/sejm-infra
+          context: .
+          file: ./backend/Dockerfile
+          push: true
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME_LOWER }}:latest
 
-      - name: 🚀 Copy files & JAR to VPS via SCP
-        uses: appleboy/scp-action@v0.1.7
+  deploy:
+    needs: build-and-push
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to VPS via SSH
+        uses: appleboy/ssh-action@master
         with:
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.USERNAME }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          source: "docker-compose.yml,init.sql,backend/Dockerfile,backend/app/target/*.jar"
-          target: "/home/${{ secrets.USERNAME }}/sejm-infra"
-          strip_components: 0
-
-      - name: 🐳 Build Image and Run Docker Compose on VPS
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.USERNAME }}
+          host: ${{ secrets.VPS_IP }}
+          username: sejmadmin
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            cd /home/${{ secrets.USERNAME }}/sejm-infra
+            cd ~/sejm-infra
             
-            echo "DB_PASS=${{ secrets.DB_PASS }}" > .env
-            echo "KC_ADMIN_PASS=${{ secrets.KC_ADMIN_PASS }}" >> .env
+            # Pobranie nazwy obrazu małymi literami
+            IMAGE_LOWER=$(echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:]')
             
-            docker compose down
-            docker compose build backend
-            docker compose up -d
+            # Logowanie do rejestru na VPS
+            echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
             
-            docker image prune -f
+            # Pobranie najnowszego obrazu
+            docker pull ghcr.io/$IMAGE_LOWER:latest
+            
+            # Generowanie pliku .env z Twoimi 12-znakowymi hasłami
+            # GitHub Actions podstawi tu wartości z Twoich Secrets i Variables
+            cat <<EOF > .env
+            DB_NAME=${{ vars.DB_NAME }}
+            DB_USER=${{ vars.DB_USER }}
+            DB_PASS=${{ secrets.DB_PASS }}
+            KC_ADMIN_USER=${{ vars.KC_ADMIN_USER }}
+            KC_ADMIN_PASS=${{ secrets.KC_ADMIN_PASS }}
+            KC_ADMIN_CLIENT_ID=${{ vars.KC_ADMIN_CLIENT_ID }}
+            KC_ADMIN_CLIENT_SECRET=${{ secrets.KC_ADMIN_CLIENT_SECRET }}
+            PGADMIN_EMAIL=${{ vars.PGADMIN_EMAIL }}
+            PGADMIN_PASS=${{ secrets.PGADMIN_PASS }}
+            DOMAIN=${{ vars.DOMAIN }}
+            KC_REALM=${{ vars.KC_REALM }}
+            GITHUB_REPOSITORY_LOWER=$IMAGE_LOWER
+            EOF
+
+            # Restart kontenerów z nowym obrazem i nowym .env
+            docker compose up -d --force-recreate
