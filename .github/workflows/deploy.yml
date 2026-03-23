@@ -56,8 +56,8 @@ jobs:
       - name: Deploy to VPS via SSH
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ secrets.VPS_IP }}
-          username: sejmadmin
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             cd ~/sejm-infra
