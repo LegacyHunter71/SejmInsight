@@ -5,6 +5,8 @@ import com.parliament.api.UserCreateRequest;
 import com.parliament.api.UserDto;
 import com.parliament.api.UserProfileUpdate;
 import com.parliament.enums.UserRole;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -20,6 +22,10 @@ class IamController {
 
     private final IamFacade iamFacade;
 
+    @Operation(
+            summary = "Rejestracja",
+            security = {}
+    )
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
     public void register(@RequestBody @Valid UserCreateRequest request) {
