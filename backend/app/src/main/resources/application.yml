@@ -3,9 +3,9 @@ spring:
     name: SejmInsight
 
   datasource:
-    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:parliament_db}
-    username: ${DB_USER:admin}
-    password: ${DB_PASS:password}
+    url: jdbc:postgresql://${DB_HOST:sejm-postgres}:${DB_PORT:5432}/${DB_NAME:parliament_db}
+    username: ${DB_USER:sejm_user}
+    password: ${DB_PASS:P4ss_Postgr12}
     driver-class-name: org.postgresql.Driver
 
   jpa:
@@ -20,17 +20,19 @@ spring:
         jdbc:
           batch_size: 25
           order_inserts: true
+
   flyway:
     enabled: true
     baseline-on-migrate: true
     locations:
       - classpath:db/migration/iam
       - classpath:db/migration/deputy
+
   security:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: ${KC_ISSUER_URL:http://localhost:8081/realms/parliament-realm}
+          issuer-uri: ${KC_ISSUER_URL:https://sejm-insight.duckdns.org/auth/realms/parliament-realm}
 
   jackson:
     property-naming-strategy: SNAKE_CASE
@@ -40,17 +42,18 @@ spring:
 
 server:
   port: ${SERVER_PORT:8080}
-  forward-headers-strategy: framework
+  forward-headers-strategy: native
 
 parliament:
   url: ${SEJM_API_URL:https://api.sejm.gov.pl/sejm/}
   term: ${SEJM_API_TERM:term10/MP}
   iam:
     keycloak:
-      server-url: ${KC_SERVER_URL:http://localhost:8081}
+      server-url: ${KC_SERVER_URL:https://sejm-insight.duckdns.org/auth}
       realm: ${KC_REALM:parliament-realm}
       admin-client-id: ${KC_ADMIN_CLIENT_ID:parliament-admin-client}
-      admin-client-secret: ${KC_ADMIN_CLIENT_SECRET:9fuEM51vNfTV9YfzY600B0kkAa2olj1s}
+      admin-client-secret: ${KC_ADMIN_CLIENT_SECRET:TUTAJ_WKLEJ_SECRET_Z_KEYCLOAKA}
+
 springdoc:
   api-docs:
     enabled: true
@@ -65,6 +68,7 @@ logging:
     org.hibernate.SQL: DEBUG
     org.hibernate.type.descriptor.sql.BasicBinder: TRACE
     com.parliament: DEBUG
+
 app:
   cors:
-    allowed-origins: "http://localhost:5173,http://127.0.0.1:5173"
+    allowed-origins: "https://sejm-insight.duckdns.org,http://localhost:5173,http://127.0.0.1:5173"

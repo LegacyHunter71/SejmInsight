@@ -1,46 +1,100 @@
-version: '3.8'
-
 services:
+  nginx-proxy:
+    image: 'jc21/nginx-proxy-manager:latest'
+    container_name: sejm-proxy
+    restart: always
+    ports:
+      - '80:80'
+      - '443:443'
+      - '81:81'
+    volumes:
+      - ./npm_data:/data
+      - ./npm_letsencrypt:/etc/letsencrypt
+    networks:
+      - sejm-network
+
   postgres:
     image: postgres:15-alpine
     container_name: sejm-postgres
-    ports:
-      - "${DB_PORT:-5432}:5432"
+    restart: always
     environment:
-      POSTGRES_DB: ${DB_NAME:-parliament_db}
-      POSTGRES_USER: ${DB_USER:-admin}
-      POSTGRES_PASSWORD: ${DB_PASS:-password}
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASS}
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - sejm-network
 
   keycloak:
     image: quay.io/keycloak/keycloak:22.0.1
     container_name: sejm-keycloak
-    command: start-dev
+    restart: always
+    command: [ "start-dev", "--proxy=edge", "--http-relative-path=/auth" ]
     environment:
       KC_DB: postgres
-      KC_DB_URL: jdbc:postgresql://postgres:5432/${KC_DB_NAME:-keycloak_db}
-      KC_DB_USERNAME: ${DB_USER:-admin}
-      KC_DB_PASSWORD: ${DB_PASS:-password}
-      KEYCLOAK_ADMIN: ${KC_ADMIN_USER:-admin}
-      KEYCLOAK_ADMIN_PASSWORD: ${KC_ADMIN_PASS:-admin}
-      KC_FEATURES: token-exchange
-    ports:
-      - "${KC_PORT:-8081}:8080"
+      KC_DB_URL: jdbc:postgresql://sejm-postgres:5432/${KC_DB_NAME}
+      KC_DB_USERNAME: ${DB_USER}
+      KC_DB_PASSWORD: ${DB_PASS}
+      KEYCLOAK_ADMIN: ${KC_ADMIN_USER}
+      KEYCLOAK_ADMIN_PASSWORD: ${KC_ADMIN_PASS}
+      KC_HOSTNAME: ${DOMAIN}
+      KC_HOSTNAME_STRICT: "false"
+      KC_HOSTNAME_STRICT_HTTPS: "true"
     depends_on:
       - postgres
+    networks:
+      - sejm-network
 
   pgadmin:
     image: dpage/pgadmin4
     container_name: sejm-pgadmin
+    restart: always
     environment:
-      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL:-admin@sejm.pl}
-      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASS:-admin}
-    ports:
-      - "${PGADMIN_PORT:-5050}:80"
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASS}
+      PGADMIN_CONFIG_ENHANCED_COOKIE_PROTECTION: 'True'
+      PGADMIN_LISTEN_ADDRESS: '0.0.0.0'
+    networks:
+      - sejm-network
+
+  backend:
+    image: ghcr.io/${GITHUB_REPOSITORY_LOWER}:latest
+    container_name: sejm-backend
+    restart: always
+    environment:
+      DB_HOST: sejm-postgres
+      DB_PORT: 5432
+      DB_NAME: ${DB_NAME}
+      DB_USER: ${DB_USER}
+      DB_PASS: ${DB_PASS}
+      KC_SERVER_URL: https://${DOMAIN}/auth
+      KC_ISSUER_URL: https://${DOMAIN}/auth/realms/${KC_REALM}
+      KC_REALM: ${KC_REALM}
+      KC_ADMIN_CLIENT_ID: ${KC_ADMIN_CLIENT_ID}
+      KC_ADMIN_CLIENT_SECRET: ${KC_ADMIN_CLIENT_SECRET}
+      SERVER_SERVLET_CONTEXT_PATH: /api
+      SERVER_FORWARD_HEADERS_STRATEGY: native
     depends_on:
       - postgres
+      - keycloak
+    networks:
+      - sejm-network
+
+  portainer:
+    image: portainer/portainer-ce:latest
+    container_name: sejm-portainer
+    restart: always
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer_data:/data
+    networks:
+      - sejm-network
+
+networks:
+  sejm-network:
+    driver: bridge
 
 volumes:
   postgres_data:
+  portainer_data:
