@@ -5,6 +5,11 @@
 *.iml
 *.iws
 *.ipr
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
 .vscode/
 .settings/
 .classpath
@@ -13,6 +18,8 @@
 .DS_Store
 Thumbs.db
 desktop.ini
+
+
 
 # ====================================================================
 # BACKEND - JAVA & MAVEN (Dla wszystkich modułów: app, iam, deputy, itd.)
@@ -29,11 +36,14 @@ desktop.ini
 # ====================================================================
 **/node_modules/
 **/dist/
+**/dist-ssr/
 **/build/
 **/.cache/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
 .eslintcache
 
 # ====================================================================
@@ -52,3 +62,4 @@ yarn-error.log*
 # ====================================================================
 temp/
 tmp/
+logs/
