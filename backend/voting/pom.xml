@@ -9,7 +9,7 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>sync</artifactId>
+    <artifactId>voting</artifactId>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
@@ -19,26 +19,8 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.parliament</groupId>
-            <artifactId>deputy</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.httpcomponents.client5</groupId>
-            <artifactId>httpclient5</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.mapstruct</groupId>
-            <artifactId>mapstruct</artifactId>
-        </dependency>
-        <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.parliament</groupId>
-            <artifactId>voting</artifactId>
-            <version>${project.version}</version>
+            <artifactId>spring-boot-starter</artifactId>
         </dependency>
     </dependencies>
 

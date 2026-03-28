@@ -1,8 +1,7 @@
-package com.parliament.utils;
+package com.parliament.internal;
 
 import com.parliament.deputy.api.dto.DeputySyncRequest;
 import com.parliament.deputy.api.facade.DeputyFacade;
-import com.parliament.dto.DeputyInDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,7 +13,7 @@ import java.util.List;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class DeputySyncService {
+class DeputySyncService {
     private final RestClient restClient;
     private final DeputyFacade deputyFacade;
 
@@ -30,7 +29,6 @@ public class DeputySyncService {
                     .body(new ParameterizedTypeReference<List<DeputyInDto>>() {});
 
             if (externalDeputies != null) {
-                // Mapujemy na DTO z API modułu Deputy
                 List<DeputySyncRequest> requests = externalDeputies.stream()
                         .map(dto -> new DeputySyncRequest(
                                 dto.id(), dto.firstLastName(), dto.club(), dto.districtName(), dto.active()

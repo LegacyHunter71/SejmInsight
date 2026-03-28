@@ -24,6 +24,7 @@
 		<module>sync</module>
 		<module>deputy</module>
         <module>iam</module>
+        <module>voting</module>
     </modules>
 
 	<properties>

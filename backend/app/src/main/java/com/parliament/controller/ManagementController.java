@@ -1,6 +1,6 @@
 package com.parliament.controller;
 
-import com.parliament.utils.DeputySyncService;
+import com.parliament.api.SyncFacade;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -13,12 +13,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class ManagementController {
 
-    private final DeputySyncService deputySyncService;
+    private final SyncFacade syncFacade;
 
     @PostMapping("/sync")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> triggerSync() {
-        deputySyncService.syncDeputies();
+        syncFacade.syncAllDeputies();
         return ResponseEntity.noContent().build();
     }
 }

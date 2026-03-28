@@ -1,13 +1,11 @@
-package com.parliament.dto;
+package com.parliament.internal;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public record VotingResponse(
-        Integer term,
+record VotingHeaderInDto(
         Integer proceedingNo,
         Integer votingNo,
         String title,
-        List<VoteDto> votes
+        String date
 ) {}
