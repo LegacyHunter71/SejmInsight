@@ -1,17 +1,8 @@
-import * as React from "react";
 import { Outlet, createRootRouteWithContext } from "@tanstack/react-router";
 import { type RouterContext } from "@/main";
-import NavBar from "@/components/navbar";
+
+import "@/styles/shared.css";
 
 export const Route = createRootRouteWithContext<RouterContext>()({
-  component: RootComponent,
+  component: () => <Outlet />,
 });
-
-function RootComponent() {
-  return (
-    <React.Fragment>
-      <NavBar />
-      <Outlet />
-    </React.Fragment>
-  );
-}

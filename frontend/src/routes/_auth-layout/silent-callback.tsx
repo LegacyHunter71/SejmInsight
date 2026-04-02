@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
 import { userManager } from "@/auth/AuthProvider";
 
-export const Route = createFileRoute("/silent-callback")({
+export const Route = createFileRoute("/_auth-layout/silent-callback")({
   component: RouteComponent,
 });
 

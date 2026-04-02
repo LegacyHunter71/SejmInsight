@@ -1,1 +1,21 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Manrope:wght@200..800&display=swap");
+
 @import "tailwindcss";
+
+@theme {
+  --color-maroon-50: #e8eeff;
+  --color-maroon-100: #d4dfff;
+  --color-maroon-200: #a1beff;
+  --color-maroon-300: #68a0ff;
+  --color-maroon-400: #0081f1;
+  --color-maroon-500: #0065c0;
+  --color-maroon-600: #00498d;
+  --color-maroon-700: #003061;
+  --color-maroon-800: #001836;
+  --color-maroon-900: #000e24;
+  --color-maroon-950: #000718;
+}
+
+.hero-gradient {
+  @apply bg-linear-to-r from-maroon-900 to-maroon-700;
+}

@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
 import { useAuth, userManager } from "@/auth/AuthProvider";
 
-export const Route = createFileRoute("/callback")({
+export const Route = createFileRoute("/_auth-layout/callback")({
   component: RouteComponent,
 });
 

@@ -37,6 +37,7 @@ interface AuthContextType {
   accessToken: string | null;
   isAuthenticated: boolean;
   signinRedirect: (args?: SigninRedirectArgs) => Promise<void>;
+  signupRedirect: () => Promise<void>;
   signoutRedirect: () => Promise<void>;
   removeUser: () => Promise<void>;
   loadUser: () => Promise<User | null>;
@@ -93,7 +94,22 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const signinRedirect = (args?: SigninRedirectArgs) =>
     userManager.signinRedirect(args);
+
+  const signupRedirect = (args?: SigninRedirectArgs) => {
+    return userManager.signinRedirect({
+      ...args,
+      extraQueryParams: {
+        ...args?.extraQueryParams,
+        // kc_action: "register",
+        prompt: "create", // Standard OIDC dla rejestracji
+        // Jeśli używasz Auth0, zamień na: screen_hint: "signup"
+        // Jeśli używasz Keycloak, czasem wymagane jest: kc_idp_hint: "rejestracja"
+      },
+    });
+  };
+
   const signoutRedirect = () => userManager.signoutRedirect();
+
   const removeUser = () => userManager.removeUser();
   const loadUser = async () => {
     const user = await userManager.getUser();
@@ -108,6 +124,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       accessToken,
       isAuthenticated,
       signinRedirect,
+      signupRedirect,
       signoutRedirect,
       removeUser,
       loadUser,

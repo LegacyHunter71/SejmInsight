@@ -9,153 +9,206 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as SilentCallbackRouteImport } from './routes/silent-callback'
-import { Route as ProfileRouteImport } from './routes/profile'
-import { Route as LoginRouteImport } from './routes/login'
-import { Route as CallbackRouteImport } from './routes/callback'
-import { Route as AboutRouteImport } from './routes/about'
-import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthLayoutRouteImport } from './routes/_auth-layout'
+import { Route as AppLayoutRouteImport } from './routes/_app-layout'
+import { Route as AppLayoutIndexRouteImport } from './routes/_app-layout/index'
+import { Route as AuthLayoutSilentCallbackRouteImport } from './routes/_auth-layout/silent-callback'
+import { Route as AuthLayoutLoginRouteImport } from './routes/_auth-layout/login'
+import { Route as AuthLayoutCallbackRouteImport } from './routes/_auth-layout/callback'
+import { Route as AppLayoutProfileRouteImport } from './routes/_app-layout/profile'
+import { Route as AppLayoutAboutRouteImport } from './routes/_app-layout/about'
 
-const SilentCallbackRoute = SilentCallbackRouteImport.update({
-  id: '/silent-callback',
-  path: '/silent-callback',
+const AuthLayoutRoute = AuthLayoutRouteImport.update({
+  id: '/_auth-layout',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ProfileRoute = ProfileRouteImport.update({
-  id: '/profile',
-  path: '/profile',
+const AppLayoutRoute = AppLayoutRouteImport.update({
+  id: '/_app-layout',
   getParentRoute: () => rootRouteImport,
 } as any)
-const LoginRoute = LoginRouteImport.update({
-  id: '/login',
-  path: '/login',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CallbackRoute = CallbackRouteImport.update({
-  id: '/callback',
-  path: '/callback',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AboutRoute = AboutRouteImport.update({
-  id: '/about',
-  path: '/about',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const IndexRoute = IndexRouteImport.update({
+const AppLayoutIndexRoute = AppLayoutIndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AppLayoutRoute,
+} as any)
+const AuthLayoutSilentCallbackRoute =
+  AuthLayoutSilentCallbackRouteImport.update({
+    id: '/silent-callback',
+    path: '/silent-callback',
+    getParentRoute: () => AuthLayoutRoute,
+  } as any)
+const AuthLayoutLoginRoute = AuthLayoutLoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => AuthLayoutRoute,
+} as any)
+const AuthLayoutCallbackRoute = AuthLayoutCallbackRouteImport.update({
+  id: '/callback',
+  path: '/callback',
+  getParentRoute: () => AuthLayoutRoute,
+} as any)
+const AppLayoutProfileRoute = AppLayoutProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => AppLayoutRoute,
+} as any)
+const AppLayoutAboutRoute = AppLayoutAboutRouteImport.update({
+  id: '/about',
+  path: '/about',
+  getParentRoute: () => AppLayoutRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
-  '/about': typeof AboutRoute
-  '/callback': typeof CallbackRoute
-  '/login': typeof LoginRoute
-  '/profile': typeof ProfileRoute
-  '/silent-callback': typeof SilentCallbackRoute
+  '/': typeof AppLayoutIndexRoute
+  '/about': typeof AppLayoutAboutRoute
+  '/profile': typeof AppLayoutProfileRoute
+  '/callback': typeof AuthLayoutCallbackRoute
+  '/login': typeof AuthLayoutLoginRoute
+  '/silent-callback': typeof AuthLayoutSilentCallbackRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
-  '/about': typeof AboutRoute
-  '/callback': typeof CallbackRoute
-  '/login': typeof LoginRoute
-  '/profile': typeof ProfileRoute
-  '/silent-callback': typeof SilentCallbackRoute
+  '/': typeof AppLayoutIndexRoute
+  '/about': typeof AppLayoutAboutRoute
+  '/profile': typeof AppLayoutProfileRoute
+  '/callback': typeof AuthLayoutCallbackRoute
+  '/login': typeof AuthLayoutLoginRoute
+  '/silent-callback': typeof AuthLayoutSilentCallbackRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
-  '/about': typeof AboutRoute
-  '/callback': typeof CallbackRoute
-  '/login': typeof LoginRoute
-  '/profile': typeof ProfileRoute
-  '/silent-callback': typeof SilentCallbackRoute
+  '/_app-layout': typeof AppLayoutRouteWithChildren
+  '/_auth-layout': typeof AuthLayoutRouteWithChildren
+  '/_app-layout/about': typeof AppLayoutAboutRoute
+  '/_app-layout/profile': typeof AppLayoutProfileRoute
+  '/_auth-layout/callback': typeof AuthLayoutCallbackRoute
+  '/_auth-layout/login': typeof AuthLayoutLoginRoute
+  '/_auth-layout/silent-callback': typeof AuthLayoutSilentCallbackRoute
+  '/_app-layout/': typeof AppLayoutIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
     | '/about'
+    | '/profile'
     | '/callback'
     | '/login'
-    | '/profile'
     | '/silent-callback'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/callback' | '/login' | '/profile' | '/silent-callback'
+  to: '/' | '/about' | '/profile' | '/callback' | '/login' | '/silent-callback'
   id:
     | '__root__'
-    | '/'
-    | '/about'
-    | '/callback'
-    | '/login'
-    | '/profile'
-    | '/silent-callback'
+    | '/_app-layout'
+    | '/_auth-layout'
+    | '/_app-layout/about'
+    | '/_app-layout/profile'
+    | '/_auth-layout/callback'
+    | '/_auth-layout/login'
+    | '/_auth-layout/silent-callback'
+    | '/_app-layout/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
-  AboutRoute: typeof AboutRoute
-  CallbackRoute: typeof CallbackRoute
-  LoginRoute: typeof LoginRoute
-  ProfileRoute: typeof ProfileRoute
-  SilentCallbackRoute: typeof SilentCallbackRoute
+  AppLayoutRoute: typeof AppLayoutRouteWithChildren
+  AuthLayoutRoute: typeof AuthLayoutRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/silent-callback': {
-      id: '/silent-callback'
-      path: '/silent-callback'
-      fullPath: '/silent-callback'
-      preLoaderRoute: typeof SilentCallbackRouteImport
+    '/_auth-layout': {
+      id: '/_auth-layout'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthLayoutRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/profile': {
-      id: '/profile'
-      path: '/profile'
-      fullPath: '/profile'
-      preLoaderRoute: typeof ProfileRouteImport
+    '/_app-layout': {
+      id: '/_app-layout'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AppLayoutRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/login': {
-      id: '/login'
-      path: '/login'
-      fullPath: '/login'
-      preLoaderRoute: typeof LoginRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/callback': {
-      id: '/callback'
-      path: '/callback'
-      fullPath: '/callback'
-      preLoaderRoute: typeof CallbackRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/about': {
-      id: '/about'
-      path: '/about'
-      fullPath: '/about'
-      preLoaderRoute: typeof AboutRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/': {
-      id: '/'
+    '/_app-layout/': {
+      id: '/_app-layout/'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof AppLayoutIndexRouteImport
+      parentRoute: typeof AppLayoutRoute
+    }
+    '/_auth-layout/silent-callback': {
+      id: '/_auth-layout/silent-callback'
+      path: '/silent-callback'
+      fullPath: '/silent-callback'
+      preLoaderRoute: typeof AuthLayoutSilentCallbackRouteImport
+      parentRoute: typeof AuthLayoutRoute
+    }
+    '/_auth-layout/login': {
+      id: '/_auth-layout/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof AuthLayoutLoginRouteImport
+      parentRoute: typeof AuthLayoutRoute
+    }
+    '/_auth-layout/callback': {
+      id: '/_auth-layout/callback'
+      path: '/callback'
+      fullPath: '/callback'
+      preLoaderRoute: typeof AuthLayoutCallbackRouteImport
+      parentRoute: typeof AuthLayoutRoute
+    }
+    '/_app-layout/profile': {
+      id: '/_app-layout/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof AppLayoutProfileRouteImport
+      parentRoute: typeof AppLayoutRoute
+    }
+    '/_app-layout/about': {
+      id: '/_app-layout/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AppLayoutAboutRouteImport
+      parentRoute: typeof AppLayoutRoute
     }
   }
 }
 
+interface AppLayoutRouteChildren {
+  AppLayoutAboutRoute: typeof AppLayoutAboutRoute
+  AppLayoutProfileRoute: typeof AppLayoutProfileRoute
+  AppLayoutIndexRoute: typeof AppLayoutIndexRoute
+}
+
+const AppLayoutRouteChildren: AppLayoutRouteChildren = {
+  AppLayoutAboutRoute: AppLayoutAboutRoute,
+  AppLayoutProfileRoute: AppLayoutProfileRoute,
+  AppLayoutIndexRoute: AppLayoutIndexRoute,
+}
+
+const AppLayoutRouteWithChildren = AppLayoutRoute._addFileChildren(
+  AppLayoutRouteChildren,
+)
+
+interface AuthLayoutRouteChildren {
+  AuthLayoutCallbackRoute: typeof AuthLayoutCallbackRoute
+  AuthLayoutLoginRoute: typeof AuthLayoutLoginRoute
+  AuthLayoutSilentCallbackRoute: typeof AuthLayoutSilentCallbackRoute
+}
+
+const AuthLayoutRouteChildren: AuthLayoutRouteChildren = {
+  AuthLayoutCallbackRoute: AuthLayoutCallbackRoute,
+  AuthLayoutLoginRoute: AuthLayoutLoginRoute,
+  AuthLayoutSilentCallbackRoute: AuthLayoutSilentCallbackRoute,
+}
+
+const AuthLayoutRouteWithChildren = AuthLayoutRoute._addFileChildren(
+  AuthLayoutRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
-  AboutRoute: AboutRoute,
-  CallbackRoute: CallbackRoute,
-  LoginRoute: LoginRoute,
-  ProfileRoute: ProfileRoute,
-  SilentCallbackRoute: SilentCallbackRoute,
+  AppLayoutRoute: AppLayoutRouteWithChildren,
+  AuthLayoutRoute: AuthLayoutRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

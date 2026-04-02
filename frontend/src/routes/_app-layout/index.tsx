@@ -1,13 +1,15 @@
 import { authGuard } from "@/auth/authGuard";
 import { createFileRoute } from "@tanstack/react-router";
 
-// import { userManager } from "@/auth/AuthProvider";
-
-export const Route = createFileRoute("/")({
+export const Route = createFileRoute("/_app-layout/")({
   beforeLoad: authGuard,
   component: RouteComponent,
 });
 
 function RouteComponent() {
-  return <span>Main Page</span>;
+  return (
+    <div className="w-5/6 overflow-auto">
+      <span>Main Page</span>
+    </div>
+  );
 }
