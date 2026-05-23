@@ -1,11 +1,9 @@
-// src/auth/authGuard.ts
 import { redirect } from "@tanstack/react-router";
-import { userManager } from "./AuthProvider";
+import { keycloak } from "./AuthProvider";
 
 export const authGuard = async ({ location }: { location: any }) => {
-  const user = await userManager.getUser();
-
-  if (!user || user.expired) {
+  // Keycloak.authenticated jest booleanem
+  if (!keycloak.authenticated) {
     throw redirect({
       to: "/login",
       search: {

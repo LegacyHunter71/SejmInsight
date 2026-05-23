@@ -4,137 +4,92 @@ import React, {
   useEffect,
   useMemo,
   useState,
+  useRef,
 } from "react";
-import { UserManager, User, WebStorageStateStore } from "oidc-client-ts";
+import Keycloak, { type KeycloakConfig } from "keycloak-js";
 
-type SigninRedirectArgs = Parameters<UserManager["signinRedirect"]>[0];
-
-const authority = import.meta.env.VITE_OIDC_AUTHORITY as string;
-
-const clientId = import.meta.env.VITE_OIDC_CLIENT_ID as string;
-
-const oidcConfig = {
-  authority,
-  client_id: clientId,
-  redirect_uri: `${window.location.origin}/callback`,
-  post_logout_redirect_uri: window.location.origin,
-  response_type: "code",
-  scope: "openid profile email",
-
-  userStore: new WebStorageStateStore({ store: window.sessionStorage }),
-
-  automaticSilentRenew: true,
-  silent_redirect_uri: `${window.location.origin}/silent-callback`,
-
-  monitorSession: true,
+const keycloakConfig: KeycloakConfig = {
+  url: import.meta.env.VITE_KEYCLOAK_URL, // np. https://auth.twoja-domena.pl
+  realm: import.meta.env.VITE_KEYCLOAK_REALM, // Keycloak wymaga Realm
+  clientId: import.meta.env.VITE_KEYCLOAK_CLIENT_ID,
 };
 
-export const userManager = new UserManager(oidcConfig);
+// Tworzymy instancję singletona poza komponentem
+export const keycloak = new Keycloak(keycloakConfig);
 
 interface AuthContextType {
-  user: User | null;
-  isLoading: boolean;
-  accessToken: string | null;
+  keycloak: Keycloak;
   isAuthenticated: boolean;
-  signinRedirect: (args?: SigninRedirectArgs) => Promise<void>;
-  signupRedirect: () => Promise<void>;
-  signoutRedirect: () => Promise<void>;
-  removeUser: () => Promise<void>;
-  loadUser: () => Promise<User | null>;
+  isLoading: boolean;
+  userProfile: any | null;
+  login: (redirectUri?: string) => Promise<void>;
+  register: (redirectUri?: string) => Promise<void>;
+  logout: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const [user, setUser] = useState<User | null>(null);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-
-  const accessToken = user?.access_token ?? null;
-  const isAuthenticated = !!user && !user.expired;
+  const [userProfile, setUserProfile] = useState<any | null>(null);
+  const isInitialized = useRef(false);
 
   useEffect(() => {
-    userManager.getUser().then((user) => {
-      setUser(user);
-      setIsLoading(false);
-    });
+    if (isInitialized.current) return;
+    isInitialized.current = true;
 
-    const onUserLoaded = (user: User) => setUser(user);
-    const onUserUnloaded = () => setUser(null);
+    keycloak
+      .init({
+        onLoad: "check-sso", // Sprawdza sesję bez przekierowania
+        silentCheckSsoRedirectUri: `${window.location.origin}/silent-check-sso.html`,
+        pkceMethod: "S256",
+      })
+      .then(async (authenticated) => {
+        setIsAuthenticated(authenticated);
+        if (authenticated) {
+          const profile = await keycloak.loadUserProfile();
+          setUserProfile(profile);
+        }
+      })
+      .finally(() => setIsLoading(false));
 
-    const onAccessTokenExpiring = () => {
-      userManager.signinSilent().catch(() => {});
-    };
-
-    const onAccessTokenExpired = () => {
-      userManager.getUser().then((u) => setUser(u));
-    };
-
-    const onSilentRenewError = () => {
-      userManager.getUser().then((u) => setUser(u));
-    };
-
-    userManager.events.addUserLoaded(onUserLoaded);
-    userManager.events.addUserUnloaded(onUserUnloaded);
-    userManager.events.addAccessTokenExpiring(onAccessTokenExpiring);
-    userManager.events.addAccessTokenExpired(onAccessTokenExpired);
-    userManager.events.addSilentRenewError(onSilentRenewError);
-
-    userManager.startSilentRenew();
-
-    return () => {
-      userManager.events.removeUserLoaded(onUserLoaded);
-      userManager.events.removeUserUnloaded(onUserUnloaded);
-      userManager.events.removeAccessTokenExpiring(onAccessTokenExpiring);
-      userManager.events.removeAccessTokenExpired(onAccessTokenExpired);
-      userManager.events.removeSilentRenewError(onSilentRenewError);
-
-      userManager.stopSilentRenew();
+    // Automatyczne odświeżanie tokena
+    keycloak.onTokenExpired = () => {
+      keycloak.updateToken(30).catch(() => {
+        console.error("Failed to refresh token");
+      });
     };
   }, []);
 
-  const signinRedirect = (args?: SigninRedirectArgs) =>
-    userManager.signinRedirect(args);
-
-  const signupRedirect = (args?: SigninRedirectArgs) => {
-    return userManager.signinRedirect({
-      ...args,
-      extraQueryParams: {
-        ...args?.extraQueryParams,
-        // kc_action: "register",
-        prompt: "create", // Standard OIDC dla rejestracji
-        // Jeśli używasz Auth0, zamień na: screen_hint: "signup"
-        // Jeśli używasz Keycloak, czasem wymagane jest: kc_idp_hint: "rejestracja"
-      },
-    });
+  const login = (redirectUri?: string) => {
+    const finalRedirect = redirectUri
+      ? redirectUri.startsWith("http")
+        ? redirectUri
+        : `${window.location.origin}${redirectUri}`
+      : window.location.origin;
+    return keycloak.login({ redirectUri: finalRedirect });
   };
 
-  const signoutRedirect = () => userManager.signoutRedirect();
+  const register = (redirectUri?: string) =>
+    keycloak.register({ redirectUri: redirectUri || window.location.origin });
 
-  const removeUser = () => userManager.removeUser();
-  const loadUser = async () => {
-    const user = await userManager.getUser();
-    setUser(user);
-    return user;
-  };
+  const logout = () => keycloak.logout({ redirectUri: window.location.origin });
 
-  const value = useMemo<AuthContextType>(
+  const value = useMemo(
     () => ({
-      user,
-      isLoading,
-      accessToken,
+      keycloak,
       isAuthenticated,
-      signinRedirect,
-      signupRedirect,
-      signoutRedirect,
-      removeUser,
-      loadUser,
+      isLoading,
+      userProfile,
+      login,
+      register,
+      logout,
     }),
-    [user, isLoading, accessToken, isAuthenticated],
+    [isAuthenticated, isLoading, userProfile],
   );
 
-  if (isLoading) {
-    return <div>Inicjalizacja sesji...</div>;
-  }
+  if (isLoading) return <div>Inicjalizacja sesji...</div>;
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

@@ -1,37 +1,24 @@
-import { userManager } from "./AuthProvider";
-
-export class AuthError extends Error {
-  constructor(message: string) {
-    super(message);
-    this.name = "AuthError";
-  }
-}
+import { keycloak } from "./AuthProvider";
 
 export async function authFetch(
   input: RequestInfo | URL,
   init: RequestInit = {},
 ): Promise<Response> {
-  const withAuth = async (): Promise<Response> => {
-    const user = await userManager.getUser();
-    const token = user?.access_token;
-
-    const headers = new Headers(init.headers);
-    if (token) headers.set("Authorization", `Bearer ${token}`);
-
-    return fetch(input, {
-      ...init,
-      headers,
-    });
-  };
-
-  const res = await withAuth();
-  if (res.status !== 401) return res;
-
+  // Odśwież token, jeśli wygaśnie w ciągu najbliższych 10 sekund
   try {
-    await userManager.signinSilent();
-  } catch {
-    throw new AuthError("Unauthorized (token expired)");
+    await keycloak.updateToken(10);
+  } catch (error) {
+    keycloak.login(); // Przekieruj do logowania jeśli odświeżenie padło
+    throw new Error("Session expired");
   }
 
-  return withAuth();
+  const headers = new Headers(init.headers);
+  if (keycloak.token) {
+    headers.set("Authorization", `Bearer ${keycloak.token}`);
+  }
+
+  return fetch(input, {
+    ...init,
+    headers,
+  });
 }

@@ -12,11 +12,13 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as AuthLayoutRouteImport } from './routes/_auth-layout'
 import { Route as AppLayoutRouteImport } from './routes/_app-layout'
 import { Route as AppLayoutIndexRouteImport } from './routes/_app-layout/index'
-import { Route as AuthLayoutSilentCallbackRouteImport } from './routes/_auth-layout/silent-callback'
 import { Route as AuthLayoutLoginRouteImport } from './routes/_auth-layout/login'
-import { Route as AuthLayoutCallbackRouteImport } from './routes/_auth-layout/callback'
 import { Route as AppLayoutProfileRouteImport } from './routes/_app-layout/profile'
 import { Route as AppLayoutAboutRouteImport } from './routes/_app-layout/about'
+import { Route as AppLayoutDeputiesIndexRouteImport } from './routes/_app-layout/deputies/index'
+import { Route as AppLayoutDebatesIndexRouteImport } from './routes/_app-layout/debates/index'
+import { Route as AppLayoutDeputiesDeputyIdRouteImport } from './routes/_app-layout/deputies/$deputyId'
+import { Route as AppLayoutDebatesDebateIdRouteImport } from './routes/_app-layout/debates/$debateId'
 
 const AuthLayoutRoute = AuthLayoutRouteImport.update({
   id: '/_auth-layout',
@@ -31,20 +33,9 @@ const AppLayoutIndexRoute = AppLayoutIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AppLayoutRoute,
 } as any)
-const AuthLayoutSilentCallbackRoute =
-  AuthLayoutSilentCallbackRouteImport.update({
-    id: '/silent-callback',
-    path: '/silent-callback',
-    getParentRoute: () => AuthLayoutRoute,
-  } as any)
 const AuthLayoutLoginRoute = AuthLayoutLoginRouteImport.update({
   id: '/login',
   path: '/login',
-  getParentRoute: () => AuthLayoutRoute,
-} as any)
-const AuthLayoutCallbackRoute = AuthLayoutCallbackRouteImport.update({
-  id: '/callback',
-  path: '/callback',
   getParentRoute: () => AuthLayoutRoute,
 } as any)
 const AppLayoutProfileRoute = AppLayoutProfileRouteImport.update({
@@ -57,22 +48,48 @@ const AppLayoutAboutRoute = AppLayoutAboutRouteImport.update({
   path: '/about',
   getParentRoute: () => AppLayoutRoute,
 } as any)
+const AppLayoutDeputiesIndexRoute = AppLayoutDeputiesIndexRouteImport.update({
+  id: '/deputies/',
+  path: '/deputies/',
+  getParentRoute: () => AppLayoutRoute,
+} as any)
+const AppLayoutDebatesIndexRoute = AppLayoutDebatesIndexRouteImport.update({
+  id: '/debates/',
+  path: '/debates/',
+  getParentRoute: () => AppLayoutRoute,
+} as any)
+const AppLayoutDeputiesDeputyIdRoute =
+  AppLayoutDeputiesDeputyIdRouteImport.update({
+    id: '/deputies/$deputyId',
+    path: '/deputies/$deputyId',
+    getParentRoute: () => AppLayoutRoute,
+  } as any)
+const AppLayoutDebatesDebateIdRoute =
+  AppLayoutDebatesDebateIdRouteImport.update({
+    id: '/debates/$debateId',
+    path: '/debates/$debateId',
+    getParentRoute: () => AppLayoutRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof AppLayoutIndexRoute
   '/about': typeof AppLayoutAboutRoute
   '/profile': typeof AppLayoutProfileRoute
-  '/callback': typeof AuthLayoutCallbackRoute
   '/login': typeof AuthLayoutLoginRoute
-  '/silent-callback': typeof AuthLayoutSilentCallbackRoute
+  '/debates/$debateId': typeof AppLayoutDebatesDebateIdRoute
+  '/deputies/$deputyId': typeof AppLayoutDeputiesDeputyIdRoute
+  '/debates/': typeof AppLayoutDebatesIndexRoute
+  '/deputies/': typeof AppLayoutDeputiesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof AppLayoutIndexRoute
   '/about': typeof AppLayoutAboutRoute
   '/profile': typeof AppLayoutProfileRoute
-  '/callback': typeof AuthLayoutCallbackRoute
   '/login': typeof AuthLayoutLoginRoute
-  '/silent-callback': typeof AuthLayoutSilentCallbackRoute
+  '/debates/$debateId': typeof AppLayoutDebatesDebateIdRoute
+  '/deputies/$deputyId': typeof AppLayoutDeputiesDeputyIdRoute
+  '/debates': typeof AppLayoutDebatesIndexRoute
+  '/deputies': typeof AppLayoutDeputiesIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -80,10 +97,12 @@ export interface FileRoutesById {
   '/_auth-layout': typeof AuthLayoutRouteWithChildren
   '/_app-layout/about': typeof AppLayoutAboutRoute
   '/_app-layout/profile': typeof AppLayoutProfileRoute
-  '/_auth-layout/callback': typeof AuthLayoutCallbackRoute
   '/_auth-layout/login': typeof AuthLayoutLoginRoute
-  '/_auth-layout/silent-callback': typeof AuthLayoutSilentCallbackRoute
   '/_app-layout/': typeof AppLayoutIndexRoute
+  '/_app-layout/debates/$debateId': typeof AppLayoutDebatesDebateIdRoute
+  '/_app-layout/deputies/$deputyId': typeof AppLayoutDeputiesDeputyIdRoute
+  '/_app-layout/debates/': typeof AppLayoutDebatesIndexRoute
+  '/_app-layout/deputies/': typeof AppLayoutDeputiesIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -91,21 +110,33 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/profile'
-    | '/callback'
     | '/login'
-    | '/silent-callback'
+    | '/debates/$debateId'
+    | '/deputies/$deputyId'
+    | '/debates/'
+    | '/deputies/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/profile' | '/callback' | '/login' | '/silent-callback'
+  to:
+    | '/'
+    | '/about'
+    | '/profile'
+    | '/login'
+    | '/debates/$debateId'
+    | '/deputies/$deputyId'
+    | '/debates'
+    | '/deputies'
   id:
     | '__root__'
     | '/_app-layout'
     | '/_auth-layout'
     | '/_app-layout/about'
     | '/_app-layout/profile'
-    | '/_auth-layout/callback'
     | '/_auth-layout/login'
-    | '/_auth-layout/silent-callback'
     | '/_app-layout/'
+    | '/_app-layout/debates/$debateId'
+    | '/_app-layout/deputies/$deputyId'
+    | '/_app-layout/debates/'
+    | '/_app-layout/deputies/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -136,25 +167,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppLayoutIndexRouteImport
       parentRoute: typeof AppLayoutRoute
     }
-    '/_auth-layout/silent-callback': {
-      id: '/_auth-layout/silent-callback'
-      path: '/silent-callback'
-      fullPath: '/silent-callback'
-      preLoaderRoute: typeof AuthLayoutSilentCallbackRouteImport
-      parentRoute: typeof AuthLayoutRoute
-    }
     '/_auth-layout/login': {
       id: '/_auth-layout/login'
       path: '/login'
       fullPath: '/login'
       preLoaderRoute: typeof AuthLayoutLoginRouteImport
-      parentRoute: typeof AuthLayoutRoute
-    }
-    '/_auth-layout/callback': {
-      id: '/_auth-layout/callback'
-      path: '/callback'
-      fullPath: '/callback'
-      preLoaderRoute: typeof AuthLayoutCallbackRouteImport
       parentRoute: typeof AuthLayoutRoute
     }
     '/_app-layout/profile': {
@@ -171,6 +188,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppLayoutAboutRouteImport
       parentRoute: typeof AppLayoutRoute
     }
+    '/_app-layout/deputies/': {
+      id: '/_app-layout/deputies/'
+      path: '/deputies'
+      fullPath: '/deputies/'
+      preLoaderRoute: typeof AppLayoutDeputiesIndexRouteImport
+      parentRoute: typeof AppLayoutRoute
+    }
+    '/_app-layout/debates/': {
+      id: '/_app-layout/debates/'
+      path: '/debates'
+      fullPath: '/debates/'
+      preLoaderRoute: typeof AppLayoutDebatesIndexRouteImport
+      parentRoute: typeof AppLayoutRoute
+    }
+    '/_app-layout/deputies/$deputyId': {
+      id: '/_app-layout/deputies/$deputyId'
+      path: '/deputies/$deputyId'
+      fullPath: '/deputies/$deputyId'
+      preLoaderRoute: typeof AppLayoutDeputiesDeputyIdRouteImport
+      parentRoute: typeof AppLayoutRoute
+    }
+    '/_app-layout/debates/$debateId': {
+      id: '/_app-layout/debates/$debateId'
+      path: '/debates/$debateId'
+      fullPath: '/debates/$debateId'
+      preLoaderRoute: typeof AppLayoutDebatesDebateIdRouteImport
+      parentRoute: typeof AppLayoutRoute
+    }
   }
 }
 
@@ -178,12 +223,20 @@ interface AppLayoutRouteChildren {
   AppLayoutAboutRoute: typeof AppLayoutAboutRoute
   AppLayoutProfileRoute: typeof AppLayoutProfileRoute
   AppLayoutIndexRoute: typeof AppLayoutIndexRoute
+  AppLayoutDebatesDebateIdRoute: typeof AppLayoutDebatesDebateIdRoute
+  AppLayoutDeputiesDeputyIdRoute: typeof AppLayoutDeputiesDeputyIdRoute
+  AppLayoutDebatesIndexRoute: typeof AppLayoutDebatesIndexRoute
+  AppLayoutDeputiesIndexRoute: typeof AppLayoutDeputiesIndexRoute
 }
 
 const AppLayoutRouteChildren: AppLayoutRouteChildren = {
   AppLayoutAboutRoute: AppLayoutAboutRoute,
   AppLayoutProfileRoute: AppLayoutProfileRoute,
   AppLayoutIndexRoute: AppLayoutIndexRoute,
+  AppLayoutDebatesDebateIdRoute: AppLayoutDebatesDebateIdRoute,
+  AppLayoutDeputiesDeputyIdRoute: AppLayoutDeputiesDeputyIdRoute,
+  AppLayoutDebatesIndexRoute: AppLayoutDebatesIndexRoute,
+  AppLayoutDeputiesIndexRoute: AppLayoutDeputiesIndexRoute,
 }
 
 const AppLayoutRouteWithChildren = AppLayoutRoute._addFileChildren(
@@ -191,15 +244,11 @@ const AppLayoutRouteWithChildren = AppLayoutRoute._addFileChildren(
 )
 
 interface AuthLayoutRouteChildren {
-  AuthLayoutCallbackRoute: typeof AuthLayoutCallbackRoute
   AuthLayoutLoginRoute: typeof AuthLayoutLoginRoute
-  AuthLayoutSilentCallbackRoute: typeof AuthLayoutSilentCallbackRoute
 }
 
 const AuthLayoutRouteChildren: AuthLayoutRouteChildren = {
-  AuthLayoutCallbackRoute: AuthLayoutCallbackRoute,
   AuthLayoutLoginRoute: AuthLayoutLoginRoute,
-  AuthLayoutSilentCallbackRoute: AuthLayoutSilentCallbackRoute,
 }
 
 const AuthLayoutRouteWithChildren = AuthLayoutRoute._addFileChildren(

@@ -16,6 +16,10 @@
   --color-maroon-950: #000718;
 }
 
+@variant dark (&:where(.dark, .dark *));
+
 .hero-gradient {
   @apply bg-linear-to-r from-maroon-900 to-maroon-700;
 }
+
+@import "./nav.css";

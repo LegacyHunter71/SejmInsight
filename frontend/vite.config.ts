@@ -13,10 +13,10 @@ export default defineConfig({
     },
   },
   plugins: [
-    tailwindcss(),
     tanstackRouter({ target: "react", autoCodeSplitting: true }),
     react(),
     svgr(),
+    tailwindcss(),
   ],
   server: {
     host: "0.0.0.0",

@@ -2,8 +2,11 @@ import { createRouter, RouterProvider } from "@tanstack/react-router";
 // import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 
+import "./styles/shared.css";
+
 import { AuthProvider, useAuth } from "./auth/AuthProvider";
 import { routeTree } from "./routeTree.gen";
+import { StrictMode } from "react";
 
 export interface RouterContext {
   auth: ReturnType<typeof useAuth>;
@@ -31,9 +34,10 @@ function App() {
 }
 
 createRoot(document.getElementById("root")!).render(
-  <AuthProvider>
-    <App />
-  </AuthProvider>,
-  // <StrictMode>
-  // </StrictMode>,
+  <StrictMode>
+    <AuthProvider>
+      <App />
+    </AuthProvider>
+    ,
+  </StrictMode>,
 );
