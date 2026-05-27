@@ -16,17 +16,11 @@
     <dependencies>
         <dependency>
             <groupId>com.parliament</groupId>
-            <artifactId>iam</artifactId>
-            <version>${project.version}</version>
+            <artifactId>core</artifactId>
         </dependency>
         <dependency>
             <groupId>com.parliament</groupId>
             <artifactId>sync</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.parliament</groupId>
-            <artifactId>deputy</artifactId>
             <version>${project.version}</version>
         </dependency>
 

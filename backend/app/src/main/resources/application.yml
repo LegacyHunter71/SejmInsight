@@ -27,6 +27,8 @@ spring:
     locations:
       - classpath:db/migration/iam
       - classpath:db/migration/deputy
+      - classpath:db/migration/comments
+      - classpath:db/migration/voting
 
   security:
     oauth2:

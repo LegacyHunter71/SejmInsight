@@ -15,10 +15,17 @@ public class ManagementController {
 
     private final SyncFacade syncFacade;
 
-    @PostMapping("/sync")
+    @PostMapping("/sync/deputies")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Void> triggerSync() {
+    public ResponseEntity<Void> triggerDeputySync() {
         syncFacade.syncAllDeputies();
+        return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/sync/votings")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Void> triggerVotingSync() {
+        syncFacade.syncVotings();
         return ResponseEntity.noContent().build();
     }
 }

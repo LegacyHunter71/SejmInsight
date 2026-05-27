@@ -20,7 +20,7 @@ class SyncFacadeImpl implements SyncFacade {
 
     @Override
     public void syncVotings() {
-        votingSyncService.syncAllVotingsFromCurrentTerm();
+        votingSyncService.syncLast100Votings();
     }
 
 
