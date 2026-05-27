@@ -1,5 +1,6 @@
 package com.parliament.internal;
 
+import com.parliament.deputy.internal.Deputy;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -43,6 +44,18 @@ class Comment {
 
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "author_id", insertable = false, updatable = false)
+    private UserEntity author;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "deputy_id", insertable = false, updatable = false)
+    private Deputy deputy;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "parent_id", insertable = false, updatable = false)
+    private Comment parent;
 
     @PrePersist
     protected void onCreate() {
