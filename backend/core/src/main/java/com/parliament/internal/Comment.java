@@ -20,7 +20,7 @@ class Comment {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @Column(nullable = false)
+    @Column(name = "deputy_id", nullable = false)
     private Integer deputyId;
 
     @Column(nullable = false)
@@ -35,9 +35,10 @@ class Comment {
     @Column(nullable = false, columnDefinition = "TEXT")
     private String content;
 
-    @Column(nullable = false)
+    @Column(name = "author_id", nullable = false)
     private UUID authorId;
 
+    @Column(name = "parent_id")
     private UUID parentId;
 
     private LocalDateTime deletedAt;
