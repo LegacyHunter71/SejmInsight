@@ -12,7 +12,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -22,7 +25,6 @@ class CommentFacadeImpl implements CommentFacade {
 
     private final CommentRepository commentRepository;
     private final CommentLikeRepository commentLikeRepository;
-    private final UserRepository userRepository;
 
     @Override
     @Transactional
@@ -75,12 +77,6 @@ class CommentFacadeImpl implements CommentFacade {
         List<UUID> topLevelIds = topLevel.stream().map(Comment::getId).toList();
         List<Comment> replies = commentRepository.findByParentIdIn(topLevelIds);
 
-        Set<UUID> allAuthorIds = Stream.concat(topLevel.stream(), replies.stream())
-                .map(Comment::getAuthorId)
-                .collect(Collectors.toSet());
-        Map<UUID, UserEntity> authors = userRepository.findAllById(allAuthorIds).stream()
-                .collect(Collectors.toMap(UserEntity::getId, u -> u));
-
         Set<UUID> allIds = Stream.concat(topLevel.stream(), replies.stream())
                 .map(Comment::getId)
                 .collect(Collectors.toSet());
@@ -93,7 +89,7 @@ class CommentFacadeImpl implements CommentFacade {
                 .collect(Collectors.groupingBy(Comment::getParentId));
 
         return topLevel.stream()
-                .map(c -> toDto(c, repliesByParent.getOrDefault(c.getId(), List.of()), authors, likeCounts))
+                .map(c -> toDto(c, repliesByParent.getOrDefault(c.getId(), List.of()), likeCounts))
                 .toList();
     }
 
@@ -131,16 +127,15 @@ class CommentFacadeImpl implements CommentFacade {
         commentRepository.save(comment);
     }
 
-    private CommentDto toDto(Comment c, List<Comment> replies,
-                             Map<UUID, UserEntity> authors, Map<UUID, Long> likeCounts) {
+    private CommentDto toDto(Comment c, List<Comment> replies, Map<UUID, Long> likeCounts) {
         boolean isDeleted = c.getDeletedAt() != null;
-        UserEntity author = authors.get(c.getAuthorId());
+        UserEntity author = c.getAuthor();
         String authorName = (isDeleted || author == null)
                 ? null
                 : author.getFirstName() + " " + author.getLastName();
 
         List<CommentDto> replyDtos = replies.stream()
-                .map(r -> toDto(r, List.of(), authors, likeCounts))
+                .map(r -> toDto(r, List.of(), likeCounts))
                 .toList();
 
         return new CommentDto(
