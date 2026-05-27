@@ -1,5 +1,6 @@
 package com.parliament.internal;
 
+import com.parliament.deputy.internal.Deputy;
 import com.parliament.enums.VoteKind;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -19,6 +20,10 @@ class VoteResult {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "voting_id", insertable = false, updatable = false)
     private Voting voting;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "deputy_id", insertable = false, updatable = false)
+    private Deputy deputy;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)

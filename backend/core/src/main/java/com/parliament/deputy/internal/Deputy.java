@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-class Deputy {
+public class Deputy {
     @Id
     private Integer id;
     private String firstName;
