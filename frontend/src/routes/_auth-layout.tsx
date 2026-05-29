@@ -1,4 +1,4 @@
-import SimpleNavBar from "@/components/simpleNarBar";
+import AuthNavBar from "@/components/authNavBar";
 import { createFileRoute, Outlet } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/_auth-layout")({
@@ -8,7 +8,7 @@ export const Route = createFileRoute("/_auth-layout")({
 function RouteComponent() {
   return (
     <>
-      <SimpleNavBar />
+      <AuthNavBar />
       <Outlet />
     </>
   );
