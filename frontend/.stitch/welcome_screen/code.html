@@ -1,0 +1,451 @@
+<!doctype html>
+
+<html class="light" lang="pl">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;family=Inter:wght@400;500;600&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "surface-container-lowest": "#ffffff",
+              background: "#f7f9fb",
+              "surface-container": "#eceef0",
+              "tertiary-fixed-dim": "#88d982",
+              tertiary: "#001e03",
+              surface: "#f7f9fb",
+              "primary-fixed": "#d5e3ff",
+              "inverse-on-surface": "#eff1f3",
+              "on-secondary": "#ffffff",
+              "on-primary-container": "#7696ca",
+              "on-tertiary-fixed": "#002204",
+              "on-primary-fixed-variant": "#254776",
+              "error-container": "#ffdad6",
+              "on-tertiary-fixed-variant": "#005312",
+              "on-primary-fixed": "#001b3c",
+              "primary-fixed-dim": "#a7c8ff",
+              "on-error": "#ffffff",
+              "surface-container-low": "#f2f4f6",
+              "secondary-fixed": "#93f2f2",
+              "on-secondary-fixed": "#002020",
+              "tertiary-fixed": "#a3f69c",
+              "surface-container-highest": "#e0e3e5",
+              error: "#ba1a1a",
+              "outline-variant": "#c3c6d0",
+              secondary: "#006a6a",
+              "surface-container-high": "#e6e8ea",
+              "on-surface": "#191c1e",
+              "inverse-primary": "#a7c8ff",
+              "secondary-container": "#90efef",
+              "on-primary": "#ffffff",
+              "tertiary-container": "#003608",
+              "on-secondary-fixed-variant": "#004f4f",
+              "on-background": "#191c1e",
+              "on-secondary-container": "#006e6e",
+              "surface-dim": "#d8dadc",
+              "secondary-fixed-dim": "#76d6d5",
+              "primary-container": "#002d5b",
+              "on-tertiary-container": "#57a655",
+              "on-surface-variant": "#43474f",
+              "inverse-surface": "#2d3133",
+              "surface-variant": "#e0e3e5",
+              "surface-tint": "#3e5f90",
+              "on-tertiary": "#ffffff",
+              primary: "#001836",
+              "surface-bright": "#f7f9fb",
+              outline: "#737780",
+              "on-error-container": "#93000a",
+            },
+            fontFamily: {
+              headline: ["Manrope"],
+              body: ["Inter"],
+              label: ["Inter"],
+            },
+            borderRadius: {
+              DEFAULT: "0.125rem",
+              lg: "0.25rem",
+              xl: "0.5rem",
+              full: "0.75rem",
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      .material-symbols-outlined {
+        font-variation-settings:
+          "FILL" 0,
+          "wght" 400,
+          "GRAD" 0,
+          "opsz" 24;
+      }
+      .glass-card {
+        background: rgba(255, 255, 255, 0.7);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+      }
+      .hero-gradient {
+        background: linear-gradient(135deg, #001836 0%, #002d5b 100%);
+      }
+    </style>
+  </head>
+  <body
+    class="bg-background font-body text-on-background selection:bg-primary-fixed selection:text-on-primary-fixed"
+  >
+    <!-- TopNavBar -->
+    <nav
+      class="fixed top-0 w-full z-50 bg-white/80 dark:bg-slate-950/80 backdrop-blur-xl shadow-sm dark:shadow-none font-['Manrope'] tracking-tight"
+    >
+      <div class="flex justify-between items-center px-8 h-16 w-full mx-auto">
+        <div
+          class="text-xl font-bold tracking-tighter text-blue-900 dark:text-blue-100"
+        >
+          SejmInsight
+        </div>
+        <div class="hidden md:flex items-center gap-8">
+          <a
+            class="text-slate-600 dark:text-slate-400 font-medium hover:text-blue-700 dark:hover:text-blue-300 transition-colors"
+            href="#"
+            >Społeczność</a
+          >
+          <a
+            class="text-slate-600 dark:text-slate-400 font-medium hover:text-blue-700 dark:hover:text-blue-300 transition-colors"
+            href="#"
+            >Dyskusje</a
+          >
+          <a
+            class="text-slate-600 dark:text-slate-400 font-medium hover:text-blue-700 dark:hover:text-blue-300 transition-colors"
+            href="#"
+            >O nas</a
+          >
+        </div>
+        <div class="flex items-center gap-4">
+          <button
+            class="text-slate-600 dark:text-slate-400 font-medium hover:text-blue-700 px-4 py-2 transition-all active:scale-95 duration-200"
+          >
+            Zaloguj się
+          </button>
+          <button
+            class="bg-primary-container text-white px-6 py-2 rounded-xl font-bold hover:opacity-90 transition-all active:scale-95 duration-200 shadow-lg shadow-primary-container/20"
+          >
+            Zarejestruj się
+          </button>
+        </div>
+      </div>
+    </nav>
+    <main class="relative min-h-screen pt-16 overflow-hidden">
+      <!-- Background Image Container -->
+      <div class="absolute inset-0 -z-10 h-full w-full">
+        <img
+          class="h-full w-full object-cover opacity-20"
+          data-alt="Wide angle view of the historic Polish Parliament hall with green seating, grand columns, and soft ambient natural light reflecting on polished surfaces."
+          src="https://lh3.googleusercontent.com/aida-public/AB6AXuCbV-RZGwqixCRoaj96xFlcdrWlr0jrGLJvOGtNFUZOL3c7z2h35dLv_EQZ3OzMtb1wePDpDXrhwJ39xUIzfnwcSN0-X6ETpRKmrHjOrjfM378BR7wn4Kdaz-C9pE56KQmUsYo6tH-OjMicTnLsncckO79ya0XlNkPwMoBiadXa97ns8UH3aUPBd4gUgitLQCus2wnka6kbrKv65Dd2cj2eqdrQRIh24W9WVIBwsAIfXy1KJwEuAiSw17beeViAyAwL8jeG7YO_pas"
+        />
+        <div
+          class="absolute inset-0 bg-gradient-to-b from-background/40 via-background to-background"
+        ></div>
+      </div>
+      <!-- Hero Section -->
+      <section
+        class="max-w-7xl mx-auto px-8 pt-24 pb-32 flex flex-col items-start gap-12"
+      >
+        <div class="max-w-3xl space-y-6">
+          <div
+            class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-secondary-container text-on-secondary-container text-xs font-bold tracking-widest uppercase"
+          >
+            <span class="relative flex h-2 w-2">
+              <span
+                class="animate-ping absolute inline-flex h-full w-full rounded-full bg-secondary opacity-75"
+              ></span>
+              <span
+                class="relative inline-flex rounded-full h-2 w-2 bg-secondary"
+              ></span>
+            </span>
+            Demokracja 2.0
+          </div>
+          <h1
+            class="font-headline text-6xl md:text-8xl font-extrabold tracking-tighter text-primary leading-[1.05]"
+          >
+            Twoje zdanie ma znaczenie w sercu parlamentu
+          </h1>
+          <p
+            class="text-xl md:text-2xl text-on-surface-variant max-w-2xl font-body leading-relaxed"
+          >
+            Dołącz do społeczności SejmInsight, komentuj głosowania, oceniaj
+            posłów i buduj nową kulturę polityczną.
+          </p>
+          <div class="flex flex-wrap gap-4 pt-4">
+            <button
+              class="hero-gradient text-white px-8 py-4 rounded-xl font-bold text-lg flex items-center gap-3 hover:shadow-2xl hover:shadow-primary/40 transition-all active:scale-95"
+            >
+              Zaloguj się przez Keycloak
+              <span class="material-symbols-outlined">login</span>
+            </button>
+            <a
+              class="flex items-center gap-2 px-8 py-4 text-primary font-bold text-lg hover:bg-surface-container-high rounded-xl transition-all underline decoration-primary/20 underline-offset-8"
+              href="#"
+            >
+              Odkryj społeczność
+            </a>
+          </div>
+        </div>
+        <!-- Social Proof -->
+        <div
+          class="glass-card p-6 rounded-2xl flex items-center gap-6 shadow-xl shadow-primary/5"
+        >
+          <div class="flex -space-x-3">
+            <img
+              class="w-12 h-12 rounded-full border-4 border-white object-cover"
+              data-alt="Portrait of a young professional man smiling in outdoor natural lighting."
+              src="https://lh3.googleusercontent.com/aida-public/AB6AXuCeiij0w6YF3qM1GRsogayaacYYrWMyV3TMmFEEwIwgAttWBI1U7bTP4MV_vYDV0-m7--oae3tJjncnZcbXMNYgbz1Pd6zPlOG79pyeZm-Zjm0zqLJ2aH0M05T2pCtEmfQziWBwqr6rp5NomNc1fqG4JOvV5NmQbPadkMpGQnpioS_L4ULysOHsLftUutt4hFB1DggHThFtbJ-vLPsURNuFQ5QC-Xfkbr7i3JlqZ6uduiFiK80ijPf8EvQjnLKnn0R8tScsJtwObvw"
+            />
+            <img
+              class="w-12 h-12 rounded-full border-4 border-white object-cover"
+              data-alt="Portrait of a diverse young woman with a friendly expression and soft background blur."
+              src="https://lh3.googleusercontent.com/aida-public/AB6AXuDcQ6-QMk6A6ygLZlM6Uy0-UqZGEBcluWKLFvnzc9yzAZlAoa2TIdDsaz99vD7JAMQ4nPu1z07PpxAqEzguUrlqEVkKfFwbfKQR_Q4KFT4fP9DRxIHfHfpcXwinwV_AYqkwT5MYXSNH472pPeOSxblDWiUoja6O2lvGC0u-P9tdei5q1_AcDOuwvuFU3le56709F_zsuBcPO_sx3VFbCM4ypy_3W-_4KNqXmLIN9kpDvh_KLbvDBo9Dx84aP0_pEGiuHIpXsWfYs-s"
+            />
+            <img
+              class="w-12 h-12 rounded-full border-4 border-white object-cover"
+              data-alt="Close up of a middle-aged man with glasses, looking thoughtful in an office setting."
+              src="https://lh3.googleusercontent.com/aida-public/AB6AXuDna_QOyYfLREuqoESzT-dEQjvyuUGLUVWrVnA1PcZZrddS80KuWsbTavKE1fvxKCbBtg5e-fAPEJRsM7NZ-nKwSsRtWjMv-X3VMOwIsrvzKatY1p7DnJueXfJcbkejlfiHRvujY_odoD213kvH8NQiIfMNF41EXF5x3np5J_pPQ3bPUQvmVGd-nX__8LGwjFaF-OJCWIQsbbQncgIGDGzDAF4j7R1QGx57zpgIF9X5kor6sFclxg5gaABPyFtOc90Z5NdXnlHV9S8"
+            />
+            <div
+              class="w-12 h-12 rounded-full border-4 border-white bg-primary flex items-center justify-center text-white text-xs font-bold"
+            >
+              +
+            </div>
+          </div>
+          <div>
+            <p class="text-sm font-label text-on-surface-variant leading-none">
+              Dołącz do dyskusji
+            </p>
+            <p class="text-lg font-headline font-extrabold text-primary">
+              Już ponad 50,000 aktywnych obywateli
+            </p>
+          </div>
+        </div>
+      </section>
+      <!-- Community Features Bento Grid -->
+      <section class="max-w-7xl mx-auto px-8 pb-32">
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-stretch">
+          <!-- Card 1 -->
+          <div
+            class="md:col-span-4 bg-surface-container-lowest p-10 rounded-xl shadow-sm hover:shadow-xl transition-all group flex flex-col justify-between border border-outline-variant/10"
+          >
+            <div class="space-y-4">
+              <div
+                class="w-12 h-12 bg-secondary/10 text-secondary rounded-lg flex items-center justify-center mb-8"
+              >
+                <span
+                  class="material-symbols-outlined"
+                  style="font-variation-settings: &quot;FILL&quot; 1"
+                  >forum</span
+                >
+              </div>
+              <h3
+                class="text-3xl font-headline font-bold text-primary tracking-tight"
+              >
+                Dyskutuj o ustawach
+              </h3>
+              <p class="text-on-surface-variant text-lg">
+                Twój głos w debacie publicznej zyskuje realny wpływ na
+                kształtowanie prawa.
+              </p>
+            </div>
+            <div
+              class="pt-12 text-secondary font-bold flex items-center gap-2 group-hover:gap-4 transition-all"
+            >
+              Dołącz do debaty
+              <span class="material-symbols-outlined">arrow_forward</span>
+            </div>
+          </div>
+          <!-- Card 2 (Large Highlight) -->
+          <div
+            class="md:col-span-4 bg-primary text-white p-10 rounded-xl shadow-2xl relative overflow-hidden flex flex-col justify-between border-none"
+          >
+            <div class="absolute -right-10 -bottom-10 opacity-10">
+              <span class="material-symbols-outlined text-[12rem]"
+                >analytics</span
+              >
+            </div>
+            <div class="space-y-4 relative z-10">
+              <div
+                class="w-12 h-12 bg-white/10 text-white rounded-lg flex items-center justify-center mb-8"
+              >
+                <span
+                  class="material-symbols-outlined"
+                  style="font-variation-settings: &quot;FILL&quot; 1"
+                  >how_to_vote</span
+                >
+              </div>
+              <h3 class="text-3xl font-headline font-bold tracking-tight">
+                Oceniaj posłów
+              </h3>
+              <p class="text-primary-fixed/80 text-lg">
+                Sprawdzaj frekwencję, aktywność i głosuj za zaufaniem dla swoich
+                reprezentantów.
+              </p>
+            </div>
+            <div class="pt-12 font-bold flex items-center gap-2 relative z-10">
+              Zobacz ranking <span class="material-symbols-outlined">star</span>
+            </div>
+          </div>
+          <!-- Card 3 -->
+          <div
+            class="md:col-span-4 bg-surface-container-lowest p-10 rounded-xl shadow-sm hover:shadow-xl transition-all group flex flex-col justify-between border border-outline-variant/10"
+          >
+            <div class="space-y-4">
+              <div
+                class="w-12 h-12 bg-tertiary-fixed-dim/20 text-on-tertiary-fixed-variant rounded-lg flex items-center justify-center mb-8"
+              >
+                <span
+                  class="material-symbols-outlined"
+                  style="font-variation-settings: &quot;FILL&quot; 1"
+                  >insights</span
+                >
+              </div>
+              <h3
+                class="text-3xl font-headline font-bold text-primary tracking-tight"
+              >
+                Twórz analizy
+              </h3>
+              <p class="text-on-surface-variant text-lg">
+                Dziel się swoją wiedzą i twórz głębokie raporty na temat
+                polityki państwa.
+              </p>
+            </div>
+            <div
+              class="pt-12 text-secondary font-bold flex items-center gap-2 group-hover:gap-4 transition-all"
+            >
+              Rozpocznij analizę
+              <span class="material-symbols-outlined">edit_note</span>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- Social Intelligence Preview Section -->
+      <section class="max-w-7xl mx-auto px-8 pb-32">
+        <div
+          class="bg-surface-container-low rounded-xl p-8 md:p-16 flex flex-col md:flex-row items-center gap-16"
+        >
+          <div class="md:w-1/2 space-y-8">
+            <h2
+              class="text-4xl font-headline font-extrabold text-primary leading-tight"
+            >
+              Analiza społeczna w czasie rzeczywistym
+            </h2>
+            <div class="space-y-6">
+              <div class="flex gap-4 items-start">
+                <div class="bg-white p-3 rounded-lg shadow-sm">
+                  <span class="material-symbols-outlined text-secondary"
+                    >trending_up</span
+                  >
+                </div>
+                <div>
+                  <h4 class="font-bold text-xl">Sentyment obywatelski</h4>
+                  <p class="text-on-surface-variant">
+                    Widzimy, jak Polacy reagują na kluczowe zmiany w legislacji
+                    sekunda po sekundzie.
+                  </p>
+                </div>
+              </div>
+              <div class="flex gap-4 items-start">
+                <div class="bg-white p-3 rounded-lg shadow-sm">
+                  <span class="material-symbols-outlined text-secondary"
+                    >verified_user</span
+                  >
+                </div>
+                <div>
+                  <h4 class="font-bold text-xl">Transparentność 2.0</h4>
+                  <p class="text-on-surface-variant">
+                    Koniec z politycznymi grami w cieniu. Każda decyzja jest pod
+                    lupą społeczności.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="md:w-1/2 relative">
+            <!-- Decorative Glass Element -->
+            <div
+              class="absolute -top-10 -left-10 w-32 h-32 bg-secondary/10 rounded-full blur-3xl"
+            ></div>
+            <div
+              class="absolute -bottom-10 -right-10 w-32 h-32 bg-primary/10 rounded-full blur-3xl"
+            ></div>
+            <div
+              class="glass-card rounded-2xl p-6 shadow-2xl relative z-10 space-y-4"
+            >
+              <div
+                class="flex items-center justify-between pb-4 border-b border-outline-variant/15"
+              >
+                <div class="flex items-center gap-2">
+                  <div class="w-8 h-8 rounded-full bg-slate-200"></div>
+                  <span class="font-bold text-sm">@JanKowalski</span>
+                </div>
+                <span class="text-xs text-on-surface-variant">2 min temu</span>
+              </div>
+              <p class="text-sm font-medium italic">
+                "Analiza ustawy o cyfryzacji pokazuje, że realne oszczędności
+                dla budżetu pojawią się dopiero w 2026. Czy ktoś jeszcze
+                zauważył ten zapis w art. 14?"
+              </p>
+              <div class="flex gap-4 text-xs font-bold text-secondary">
+                <span>124 głosy</span>
+                <span>42 odpowiedzi</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+    <!-- Footer -->
+    <footer
+      class="w-full py-12 px-8 bg-slate-50 dark:bg-slate-900 border-t border-slate-100 dark:border-slate-800"
+    >
+      <div
+        class="flex flex-col md:flex-row justify-between items-center gap-4 w-full max-w-7xl mx-auto"
+      >
+        <div class="text-lg font-bold text-blue-900 font-headline">
+          SejmInsight
+        </div>
+        <div class="flex gap-8 font-['Inter'] text-sm">
+          <a
+            class="text-slate-500 hover:text-blue-700 font-semibold hover:underline"
+            href="#"
+            >Polityka prywatności</a
+          >
+          <a
+            class="text-slate-500 hover:text-blue-700 font-semibold hover:underline"
+            href="#"
+            >Regulamin</a
+          >
+          <a
+            class="text-slate-500 hover:text-blue-700 font-semibold hover:underline"
+            href="#"
+            >Kontakt</a
+          >
+          <a
+            class="text-slate-500 hover:text-blue-700 font-semibold hover:underline"
+            href="#"
+            >API</a
+          >
+        </div>
+        <div class="text-slate-500 font-['Inter'] text-sm">
+          © 2024 SejmInsight. Inteligencja Demokratyczna.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
