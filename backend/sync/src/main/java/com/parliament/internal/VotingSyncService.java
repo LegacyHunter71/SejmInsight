@@ -12,6 +12,8 @@ import org.springframework.web.client.RestClient;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -27,31 +29,47 @@ public class VotingSyncService {
     public void syncLast100Votings() {
         log.info("Rozpoczynam bezpieczną synchronizację ostatnich 100 głosowań...");
         try {
-            List<VotingHeaderInDto> headers = restClient.get()
+
+            List<ProceedingDto> proceedings = restClient.get()
                     .uri(apiTerm + "/votings")
                     .retrieve()
-                    .body(new ParameterizedTypeReference<List<VotingHeaderInDto>>() {});
+                    .body(new ParameterizedTypeReference<List<ProceedingDto>>() {});
 
-            if (headers == null || headers.isEmpty()) {
-                log.warn("API Sejmu zwróciło pustą listę nagłówków.");
+            if (proceedings == null || proceedings.isEmpty()) {
+                log.warn("API Sejmu zwróciło pustą listę posiedzeń.");
                 return;
             }
 
-            Collections.reverse(headers);
+            List<FlatVotingReference> allVotings = proceedings.stream()
+                    .filter(p -> p.proceedingNo() != null && p.votings() != null)
+                    .flatMap(p -> p.votings().stream()
+                            .filter(v -> v.votingNo() != null)
+                            .map(v -> new FlatVotingReference(p.proceedingNo(), v.votingNo())))
+                    .collect(Collectors.toList());
 
-            List<VotingHeaderInDto> last100Headers = headers.stream()
+            if (allVotings.isEmpty()) {
+                log.warn("Nie znaleziono żadnych głosowań w posiedzeniach.");
+                return;
+            }
+
+            Collections.reverse(allVotings);
+            List<FlatVotingReference> last100Votings = allVotings.stream()
                     .limit(100)
                     .toList();
 
-            last100Headers.forEach(h -> syncSingleVoting(h.proceedingNo(), h.votingNo()));
+            for (FlatVotingReference ref : last100Votings) {
+                syncSingleVoting(ref.proceedingNo(), ref.votingNo());
+            }
 
             log.info("Synchronizacja 100 najnowszych głosowań zakończona.");
         } catch (Exception e) {
-            log.error("Błąd podczas pobierania listy nagłówków głosowań: {}", e.getMessage());
+            log.error("Błąd podczas pobierania listy nagłówków głosowań: {}", e.getMessage(), e);
         }
     }
 
-    private void syncSingleVoting(int proceedingNo, int votingNo) {
+    private void syncSingleVoting(Integer proceedingNo, Integer votingNo) {
+        if (proceedingNo == null || votingNo == null) return;
+
         try {
             VotingResponse response = restClient.get()
                     .uri(apiTerm + "/votings/{proceedingNo}/{votingNo}", proceedingNo, votingNo)
@@ -73,8 +91,13 @@ public class VotingSyncService {
                     response.title(),
                     items
             ));
+
+            log.info("Zapisano: posiedzenie {}, głosowanie {}", proceedingNo, votingNo);
+
         } catch (Exception e) {
             log.error("Nie udało się pobrać szczegółów głosowania {}/{}: {}", proceedingNo, votingNo, e.getMessage());
         }
     }
+
+    private record FlatVotingReference(Integer proceedingNo, Integer votingNo) {}
 }
