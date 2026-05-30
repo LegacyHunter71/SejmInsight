@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonIgnoreProperties(ignoreUnknown = true)
 record VoteDto(
         @JsonProperty("MPid") Integer MPid,
-        String vote
+        @JsonProperty("vote") String vote
 ) {
     public boolean isPresent() {
         return !"ABSENT".equals(vote);

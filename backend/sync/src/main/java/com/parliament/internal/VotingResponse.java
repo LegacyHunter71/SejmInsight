@@ -7,10 +7,9 @@ import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 record VotingResponse(
-        Integer term,
+        @JsonProperty("term") Integer term,
         @JsonProperty("proceedingNo") Integer proceedingNo,
         @JsonProperty("votingNo") Integer votingNo,
-        String title,
-        String date,
-        List<VoteDto> votes
+        @JsonProperty("title") String title,
+        @JsonProperty("votes") List<VoteDto> votes
 ) {}

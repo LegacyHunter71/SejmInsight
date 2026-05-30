@@ -7,6 +7,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 record VotingHeaderInDto(
         @JsonProperty("proceedingNo") Integer proceedingNo,
         @JsonProperty("votingNo") Integer votingNo,
-        String title,
-        String date
+        @JsonProperty("title") String title,
+        @JsonProperty("date") String date
 ) {}
