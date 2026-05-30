@@ -6,9 +6,9 @@ import React, {
   useState,
   useRef,
 } from "react";
-import InitLoading from '@/components/InitLoading'
+import InitLoading from "@/components/InitLoading";
 import Keycloak, { type KeycloakConfig } from "keycloak-js";
-import { useTheme } from '@/hooks/useTheme'
+import { useTheme } from "@/hooks/useTheme";
 
 const keycloakConfig: KeycloakConfig = {
   url: import.meta.env.VITE_KEYCLOAK_URL,
@@ -25,7 +25,6 @@ interface AuthContextType {
   isLoading: boolean;
   userProfile: any | null;
   login: (redirectUri?: string) => Promise<void>;
-  register: (redirectUri?: string) => Promise<void>;
   logout: () => Promise<void>;
 }
 
@@ -33,7 +32,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   // Ensure theme gets applied globally as soon as AuthProvider mounts
-  useTheme()
+  useTheme();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [userProfile, setUserProfile] = useState<any | null>(null);
@@ -75,15 +74,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     return keycloak.login({ redirectUri: finalRedirect });
   };
 
-  const register = (redirectUri?: string) => {
-    const finalRedirect = redirectUri
-      ? redirectUri.startsWith("http")
-        ? redirectUri
-        : `${window.location.origin}${redirectUri}`
-      : window.location.origin;
-    return keycloak.register({ redirectUri: finalRedirect });
-  };
-
   const logout = () => keycloak.logout({ redirectUri: window.location.origin });
 
   const value = useMemo(
@@ -93,7 +83,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       isLoading,
       userProfile,
       login,
-      register,
       logout,
     }),
     [isAuthenticated, isLoading, userProfile],
