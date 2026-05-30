@@ -1,12 +1,12 @@
 services:
   nginx-proxy:
-    image: 'jc21/nginx-proxy-manager:latest'
+    image: "jc21/nginx-proxy-manager:latest"
     container_name: sejm-proxy
     restart: always
     ports:
-      - '80:80'
-      - '443:443'
-      - '81:81'
+      - "80:80"
+      - "443:443"
+      - "81:81"
     volumes:
       - ./npm_data:/data
       - ./npm_letsencrypt:/etc/letsencrypt
@@ -30,7 +30,7 @@ services:
     image: quay.io/keycloak/keycloak:22.0.1
     container_name: sejm-keycloak
     restart: always
-    command: [ "start-dev", "--proxy=edge", "--http-relative-path=/auth" ]
+    command: ["start-dev", "--proxy=edge", "--http-relative-path=/auth"]
     environment:
       KC_DB: postgres
       KC_DB_URL: jdbc:postgresql://sejm-postgres:5432/${KC_DB_NAME}
@@ -43,6 +43,8 @@ services:
       KC_HOSTNAME_STRICT_HTTPS: "true"
     depends_on:
       - postgres
+    volumes:
+      - ./SejmInsight_theme.jar:/opt/keycloak/providers/SejmInsight_theme.jar
     networks:
       - sejm-network
 
@@ -53,8 +55,8 @@ services:
     environment:
       PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL}
       PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASS}
-      PGADMIN_CONFIG_ENHANCED_COOKIE_PROTECTION: 'True'
-      PGADMIN_LISTEN_ADDRESS: '0.0.0.0'
+      PGADMIN_CONFIG_ENHANCED_COOKIE_PROTECTION: "True"
+      PGADMIN_LISTEN_ADDRESS: "0.0.0.0"
     networks:
       - sejm-network
 
