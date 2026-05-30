@@ -6,14 +6,9 @@ RUN npm ci
 
 COPY . .
 
-ARG VITE_KEYCLOAK_URL
-ARG VITE_KEYCLOAK_REALM
-ARG VITE_KEYCLOAK_CLIENT_ID
-
-RUN VITE_KEYCLOAK_URL=$VITE_KEYCLOAK_URL \
-    VITE_KEYCLOAK_REALM=$VITE_KEYCLOAK_REALM \
-    VITE_KEYCLOAK_CLIENT_ID=$VITE_KEYCLOAK_CLIENT_ID \
-    npm run build
+# Vite automatycznie ładuje zmienne z plików `.env*` znajdujących się w katalogu projektu
+# na etapie `vite build`. Dzięki temu nie musimy przekazywać build-args.
+RUN npm run build
 
 FROM nginx:alpine
 COPY nginx.conf /etc/nginx/conf.d/default.conf

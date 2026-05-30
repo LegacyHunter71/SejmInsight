@@ -2,7 +2,7 @@ name: Deploy SejmInsight to VPS
 
 on:
   push:
-    branches: [ test ]
+    branches: [test]
 
 env:
   REGISTRY: ghcr.io
@@ -22,9 +22,9 @@ jobs:
       - name: Set up JDK 21
         uses: actions/setup-java@v4
         with:
-          java-version: '21'
-          distribution: 'temurin'
-          cache: 'maven'
+          java-version: "21"
+          distribution: "temurin"
+          cache: "maven"
 
       - name: Build with Maven
         run: mvn clean package -DskipTests
@@ -73,13 +73,18 @@ jobs:
       # --- TWORZYMY PLIK .ENV PRZED BUDOWANIEM ---
       - name: Create frontend .env file
         run: |
-          touch frontend/.env
-          echo "VITE_KEYCLOAK_URL=https://${{ vars.DOMAIN }}/auth" >> frontend/.env
-          echo "VITE_KEYCLOAK_REALM=${{ vars.KC_REALM }}" >> frontend/.env
-          echo "VITE_KEYCLOAK_CLIENT_ID=${{ vars.KC_FRONTEND_CLIENT_ID }}" >> frontend/.env
-          echo "VITE_API_BASE_URL=https://${{ vars.DOMAIN }}/api" >> frontend/.env
-          echo "Plik .env wygenerowany pomyślnie:"
-          cat frontend/.env
+          # Vite dla `vite build` ładuje m.in. `.env.production`. Używamy go, żeby mieć pewność,
+          # że wartości trafią do buildu produkcyjnego.
+          rm -f frontend/.env.production
+          {
+            echo "VITE_KEYCLOAK_URL=https://${{ vars.DOMAIN }}/auth"
+            echo "VITE_KEYCLOAK_REALM=${{ vars.KC_REALM }}"
+            echo "VITE_KEYCLOAK_CLIENT_ID=${{ vars.KC_FRONTEND_CLIENT_ID }}"
+            echo "VITE_API_BASE_URL=https://${{ vars.DOMAIN }}/api"
+          } >> frontend/.env.production
+
+          echo "Plik frontend/.env.production wygenerowany pomyślnie:"
+          cat frontend/.env.production
 
       - name: Build and push frontend image
         uses: docker/build-push-action@v5
