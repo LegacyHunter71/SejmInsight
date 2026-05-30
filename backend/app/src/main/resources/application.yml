@@ -48,7 +48,7 @@ server:
 
 parliament:
   url: ${SEJM_API_URL:https://api.sejm.gov.pl/sejm/}
-  term: ${SEJM_API_TERM:term10/MP}
+  term: ${SEJM_API_TERM:term10}
   iam:
     keycloak:
       server-url: ${KC_SERVER_URL:https://sejm-insight.duckdns.org/auth}

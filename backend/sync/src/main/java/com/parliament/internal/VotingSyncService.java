@@ -5,6 +5,7 @@ import com.parliament.api.VotingFacade;
 import com.parliament.api.VotingSyncRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
@@ -20,11 +21,14 @@ public class VotingSyncService {
     private final RestClient restClient;
     private final VotingFacade votingFacade;
 
+    @Value("${parliament.term}")
+    private String apiTerm;
+
     public void syncLast100Votings() {
         log.info("Rozpoczynam bezpieczną synchronizację ostatnich 100 głosowań...");
         try {
             List<VotingHeaderInDto> headers = restClient.get()
-                    .uri("/votings")
+                    .uri(apiTerm + "/votings")
                     .retrieve()
                     .body(new ParameterizedTypeReference<List<VotingHeaderInDto>>() {});
 
@@ -50,7 +54,7 @@ public class VotingSyncService {
     private void syncSingleVoting(int proceedingNo, int votingNo) {
         try {
             VotingResponse response = restClient.get()
-                    .uri("/votings/{proceedingNo}/{votingNo}", proceedingNo, votingNo)
+                    .uri(apiTerm + "/votings/{proceedingNo}/{votingNo}", proceedingNo, votingNo)
                     .retrieve()
                     .body(VotingResponse.class);
 
