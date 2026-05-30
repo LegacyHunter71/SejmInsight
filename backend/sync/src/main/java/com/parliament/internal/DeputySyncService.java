@@ -24,7 +24,7 @@ class DeputySyncService {
         log.info("Pobieranie danych z API Sejmu...");
         try {
             List<DeputyInDto> externalDeputies = restClient.get()
-                    .uri(apiTerm)
+                    .uri(apiTerm + "/MP")
                     .retrieve()
                     .body(new ParameterizedTypeReference<List<DeputyInDto>>() {});
 
