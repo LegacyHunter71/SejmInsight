@@ -12,7 +12,9 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as AuthLayoutRouteImport } from './routes/_auth-layout'
 import { Route as AppLayoutRouteImport } from './routes/_app-layout'
 import { Route as AppLayoutIndexRouteImport } from './routes/_app-layout/index'
+import { Route as AuthLayoutRegisterRouteImport } from './routes/_auth-layout/register'
 import { Route as AuthLayoutLoginRouteImport } from './routes/_auth-layout/login'
+import { Route as AppLayoutAdminRouteImport } from './routes/_app-layout/admin'
 import { Route as AppLayoutAboutRouteImport } from './routes/_app-layout/about'
 import { Route as AppLayoutProfileIndexRouteImport } from './routes/_app-layout/profile/index'
 import { Route as AppLayoutDeputiesIndexRouteImport } from './routes/_app-layout/deputies/index'
@@ -34,10 +36,20 @@ const AppLayoutIndexRoute = AppLayoutIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AppLayoutRoute,
 } as any)
+const AuthLayoutRegisterRoute = AuthLayoutRegisterRouteImport.update({
+  id: '/register',
+  path: '/register',
+  getParentRoute: () => AuthLayoutRoute,
+} as any)
 const AuthLayoutLoginRoute = AuthLayoutLoginRouteImport.update({
   id: '/login',
   path: '/login',
   getParentRoute: () => AuthLayoutRoute,
+} as any)
+const AppLayoutAdminRoute = AppLayoutAdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => AppLayoutRoute,
 } as any)
 const AppLayoutAboutRoute = AppLayoutAboutRouteImport.update({
   id: '/about',
@@ -81,7 +93,9 @@ const AppLayoutDebatesDebateIdRoute =
 export interface FileRoutesByFullPath {
   '/': typeof AppLayoutIndexRoute
   '/about': typeof AppLayoutAboutRoute
+  '/admin': typeof AppLayoutAdminRoute
   '/login': typeof AuthLayoutLoginRoute
+  '/register': typeof AuthLayoutRegisterRoute
   '/debates/$debateId': typeof AppLayoutDebatesDebateIdRoute
   '/deputies/$deputyId': typeof AppLayoutDeputiesDeputyIdRoute
   '/profile/settings': typeof AppLayoutProfileSettingsRoute
@@ -92,7 +106,9 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof AppLayoutIndexRoute
   '/about': typeof AppLayoutAboutRoute
+  '/admin': typeof AppLayoutAdminRoute
   '/login': typeof AuthLayoutLoginRoute
+  '/register': typeof AuthLayoutRegisterRoute
   '/debates/$debateId': typeof AppLayoutDebatesDebateIdRoute
   '/deputies/$deputyId': typeof AppLayoutDeputiesDeputyIdRoute
   '/profile/settings': typeof AppLayoutProfileSettingsRoute
@@ -105,7 +121,9 @@ export interface FileRoutesById {
   '/_app-layout': typeof AppLayoutRouteWithChildren
   '/_auth-layout': typeof AuthLayoutRouteWithChildren
   '/_app-layout/about': typeof AppLayoutAboutRoute
+  '/_app-layout/admin': typeof AppLayoutAdminRoute
   '/_auth-layout/login': typeof AuthLayoutLoginRoute
+  '/_auth-layout/register': typeof AuthLayoutRegisterRoute
   '/_app-layout/': typeof AppLayoutIndexRoute
   '/_app-layout/debates/$debateId': typeof AppLayoutDebatesDebateIdRoute
   '/_app-layout/deputies/$deputyId': typeof AppLayoutDeputiesDeputyIdRoute
@@ -119,7 +137,9 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/about'
+    | '/admin'
     | '/login'
+    | '/register'
     | '/debates/$debateId'
     | '/deputies/$deputyId'
     | '/profile/settings'
@@ -130,7 +150,9 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/about'
+    | '/admin'
     | '/login'
+    | '/register'
     | '/debates/$debateId'
     | '/deputies/$deputyId'
     | '/profile/settings'
@@ -142,7 +164,9 @@ export interface FileRouteTypes {
     | '/_app-layout'
     | '/_auth-layout'
     | '/_app-layout/about'
+    | '/_app-layout/admin'
     | '/_auth-layout/login'
+    | '/_auth-layout/register'
     | '/_app-layout/'
     | '/_app-layout/debates/$debateId'
     | '/_app-layout/deputies/$deputyId'
@@ -180,12 +204,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppLayoutIndexRouteImport
       parentRoute: typeof AppLayoutRoute
     }
+    '/_auth-layout/register': {
+      id: '/_auth-layout/register'
+      path: '/register'
+      fullPath: '/register'
+      preLoaderRoute: typeof AuthLayoutRegisterRouteImport
+      parentRoute: typeof AuthLayoutRoute
+    }
     '/_auth-layout/login': {
       id: '/_auth-layout/login'
       path: '/login'
       fullPath: '/login'
       preLoaderRoute: typeof AuthLayoutLoginRouteImport
       parentRoute: typeof AuthLayoutRoute
+    }
+    '/_app-layout/admin': {
+      id: '/_app-layout/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AppLayoutAdminRouteImport
+      parentRoute: typeof AppLayoutRoute
     }
     '/_app-layout/about': {
       id: '/_app-layout/about'
@@ -241,6 +279,7 @@ declare module '@tanstack/react-router' {
 
 interface AppLayoutRouteChildren {
   AppLayoutAboutRoute: typeof AppLayoutAboutRoute
+  AppLayoutAdminRoute: typeof AppLayoutAdminRoute
   AppLayoutIndexRoute: typeof AppLayoutIndexRoute
   AppLayoutDebatesDebateIdRoute: typeof AppLayoutDebatesDebateIdRoute
   AppLayoutDeputiesDeputyIdRoute: typeof AppLayoutDeputiesDeputyIdRoute
@@ -252,6 +291,7 @@ interface AppLayoutRouteChildren {
 
 const AppLayoutRouteChildren: AppLayoutRouteChildren = {
   AppLayoutAboutRoute: AppLayoutAboutRoute,
+  AppLayoutAdminRoute: AppLayoutAdminRoute,
   AppLayoutIndexRoute: AppLayoutIndexRoute,
   AppLayoutDebatesDebateIdRoute: AppLayoutDebatesDebateIdRoute,
   AppLayoutDeputiesDeputyIdRoute: AppLayoutDeputiesDeputyIdRoute,
@@ -267,10 +307,12 @@ const AppLayoutRouteWithChildren = AppLayoutRoute._addFileChildren(
 
 interface AuthLayoutRouteChildren {
   AuthLayoutLoginRoute: typeof AuthLayoutLoginRoute
+  AuthLayoutRegisterRoute: typeof AuthLayoutRegisterRoute
 }
 
 const AuthLayoutRouteChildren: AuthLayoutRouteChildren = {
   AuthLayoutLoginRoute: AuthLayoutLoginRoute,
+  AuthLayoutRegisterRoute: AuthLayoutRegisterRoute,
 }
 
 const AuthLayoutRouteWithChildren = AuthLayoutRoute._addFileChildren(

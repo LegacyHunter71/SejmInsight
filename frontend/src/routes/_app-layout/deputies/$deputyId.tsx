@@ -1,7 +1,12 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useAuth } from "@/auth/AuthProvider";
 import { useState } from "react";
-import { useComments, useAddComment, useToggleLike, useDeleteComment } from "@/hooks/useComments";
+import {
+  useComments,
+  useAddComment,
+  useToggleLike,
+  useDeleteComment,
+} from "@/hooks/useComments";
 import { useDeputy } from "@/hooks/useDeputy";
 
 export const Route = createFileRoute("/_app-layout/deputies/$deputyId")({
@@ -14,13 +19,20 @@ function RouteComponent() {
   const [commentText, setCommentText] = useState("");
 
   const parsedId = Number(deputyId);
-  const { data: comments = [], isLoading: commentsLoading } = useComments(parsedId, 0, 0, 0);
+  const { data: comments = [], isLoading: commentsLoading } = useComments(
+    parsedId,
+    0,
+    0,
+    0,
+  );
   const addComment = useAddComment(parsedId, 0, 0, 0);
   const toggleLike = useToggleLike();
   const deleteComment = useDeleteComment();
   const [isPosting, setIsPosting] = useState(false);
   const [pendingLikes, setPendingLikes] = useState<Record<string, boolean>>({});
-  const [pendingDeletes, setPendingDeletes] = useState<Record<string, boolean>>({});
+  const [pendingDeletes, setPendingDeletes] = useState<Record<string, boolean>>(
+    {},
+  );
 
   async function handleSubmit() {
     if (!commentText.trim()) return;
@@ -46,25 +58,25 @@ function RouteComponent() {
         </div>
         <div className="space-y-2">
           <h1 className="text-4xl font-extrabold text-gray-900 dark:text-white font-[Manrope]">
-            {deputyLoading ? 'Wczytywanie posła...' : deputyData ? `${deputyData.firstName} ${deputyData.lastName}` : `Poseł ID: ${deputyId}`}
+            {deputyLoading
+              ? "Wczytywanie posła..."
+              : deputyData
+                ? `${deputyData.firstName} ${deputyData.lastName}`
+                : `Poseł ID: ${deputyId}`}
           </h1>
           <p className="text-xl text-gray-600 dark:text-gray-400">
-            {deputyData?.club ?? 'Klub Parlamentarny (Mock)'} • {deputyData?.districtName ?? ''}
+            {deputyData?.club ?? "Klub Parlamentarny (Mock)"} •{" "}
+            {deputyData?.districtName ?? ""}
           </p>
           <div className="flex gap-4 pt-4">
             <div className="bg-emerald-50 dark:bg-emerald-900/30 text-emerald-800 dark:text-emerald-400 border border-transparent dark:border-emerald-800/50 px-4 py-2 rounded-lg font-bold">
-              Frekwencja: {deputyData?.attendanceRate ?? '—'}%
+              Frekwencja: {deputyData?.attendanceRate ?? "—"}%
             </div>
             <div className="bg-blue-50 dark:bg-blue-900/30 text-blue-800 dark:text-blue-400 border border-transparent dark:border-blue-800/50 px-4 py-2 rounded-lg font-bold">
               Głosowań: {/* TODO: fetch votings count */} —
             </div>
           </div>
         </div>
-      </div>
-
-      {/* Sekcja Wykresów */}
-      <div className="h-64 bg-gray-50/50 dark:bg-slate-900/50 border border-gray-200 dark:border-slate-700 rounded-2xl flex items-center justify-center text-gray-400 dark:text-gray-500 border-dashed transition-colors">
-        Miejsce na wykres analityczny (Recharts) np. Zgodność głosowań z partią
       </div>
 
       {/* Moduł Społecznościowy */}
@@ -118,15 +130,26 @@ function RouteComponent() {
 
         <div className="space-y-4">
           {commentsLoading ? (
-            <div className="text-center text-gray-500">Wczytywanie komentarzy...</div>
+            <div className="text-center text-gray-500">
+              Wczytywanie komentarzy...
+            </div>
           ) : (
             (comments as any[]).map((c) => (
-              <div key={c.id} className="bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-2xl p-4 shadow-sm">
+              <div
+                key={c.id}
+                className="bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-2xl p-4 shadow-sm"
+              >
                 <div className="flex justify-between items-start">
                   <div>
-                    <div className="font-bold text-gray-900 dark:text-white">{c.authorName ?? 'Anonim'}</div>
-                    <div className="text-sm text-gray-500 dark:text-gray-400">{new Date(c.createdAt ?? Date.now()).toLocaleString()}</div>
-                    <div className="mt-2 text-gray-800 dark:text-gray-200">{c.content}</div>
+                    <div className="font-bold text-gray-900 dark:text-white">
+                      {c.author_name ?? "Anonim"}
+                    </div>
+                    <div className="text-sm text-gray-500 dark:text-gray-400">
+                      {new Date(c.created_at ?? Date.now()).toLocaleString()}
+                    </div>
+                    <div className="mt-2 text-gray-800 dark:text-gray-200">
+                      {c.content}
+                    </div>
                   </div>
                   <div className="flex flex-col items-end gap-2">
                     <button
@@ -146,7 +169,7 @@ function RouteComponent() {
                       }}
                       className="text-sm text-gray-500 hover:text-maroon-800"
                     >
-                      ❤️ {c.likeCount ?? 0} {pendingLikes[c.id] ? '...' : ''}
+                      ❤️ {c.like_count ?? 0} {pendingLikes[c.id] ? "..." : ""}
                     </button>
                     {isAuthenticated && (
                       <button
@@ -166,7 +189,7 @@ function RouteComponent() {
                         }}
                         className="text-xs text-red-600"
                       >
-                        Usuń {pendingDeletes[c.id] ? '...' : ''}
+                        Usuń {pendingDeletes[c.id] ? "..." : ""}
                       </button>
                     )}
                   </div>

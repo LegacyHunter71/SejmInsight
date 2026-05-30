@@ -1,9 +1,10 @@
 import SejmInsightLogo from "@/assets/icons/sejminsight_logo.svg?react";
 import { useAuth } from "@/auth/AuthProvider";
 import { useTheme } from "@/hooks/useTheme";
+import { Link } from "@tanstack/react-router";
 
 export default function AuthNavBar() {
-  const { login, register } = useAuth();
+  const { login } = useAuth();
   const { theme, setTheme } = useTheme();
 
   return (
@@ -92,12 +93,12 @@ export default function AuthNavBar() {
         >
           Zaloguj się
         </button>
-        <button
-          onClick={() => register()}
+        <Link
+          to="/register"
           className="hero-gradient text-white px-6 py-2 rounded-xl font-bold hover:opacity-90 transition-all active:scale-95 duration-200 shadow-lg shadow-maroon-800/20 hover:cursor-pointer"
         >
           Zarejestruj się
-        </button>
+        </Link>
       </div>
     </div>
   );
