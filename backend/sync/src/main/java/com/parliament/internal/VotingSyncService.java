@@ -29,6 +29,7 @@ public class VotingSyncService {
 
     public void syncLast100Votings() {
         log.info("Rozpoczynam zaktualizowaną synchronizację 100 najnowszych głosowań...");
+        log.info("Strzelam pod adres: {}/votings", apiTerm);
         try {
             // KROK 1: Pobieramy listę wszystkich posiedzeń
             List<ProceedingDto> proceedings = restClient.get()
