@@ -83,6 +83,13 @@ services:
     networks:
       - sejm-network
 
+  frontend:
+    image: ghcr.io/${GITHUB_REPOSITORY_LOWER}-frontend:latest
+    container_name: sejm-frontend
+    restart: always
+    networks:
+      - sejm-network
+
   portainer:
     image: portainer/portainer-ce:latest
     container_name: sejm-portainer
