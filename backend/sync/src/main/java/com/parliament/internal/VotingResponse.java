@@ -6,11 +6,10 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-record VotingResponse(
-        @JsonAlias({"term"}) Integer term,
-        @JsonAlias({"sitting", "proceedingNo"}) Integer sitting,
-        @JsonAlias({"votingNumber", "votingNo"}) Integer votingNumber,
-        @JsonAlias({"title"}) String title,
-        @JsonAlias({"votes"}) List<VoteDto> votes
-) {
-}
+record SejmVotingResponse(
+        @JsonAlias({"term", "kadencja"}) Integer term,
+        @JsonAlias({"sitting", "proceedingNo", "proceeding", "number"}) Integer sitting,
+        @JsonAlias({"votingNumber", "votingNo", "voting"}) Integer votingNumber,
+        @JsonAlias({"title", "topic"}) String title,
+        @JsonAlias({"votes", "glosy"}) List<VoteDto> votes
+) {}
