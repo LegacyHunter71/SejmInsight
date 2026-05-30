@@ -2,7 +2,7 @@ import { authGuard } from "@/auth/authGuard";
 import { useAuth } from "@/auth/AuthProvider";
 import { createFileRoute } from "@tanstack/react-router";
 
-export const Route = createFileRoute("/_app-layout/profile")({
+export const Route = createFileRoute("/_app-layout/profile/")({
   beforeLoad: authGuard,
   component: RouteComponent,
 });
@@ -18,7 +18,7 @@ function RouteComponent() {
     .toUpperCase();
 
   return (
-    <div className="p-8 max-w-5xl mx-auto space-y-8">
+    <div className="p-8 min-w-[60%] max-w-9xl mx-auto space-y-8">
       <div className="flex justify-between items-end">
         <div>
           <h1 className="text-3xl font-extrabold text-gray-900 dark:text-white font-[Manrope]">
@@ -46,14 +46,40 @@ function RouteComponent() {
           </div>
 
           <div className="flex flex-wrap gap-2 pt-2">
-            {roles.map((role) => (
-              <span
-                key={role}
-                className="bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 px-3 py-1 rounded-full text-sm font-bold border border-blue-200 dark:border-blue-800/50"
-              >
-                {role}
-              </span>
-            ))}
+            {(() => {
+              const important = ["CITIZEN", "ANALYST", "ADMIN"]
+              const shown = (roles || []).filter((r: string) => important.includes((r || "").toUpperCase()))
+
+              if (shown.length === 0) {
+                return (
+                  <span className="text-sm text-gray-500 dark:text-gray-400">Brak specjalnej roli</span>
+                )
+              }
+
+              return shown.map((role) => {
+                const r = (role || "").toUpperCase()
+                let className =
+                  "px-3 py-1 rounded-full text-sm font-bold"
+                let label = role
+
+                if (r === "CITIZEN") {
+                  className += " bg-maroon-100 text-maroon-800 dark:bg-maroon-800 dark:text-white border border-maroon-200 dark:border-maroon-700"
+                  label = "Obywatel"
+                } else if (r === "ANALYST") {
+                  className += " bg-blue-50 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300 border border-blue-200 dark:border-blue-800/50"
+                  label = "Analityk"
+                } else if (r === "ADMIN") {
+                  className += " bg-red-50 text-red-700 dark:bg-red-900/30 dark:text-red-300 border border-red-200 dark:border-red-800/50"
+                  label = "Administrator"
+                }
+
+                return (
+                  <span key={role} className={className}>
+                    {label}
+                  </span>
+                )
+              })
+            })()}
           </div>
         </div>
       </div>

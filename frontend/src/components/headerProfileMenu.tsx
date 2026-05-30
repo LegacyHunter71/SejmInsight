@@ -3,6 +3,8 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useAuth } from "@/auth/AuthProvider";
 import { useTheme } from "@/hooks/useTheme";
 
+import { Link } from "@tanstack/react-router";
+
 // import "@/styles/nav.css";
 
 import "@/utils/nav";
@@ -72,7 +74,30 @@ export default function HeaderProfileMenu() {
                 </div>
 
                 <div className="p-2">
-                  <button className="w-full text-left px-4 py-2 mt-1 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-slate-700 rounded-xl transition-colors flex items-center gap-3 cursor-pointer">
+                  <Link
+                    to="/profile"
+                    className="w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-slate-700 rounded-xl transition-colors flex items-center gap-3 cursor-pointer"
+                  >
+                    <svg
+                      className="w-5 h-5 text-gray-400"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"
+                      />
+                    </svg>
+                    Profil
+                  </Link>
+
+                  <Link
+                    to="/profile/settings"
+                    className="w-full text-left px-4 py-2 mt-1 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-slate-700 rounded-xl transition-colors flex items-center gap-3 cursor-pointer"
+                  >
                     <svg
                       className="w-5 h-5 text-gray-400"
                       fill="none"
@@ -93,7 +118,7 @@ export default function HeaderProfileMenu() {
                       />
                     </svg>
                     Ustawienia konta
-                  </button>
+                  </Link>
                 </div>
 
                 <div className="p-3 border-t border-gray-100 dark:border-slate-700">
@@ -103,11 +128,10 @@ export default function HeaderProfileMenu() {
                   <div className="flex bg-gray-100 dark:bg-slate-900 rounded-lg p-1 gap-1">
                     <button
                       onClick={() => setTheme("light")}
-                      className={`flex-1 flex justify-center py-2 rounded-md transition-colors cursor-pointer ${
-                        theme === "light"
+                      className={`flex-1 flex justify-center py-2 rounded-md transition-colors cursor-pointer ${theme === "light"
                           ? "bg-white dark:bg-slate-700 shadow-sm text-gray-900 dark:text-white"
                           : "text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
-                      }`}
+                        }`}
                       title="Jasny"
                     >
                       <svg
@@ -126,11 +150,10 @@ export default function HeaderProfileMenu() {
                     </button>
                     <button
                       onClick={() => setTheme("system")}
-                      className={`flex-1 flex justify-center py-2 rounded-md transition-colors cursor-pointer ${
-                        theme === "system"
+                      className={`flex-1 flex justify-center py-2 rounded-md transition-colors cursor-pointer ${theme === "system"
                           ? "bg-white dark:bg-slate-700 shadow-sm text-gray-900 dark:text-white"
                           : "text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
-                      }`}
+                        }`}
                       title="Systemowy"
                     >
                       <svg
@@ -149,11 +172,10 @@ export default function HeaderProfileMenu() {
                     </button>
                     <button
                       onClick={() => setTheme("dark")}
-                      className={`flex-1 flex justify-center py-2 rounded-md transition-colors cursor-pointer ${
-                        theme === "dark"
+                      className={`flex-1 flex justify-center py-2 rounded-md transition-colors cursor-pointer ${theme === "dark"
                           ? "bg-white dark:bg-slate-700 shadow-sm text-gray-900 dark:text-white"
                           : "text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
-                      }`}
+                        }`}
                       title="Ciemny"
                     >
                       <svg

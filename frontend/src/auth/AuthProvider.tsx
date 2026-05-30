@@ -6,11 +6,13 @@ import React, {
   useState,
   useRef,
 } from "react";
+import InitLoading from '@/components/InitLoading'
 import Keycloak, { type KeycloakConfig } from "keycloak-js";
+import { useTheme } from '@/hooks/useTheme'
 
 const keycloakConfig: KeycloakConfig = {
-  url: import.meta.env.VITE_KEYCLOAK_URL, // np. https://auth.twoja-domena.pl
-  realm: import.meta.env.VITE_KEYCLOAK_REALM, // Keycloak wymaga Realm
+  url: import.meta.env.VITE_KEYCLOAK_URL,
+  realm: import.meta.env.VITE_KEYCLOAK_REALM,
   clientId: import.meta.env.VITE_KEYCLOAK_CLIENT_ID,
 };
 
@@ -30,6 +32,8 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
+  // Ensure theme gets applied globally as soon as AuthProvider mounts
+  useTheme()
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [userProfile, setUserProfile] = useState<any | null>(null);
@@ -89,7 +93,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     [isAuthenticated, isLoading, userProfile],
   );
 
-  if (isLoading) return <div>Inicjalizacja sesji...</div>;
+  if (isLoading) return <InitLoading />;
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

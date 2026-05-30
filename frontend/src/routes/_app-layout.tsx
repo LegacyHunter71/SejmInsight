@@ -8,7 +8,7 @@ export const Route = createFileRoute("/_app-layout")({
 
 function RouteComponent() {
   return (
-    <div className="min-h-screen bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 transition-colors duration-200">
+    <div className="h-full bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 transition-colors duration-200">
       <Header />
       <div className="flex flex-row h-[calc(100vh-4rem)]">
         <Sidebar />

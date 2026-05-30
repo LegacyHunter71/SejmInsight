@@ -13,10 +13,11 @@ import { Route as AuthLayoutRouteImport } from './routes/_auth-layout'
 import { Route as AppLayoutRouteImport } from './routes/_app-layout'
 import { Route as AppLayoutIndexRouteImport } from './routes/_app-layout/index'
 import { Route as AuthLayoutLoginRouteImport } from './routes/_auth-layout/login'
-import { Route as AppLayoutProfileRouteImport } from './routes/_app-layout/profile'
 import { Route as AppLayoutAboutRouteImport } from './routes/_app-layout/about'
+import { Route as AppLayoutProfileIndexRouteImport } from './routes/_app-layout/profile/index'
 import { Route as AppLayoutDeputiesIndexRouteImport } from './routes/_app-layout/deputies/index'
 import { Route as AppLayoutDebatesIndexRouteImport } from './routes/_app-layout/debates/index'
+import { Route as AppLayoutProfileSettingsRouteImport } from './routes/_app-layout/profile/settings'
 import { Route as AppLayoutDeputiesDeputyIdRouteImport } from './routes/_app-layout/deputies/$deputyId'
 import { Route as AppLayoutDebatesDebateIdRouteImport } from './routes/_app-layout/debates/$debateId'
 
@@ -38,14 +39,14 @@ const AuthLayoutLoginRoute = AuthLayoutLoginRouteImport.update({
   path: '/login',
   getParentRoute: () => AuthLayoutRoute,
 } as any)
-const AppLayoutProfileRoute = AppLayoutProfileRouteImport.update({
-  id: '/profile',
-  path: '/profile',
-  getParentRoute: () => AppLayoutRoute,
-} as any)
 const AppLayoutAboutRoute = AppLayoutAboutRouteImport.update({
   id: '/about',
   path: '/about',
+  getParentRoute: () => AppLayoutRoute,
+} as any)
+const AppLayoutProfileIndexRoute = AppLayoutProfileIndexRouteImport.update({
+  id: '/profile/',
+  path: '/profile/',
   getParentRoute: () => AppLayoutRoute,
 } as any)
 const AppLayoutDeputiesIndexRoute = AppLayoutDeputiesIndexRouteImport.update({
@@ -58,6 +59,12 @@ const AppLayoutDebatesIndexRoute = AppLayoutDebatesIndexRouteImport.update({
   path: '/debates/',
   getParentRoute: () => AppLayoutRoute,
 } as any)
+const AppLayoutProfileSettingsRoute =
+  AppLayoutProfileSettingsRouteImport.update({
+    id: '/profile/settings',
+    path: '/profile/settings',
+    getParentRoute: () => AppLayoutRoute,
+  } as any)
 const AppLayoutDeputiesDeputyIdRoute =
   AppLayoutDeputiesDeputyIdRouteImport.update({
     id: '/deputies/$deputyId',
@@ -74,69 +81,75 @@ const AppLayoutDebatesDebateIdRoute =
 export interface FileRoutesByFullPath {
   '/': typeof AppLayoutIndexRoute
   '/about': typeof AppLayoutAboutRoute
-  '/profile': typeof AppLayoutProfileRoute
   '/login': typeof AuthLayoutLoginRoute
   '/debates/$debateId': typeof AppLayoutDebatesDebateIdRoute
   '/deputies/$deputyId': typeof AppLayoutDeputiesDeputyIdRoute
+  '/profile/settings': typeof AppLayoutProfileSettingsRoute
   '/debates/': typeof AppLayoutDebatesIndexRoute
   '/deputies/': typeof AppLayoutDeputiesIndexRoute
+  '/profile/': typeof AppLayoutProfileIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof AppLayoutIndexRoute
   '/about': typeof AppLayoutAboutRoute
-  '/profile': typeof AppLayoutProfileRoute
   '/login': typeof AuthLayoutLoginRoute
   '/debates/$debateId': typeof AppLayoutDebatesDebateIdRoute
   '/deputies/$deputyId': typeof AppLayoutDeputiesDeputyIdRoute
+  '/profile/settings': typeof AppLayoutProfileSettingsRoute
   '/debates': typeof AppLayoutDebatesIndexRoute
   '/deputies': typeof AppLayoutDeputiesIndexRoute
+  '/profile': typeof AppLayoutProfileIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_app-layout': typeof AppLayoutRouteWithChildren
   '/_auth-layout': typeof AuthLayoutRouteWithChildren
   '/_app-layout/about': typeof AppLayoutAboutRoute
-  '/_app-layout/profile': typeof AppLayoutProfileRoute
   '/_auth-layout/login': typeof AuthLayoutLoginRoute
   '/_app-layout/': typeof AppLayoutIndexRoute
   '/_app-layout/debates/$debateId': typeof AppLayoutDebatesDebateIdRoute
   '/_app-layout/deputies/$deputyId': typeof AppLayoutDeputiesDeputyIdRoute
+  '/_app-layout/profile/settings': typeof AppLayoutProfileSettingsRoute
   '/_app-layout/debates/': typeof AppLayoutDebatesIndexRoute
   '/_app-layout/deputies/': typeof AppLayoutDeputiesIndexRoute
+  '/_app-layout/profile/': typeof AppLayoutProfileIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
     | '/about'
-    | '/profile'
     | '/login'
     | '/debates/$debateId'
     | '/deputies/$deputyId'
+    | '/profile/settings'
     | '/debates/'
     | '/deputies/'
+    | '/profile/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/about'
-    | '/profile'
     | '/login'
     | '/debates/$debateId'
     | '/deputies/$deputyId'
+    | '/profile/settings'
     | '/debates'
     | '/deputies'
+    | '/profile'
   id:
     | '__root__'
     | '/_app-layout'
     | '/_auth-layout'
     | '/_app-layout/about'
-    | '/_app-layout/profile'
     | '/_auth-layout/login'
     | '/_app-layout/'
     | '/_app-layout/debates/$debateId'
     | '/_app-layout/deputies/$deputyId'
+    | '/_app-layout/profile/settings'
     | '/_app-layout/debates/'
     | '/_app-layout/deputies/'
+    | '/_app-layout/profile/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -174,18 +187,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthLayoutLoginRouteImport
       parentRoute: typeof AuthLayoutRoute
     }
-    '/_app-layout/profile': {
-      id: '/_app-layout/profile'
-      path: '/profile'
-      fullPath: '/profile'
-      preLoaderRoute: typeof AppLayoutProfileRouteImport
-      parentRoute: typeof AppLayoutRoute
-    }
     '/_app-layout/about': {
       id: '/_app-layout/about'
       path: '/about'
       fullPath: '/about'
       preLoaderRoute: typeof AppLayoutAboutRouteImport
+      parentRoute: typeof AppLayoutRoute
+    }
+    '/_app-layout/profile/': {
+      id: '/_app-layout/profile/'
+      path: '/profile'
+      fullPath: '/profile/'
+      preLoaderRoute: typeof AppLayoutProfileIndexRouteImport
       parentRoute: typeof AppLayoutRoute
     }
     '/_app-layout/deputies/': {
@@ -200,6 +213,13 @@ declare module '@tanstack/react-router' {
       path: '/debates'
       fullPath: '/debates/'
       preLoaderRoute: typeof AppLayoutDebatesIndexRouteImport
+      parentRoute: typeof AppLayoutRoute
+    }
+    '/_app-layout/profile/settings': {
+      id: '/_app-layout/profile/settings'
+      path: '/profile/settings'
+      fullPath: '/profile/settings'
+      preLoaderRoute: typeof AppLayoutProfileSettingsRouteImport
       parentRoute: typeof AppLayoutRoute
     }
     '/_app-layout/deputies/$deputyId': {
@@ -221,22 +241,24 @@ declare module '@tanstack/react-router' {
 
 interface AppLayoutRouteChildren {
   AppLayoutAboutRoute: typeof AppLayoutAboutRoute
-  AppLayoutProfileRoute: typeof AppLayoutProfileRoute
   AppLayoutIndexRoute: typeof AppLayoutIndexRoute
   AppLayoutDebatesDebateIdRoute: typeof AppLayoutDebatesDebateIdRoute
   AppLayoutDeputiesDeputyIdRoute: typeof AppLayoutDeputiesDeputyIdRoute
+  AppLayoutProfileSettingsRoute: typeof AppLayoutProfileSettingsRoute
   AppLayoutDebatesIndexRoute: typeof AppLayoutDebatesIndexRoute
   AppLayoutDeputiesIndexRoute: typeof AppLayoutDeputiesIndexRoute
+  AppLayoutProfileIndexRoute: typeof AppLayoutProfileIndexRoute
 }
 
 const AppLayoutRouteChildren: AppLayoutRouteChildren = {
   AppLayoutAboutRoute: AppLayoutAboutRoute,
-  AppLayoutProfileRoute: AppLayoutProfileRoute,
   AppLayoutIndexRoute: AppLayoutIndexRoute,
   AppLayoutDebatesDebateIdRoute: AppLayoutDebatesDebateIdRoute,
   AppLayoutDeputiesDeputyIdRoute: AppLayoutDeputiesDeputyIdRoute,
+  AppLayoutProfileSettingsRoute: AppLayoutProfileSettingsRoute,
   AppLayoutDebatesIndexRoute: AppLayoutDebatesIndexRoute,
   AppLayoutDeputiesIndexRoute: AppLayoutDeputiesIndexRoute,
+  AppLayoutProfileIndexRoute: AppLayoutProfileIndexRoute,
 }
 
 const AppLayoutRouteWithChildren = AppLayoutRoute._addFileChildren(
