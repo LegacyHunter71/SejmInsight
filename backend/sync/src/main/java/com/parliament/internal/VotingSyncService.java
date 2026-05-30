@@ -30,6 +30,7 @@ public class VotingSyncService {
     public void syncLast100Votings() {
         log.info("Rozpoczynam zaktualizowaną synchronizację 100 najnowszych głosowań...");
         try {
+            // KROK 1: Pobieramy listę wszystkich posiedzeń
             List<ProceedingDto> proceedings = restClient.get()
                     .uri(apiTerm + "/votings")
                     .retrieve()
@@ -40,29 +41,31 @@ public class VotingSyncService {
                 return;
             }
 
+            // Odwracamy, żeby zacząć od najnowszego posiedzenia
             Collections.reverse(proceedings);
 
             List<FlatVotingReference> votingsToSync = new ArrayList<>();
 
+            // KROK 2: Przebijamy się przez posiedzenia i zbieramy nagłówki głosowań
             for (ProceedingDto p : proceedings) {
-                if (p.proceedingNo() == null) continue;
+                if (p.sitting() == null) continue;
 
+                // Pobieramy listę głosowań z tego konkretnego posiedzenia
                 List<VotingHeaderDto> headers = restClient.get()
-                        .uri(apiTerm + "/votings/{proceedingNo}", p.proceedingNo())
+                        .uri(apiTerm + "/votings/{sitting}", p.sitting())
                         .retrieve()
                         .body(new ParameterizedTypeReference<List<VotingHeaderDto>>() {});
 
                 if (headers != null && !headers.isEmpty()) {
+                    // Odwracamy głosowania, by najnowsze z danego dnia były na początku
                     Collections.reverse(headers);
                     for (VotingHeaderDto h : headers) {
-                        if (h.votingNo() != null) {
-                            votingsToSync.add(new FlatVotingReference(p.proceedingNo(), h.votingNo()));
+                        if (h.votingNumber() != null) {
+                            votingsToSync.add(new FlatVotingReference(p.sitting(), h.votingNumber()));
                         }
-
                         if (votingsToSync.size() >= 100) break;
                     }
                 }
-
                 if (votingsToSync.size() >= 100) break;
             }
 
@@ -73,8 +76,9 @@ public class VotingSyncService {
 
             log.info("Uzbierano {} głosowań. Rozpoczynam pobieranie szczegółów i zapis do bazy...", votingsToSync.size());
 
+            // KROK 3: Pobieramy szczegóły i wysyłamy do Fasady (Zapis do Bazy)
             for (FlatVotingReference ref : votingsToSync) {
-                syncSingleVotingDetails(ref.proceedingNo(), ref.votingNo());
+                syncSingleVotingDetails(ref.sitting(), ref.votingNumber());
             }
 
             log.info("Synchronizacja najnowszych głosowań zakończona pełnym sukcesem!");
@@ -84,10 +88,10 @@ public class VotingSyncService {
         }
     }
 
-    private void syncSingleVotingDetails(Integer proceedingNo, Integer votingNo) {
+    private void syncSingleVotingDetails(Integer sitting, Integer votingNumber) {
         try {
             VotingResponse response = restClient.get()
-                    .uri(apiTerm + "/votings/{proceedingNo}/{votingNo}", proceedingNo, votingNo)
+                    .uri(apiTerm + "/votings/{sitting}/{votingNumber}", sitting, votingNumber)
                     .retrieve()
                     .body(VotingResponse.class);
 
@@ -97,28 +101,25 @@ public class VotingSyncService {
                     .map(dto -> new VoteSyncItem(dto.MPid(), dto.vote(), dto.isPresent()))
                     .toList();
 
+            // Zabezpieczamy się, gdyby API znów czegoś nie przysłało
+            Integer finalTerm = response.term() != null ? response.term() : 10;
+            Integer finalSitting = response.sitting() != null ? response.sitting() : sitting;
+            Integer finalVotingNo = response.votingNumber() != null ? response.votingNumber() : votingNumber;
+
             votingFacade.saveVoting(new VotingSyncRequest(
-                    response.term(),
-                    response.proceedingNo(),
-                    response.votingNo(),
+                    finalTerm,
+                    finalSitting,
+                    finalVotingNo,
                     response.title(),
                     items
             ));
 
-            log.debug("Zapisano: posiedzenie {}, głosowanie {}", proceedingNo, votingNo);
+            log.info("Zapisano: posiedzenie {}, głosowanie {}", finalSitting, finalVotingNo);
 
         } catch (Exception e) {
-            log.error("Nie udało się pobrać szczegółów dla {}/{}: {}", proceedingNo, votingNo, e.getMessage());
+            log.error("Nie udało się pobrać szczegółów dla {}/{}: {}", sitting, votingNumber, e.getMessage());
         }
     }
 
-    // --- WEWNĘTRZNE REKORDY DTO (Dopasowane do API Sejmu) ---
-
-    @JsonIgnoreProperties(ignoreUnknown = true)
-    private record ProceedingDto(@JsonProperty("proceedingNo") Integer proceedingNo) {}
-
-    @JsonIgnoreProperties(ignoreUnknown = true)
-    private record VotingHeaderDto(@JsonProperty("votingNo") Integer votingNo) {}
-
-    private record FlatVotingReference(Integer proceedingNo, Integer votingNo) {}
+    record FlatVotingReference(Integer sitting, Integer votingNumber) {}
 }

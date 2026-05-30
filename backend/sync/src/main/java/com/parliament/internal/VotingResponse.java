@@ -1,15 +1,16 @@
 package com.parliament.internal;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 record VotingResponse(
-        @JsonProperty("term") Integer term,
-        @JsonProperty("proceedingNo") Integer proceedingNo,
-        @JsonProperty("votingNo") Integer votingNo,
-        @JsonProperty("title") String title,
-        @JsonProperty("votes") List<VoteDto> votes
-) {}
+        @JsonAlias({"term"}) Integer term,
+        @JsonAlias({"sitting", "proceedingNo"}) Integer sitting,
+        @JsonAlias({"votingNumber", "votingNo"}) Integer votingNumber,
+        @JsonAlias({"title"}) String title,
+        @JsonAlias({"votes"}) List<VoteDto> votes
+) {
+}
