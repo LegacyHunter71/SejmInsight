@@ -12,7 +12,9 @@ function RouteComponent() {
       <Header />
       <div className="flex flex-row h-[calc(100vh-4rem)]">
         <Sidebar />
-        <Outlet />
+        <div className="flex-1 p-4 overflow-y-auto">
+          <Outlet />
+        </div>
       </div>
     </div>
   );

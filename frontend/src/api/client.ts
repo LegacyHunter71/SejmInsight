@@ -11,7 +11,12 @@ export interface ApiError {
 const getBaseUrl = () => {
     // Vite env variable
     const v = import.meta.env.VITE_API_BASE_URL as string | undefined;
-    return v ?? "/api";
+    if (v) return v.replace(/\/$/, "");
+    if (typeof window !== "undefined" && window.location) {
+        return `${window.location.origin}/api`;
+    }
+    // fallback for SSR or unknown env
+    return "http://localhost/api";
 };
 
 async function parseResponse<T>(res: Response): Promise<T> {
@@ -63,7 +68,9 @@ async function handleResponse<T>(res: Response): Promise<T> {
 
 function buildUrl(path: string, query?: Record<string, any>) {
     const base = getBaseUrl().replace(/\/$/, "");
-    const url = new URL(path, base);
+    const cleanPath = `/${path.replace(/^\//, "")}`;
+    const urlStr = `${base}${cleanPath}`;
+    const url = new URL(urlStr);
     if (query) {
         Object.entries(query).forEach(([k, v]) => {
             if (v === undefined || v === null) return;

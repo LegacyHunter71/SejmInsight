@@ -13,7 +13,7 @@ function RouteComponent() {
   if (!isAuthenticated) return null;
 
   const roles = keycloak.realmAccess?.roles || [];
-  const initial = (userProfile?.name || userProfile?.preferred_username || "U")
+  const initial = (userProfile?.firstName || "U")
     .charAt(0)
     .toUpperCase();
 
@@ -38,7 +38,7 @@ function RouteComponent() {
         <div className="space-y-4 flex-1">
           <div>
             <h2 className="text-3xl font-extrabold text-gray-900 dark:text-white font-[Manrope]">
-              {userProfile?.name || "Użytkownik SejmInsight"}
+              {userProfile?.firstName + " " + userProfile?.lastName || "Użytkownik SejmInsight"}
             </h2>
             <p className="text-lg text-gray-500 dark:text-gray-400">
               {userProfile?.email}

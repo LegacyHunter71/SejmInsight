@@ -7,6 +7,9 @@ import "./styles/shared.css";
 import { AuthProvider, useAuth } from "./auth/AuthProvider";
 import { routeTree } from "./routeTree.gen";
 import { StrictMode } from "react";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+const queryClient = new QueryClient();
 
 export interface RouterContext {
   auth: ReturnType<typeof useAuth>;
@@ -30,7 +33,11 @@ function App() {
 
   if (auth.isLoading) return <div>Loading...</div>;
 
-  return <RouterProvider router={router} context={{ auth }} />;
+  return (
+    <QueryClientProvider client={queryClient}>
+      <RouterProvider router={router} context={{ auth }} />
+    </QueryClientProvider>
+  );
 }
 
 createRoot(document.getElementById("root")!).render(

@@ -75,8 +75,14 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     return keycloak.login({ redirectUri: finalRedirect });
   };
 
-  const register = (redirectUri?: string) =>
-    keycloak.register({ redirectUri: redirectUri || window.location.origin });
+  const register = (redirectUri?: string) => {
+    const finalRedirect = redirectUri
+      ? redirectUri.startsWith("http")
+        ? redirectUri
+        : `${window.location.origin}${redirectUri}`
+      : window.location.origin;
+    return keycloak.register({ redirectUri: finalRedirect });
+  };
 
   const logout = () => keycloak.logout({ redirectUri: window.location.origin });
 
