@@ -1,0 +1,239 @@
+{
+  "common": {
+    "loading": "Ładowanie...",
+    "appName": "SejmInsight",
+    "searchPlaceholder": "Szukaj w SejmInsight..."
+  },
+  "nav": {
+    "profile": "Profil",
+    "accountSettings": "Ustawienia konta",
+    "theme": "Motyw",
+    "logout": "Wyloguj się",
+    "login": "Zaloguj się",
+    "register": "Zarejestruj się",
+    "language": "Język"
+  },
+  "theme": {
+    "light": "Jasny",
+    "system": "Systemowy",
+    "dark": "Ciemny"
+  },
+  "auth": {
+    "noEmail": "Brak email"
+  },
+  "admin": {
+    "title": "Panel administratora",
+    "onlyForAdmin": "To jest strona widoczna tylko dla użytkowników z rolą ADMIN.",
+    "actionsTitle": "Akcje administracyjne",
+    "actionsDesc": "W tym miejscu możesz dodać synchronizację danych, zarządzanie rolami, itd.",
+    "syncDeputies": {
+      "title": "Sync posłów",
+      "desc": "Uruchamia backendowy sync danych posłów.",
+      "pending": "Synchronizacja…",
+      "success": "Uruchomiono ✅",
+      "idle": "Uruchom sync",
+      "errorFallback": "Nie udało się uruchomić synchronizacji posłów"
+    },
+    "syncVotings": {
+      "title": "Sync głosowań",
+      "desc": "Uruchamia backendowy sync danych głosowań.",
+      "pending": "Synchronizacja…",
+      "success": "Uruchomiono ✅",
+      "idle": "Uruchom sync",
+      "errorFallback": "Nie udało się uruchomić synchronizacji głosowań"
+    },
+    "moderation": {
+      "title": "Moderacja komentarzy",
+      "desc": "Placeholder tabeli do zatwierdzania komentarzy oznaczonych jako potencjalnie obraźliwe.",
+      "author": "Autor",
+      "content": "Treść",
+      "date": "Data",
+      "signals": "Sygnały",
+      "actions": "Akcje",
+      "contentPlaceholder": "(placeholder treści komentarza)",
+      "approve": "Zatwierdź",
+      "reject": "Odrzuć",
+      "placeholderTitle": "Placeholder"
+    }
+  },
+  "initLoading": {
+    "title": "Inicjalizacja sesji",
+    "message": "Sprawdzam Twoje logowanie i konfiguruję środowisko..."
+  },
+  "about": {
+    "title": "O projekcie SejmInsight",
+    "body": "SejmInsight to nowoczesna platforma analityczno-społecznościowa budująca przestrzeń do debaty publicznej. Naszym celem jest transparentność i udostępnienie narzędzi pozwalających każdemu obywatelowi na ocenę działań swoich przedstawicieli.",
+    "notice": "Projekt jest w fazie wczesnego rozwoju. Funkcjonalności takie jak logowanie czy agregacja danych z API Sejmu są systematycznie wdrażane."
+  },
+  "home": {
+    "title": "Pulpit Analityczny",
+    "subtitle": "Najważniejsze wydarzenia i statystyki Sejmu RP X kadencji.",
+    "charts": {
+      "attendanceTitle": "Średnia frekwencja klubów parlamentarnych (%)"
+    },
+    "cards": {
+      "mostActiveDeputies": "Najaktywniejsi Posłowie",
+      "listLoading": "Lista wczytywana z API..."
+    }
+  },
+  "deputies": {
+    "catalogTitle": "Katalog Posłów",
+    "catalogSubtitle": "Przeglądaj, filtruj i sprawdzaj statystyki parlamentarzystów.",
+    "searchPlaceholder": "Szukaj po nazwisku...",
+    "loading": "Wczytywanie...",
+    "loadingDeputy": "Wczytywanie posła...",
+    "parliamentaryClubMock": "Klub Parlamentarny (Mock)",
+    "attendance": "Frekwencja",
+    "votings": "Głosowań",
+    "community": "Społeczność",
+    "addOpinion": "Dodaj swoją opinię",
+    "commentPlaceholder": "Co sądzisz o ostatnich działaniach tego posła?",
+    "cancel": "Anuluj",
+    "posting": "Wysyłanie...",
+    "publishComment": "Opublikuj komentarz",
+    "loginToParticipate": "Musisz być zalogowanym obywatelem, aby wziąć udział w debacie i oceniać posłów.",
+    "loginWithKeycloak": "Zaloguj się przez Keycloak",
+    "loadingComments": "Wczytywanie komentarzy...",
+    "anonymous": "Anonim",
+    "delete": "Usuń"
+  },
+  "pagination": {
+    "pageSize": "Rozmiar strony:",
+    "prev": "Prev",
+    "next": "Next",
+    "page": "Strona"
+  },
+  "debates": {
+    "printNo": "Druk nr",
+    "titleForId": "Tytuł Debaty dla ID: {{id}}",
+    "descriptionPlaceholder": "Oto szczegółowy opis i analiza przedmiotu debaty. Miejsce to będzie zintegrowane w przyszłości z API Sejmu RP, dostarczając zarys ustawy, linki do oficjalnych dokumentów i listę poprawek.",
+    "community": "Społeczność",
+    "yourVoice": "Twój głos w debacie",
+    "commentPlaceholder": "Podziel się swoją merytoryczną opinią na temat tej ustawy...",
+    "publishComment": "Opublikuj komentarz",
+    "loginToParticipate": "Musisz być zalogowanym obywatelem, aby wziąć udział w debacie legislacyjnej.",
+    "opinionsPlaceholder": "Paginowana lista merytorycznych opinii obywateli pojawi się tutaj...",
+    "index": {
+      "title": "Debaty i Ustawy",
+      "subtitle": "Dołącz do dyskusji na temat najnowszych projektów legislacyjnych. Twoje opinie pomagają budować wgląd społeczny.",
+      "postsSuffix": "opinii",
+      "items": {
+        "budget": {
+          "description": "Projekt ustawy budżetowej na rok 2026. Analiza wydatków na obronność i edukację."
+        },
+        "health": {
+          "description": "Zmiany w składce zdrowotnej oraz dofinansowanie szpitali powiatowych."
+        },
+        "vote": {
+          "description": "Głosowanie nad wotum nieufności dla Ministra Cyfryzacji."
+        }
+      }
+    }
+  },
+  "sidebar": {
+    "home": "Strona główna",
+    "deputies": "Posłowie",
+    "debates": "Debaty i Ustawy",
+    "about": "O nas",
+    "admin": "Administracja"
+  },
+  "authPages": {
+    "register": {
+      "title": "Załóż konto",
+      "subtitle": "Zarejestruj się w SejmInsight. Po utworzeniu konta wrócisz do logowania.",
+      "firstName": "Imię",
+      "lastName": "Nazwisko",
+      "email": "Email",
+      "cta": "Zarejestruj się",
+      "submitting": "Tworzenie konta…",
+      "alreadyHaveAccount": "Masz już konto? Zaloguj się",
+      "successRedirect": "Konto utworzone. Przekierowanie do logowania…",
+      "errorGeneric": "Nie udało się utworzyć konta. Spróbuj ponownie."
+    },
+    "login": {
+      "heroTitle": "Twoje zdanie ma znaczenie w sercu parlamentu",
+      "heroSubtitle": "Dołącz do społeczności SejmInsight, komentuj głosowania, oceniaj posłów i buduj kulturę polityczną.",
+      "cta": "Dołącz do inteligencji demokratycznej",
+      "features": {
+        "discussTitle": "Dyskutuj o ustawach",
+        "discussDesc": "Twój głos w debacie publicznej zyskuje realny wpływ na kształtowanie prawa.",
+        "rateTitle": "Oceniaj posłów",
+        "rateDesc": "Sprawdzaj frekwencję, aktywność i głosuj za zaufaniem dla swoich reprezentantów.",
+        "analyzeTitle": "Twórz analizy",
+        "analyzeDesc": "Dziel się swoją wiedzą i twórz głębokie raporty na temat polityki państwa."
+      },
+      "socialAnalysisTitle": "Analiza społeczna w czasie rzeczywistym",
+      "social": {
+        "sentimentTitle": "Sentyment obywatelski",
+        "sentimentDesc": "Dziel się swoją wiedzą i twórz głębokie raporty na temat polityki państwa.",
+        "transparencyTitle": "Transparentność",
+        "transparencyDesc": "Koniec z politycznymi grami w cieniu. Każda decyzja jest pod lupą społeczności."
+      },
+      "mock": {
+        "minutesAgo": "2 min temu",
+        "votes": "124 głosy",
+        "replies": "42 odpowiedzi",
+        "quote": "\"Analiza ustawy o cyfryzacji pokazuje, że realne oszczędności dla budżetu pojawią się dopiero w 2026. Czy ktoś jeszcze zauważył ten zapis w art. 14?\""
+      },
+      "footer": {
+        "privacyPolicy": "Polityka prywatności",
+        "terms": "Regulamin",
+        "contact": "Kontakt",
+        "copyright": "© 2026 SejmInsight. Inteligencja Demokratyczna."
+      }
+    }
+  },
+  "profile": {
+    "title": "Twój Profil",
+    "subtitle": "Zarządzaj swoimi danymi i uprawnieniami w systemie.",
+    "defaultFullName": "Użytkownik SejmInsight",
+    "noSpecialRole": "Brak specjalnej roli",
+    "roles": {
+      "citizen": "Obywatel",
+      "analyst": "Analityk",
+      "admin": "Administrator"
+    },
+    "accountDetails": {
+      "title": "Szczegóły konta",
+      "username": "Username",
+      "status": "Status",
+      "activeSso": "Aktywny (SSO)"
+    },
+    "activity": {
+      "title": "Twoja Aktywność",
+      "comingSoon": "Historia komentarzy wkrótce..."
+    },
+    "settings": {
+      "title": "Ustawienia",
+      "subtitle": "Tu skonfigurujesz swój profil i preferencje.",
+      "sections": {
+        "profile": "Profil",
+        "notifications": "Powiadomienia",
+        "privacyFacade": "Prywatność (fasada)",
+        "accountActions": "Akcje konta"
+      },
+      "avatar": "Av",
+      "displayName": {
+        "label": "Nazwa wyświetlana",
+        "help": "To, co widzą inni użytkownicy."
+      },
+      "notifications": {
+        "email": "E-mail",
+        "help": "Otrzymuj powiadomienia o aktywnościach."
+      },
+      "privacy": {
+        "desc": "Opcje prywatności będą tutaj dostępne. To tylko widok — funkcje pojawią się później.",
+        "manageVisibility": "Zarządzaj widocznością"
+      },
+      "save": {
+        "pending": "Zapiszę...",
+        "saved": "Zapisano",
+        "idle": "Zapisz zmiany"
+      },
+      "actions": {
+        "changePassword": "Zmień hasło",
+        "deactivateFacade": "Dezaktywuj konto (fasada)"
+      }
+    }
+  }
+}

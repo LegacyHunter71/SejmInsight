@@ -10,7 +10,7 @@ export interface ApiError {
 
 const getBaseUrl = () => {
   // Vite env variable
-  const v = import.meta.env.VITE_SEJMINSIGHT_API as string | undefined;
+  const v = "https://sejm-insight.duckdns.org/api";
   if (v) return v.replace(/\/$/, "");
   if (typeof window !== "undefined" && window.location) {
     return `${window.location.origin}/api`;

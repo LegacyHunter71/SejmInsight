@@ -1,8 +1,10 @@
 import { createFileRoute, Outlet } from "@tanstack/react-router";
 import Header from "@/components/header";
 import Sidebar from "@/components/sidebar";
+import { authGuard } from "@/auth/authGuard";
 
 export const Route = createFileRoute("/_app-layout")({
+  beforeLoad: authGuard,
   component: RouteComponent,
 });
 

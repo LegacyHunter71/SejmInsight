@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useAuth } from "@/auth/AuthProvider";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
   useComments,
   useAddComment,
@@ -14,6 +15,8 @@ export const Route = createFileRoute("/_app-layout/deputies/$deputyId")({
 });
 
 function RouteComponent() {
+  const { t } = useTranslation();
+
   const { deputyId } = Route.useParams();
   const { isAuthenticated, login } = useAuth();
   const [commentText, setCommentText] = useState("");
@@ -59,21 +62,21 @@ function RouteComponent() {
         <div className="space-y-2">
           <h1 className="text-4xl font-extrabold text-gray-900 dark:text-white font-[Manrope]">
             {deputyLoading
-              ? "Wczytywanie posła..."
+              ? t("deputies.loadingDeputy")
               : deputyData
                 ? `${deputyData.firstName} ${deputyData.lastName}`
                 : `Poseł ID: ${deputyId}`}
           </h1>
           <p className="text-xl text-gray-600 dark:text-gray-400">
-            {deputyData?.club ?? "Klub Parlamentarny (Mock)"} •{" "}
+            {deputyData?.club ?? t("deputies.parliamentaryClubMock")} •{" "}
             {deputyData?.districtName ?? ""}
           </p>
           <div className="flex gap-4 pt-4">
             <div className="bg-emerald-50 dark:bg-emerald-900/30 text-emerald-800 dark:text-emerald-400 border border-transparent dark:border-emerald-800/50 px-4 py-2 rounded-lg font-bold">
-              Frekwencja: {deputyData?.attendanceRate ?? "—"}%
+              {t("deputies.attendance")}: {deputyData?.attendanceRate ?? "—"}%
             </div>
             <div className="bg-blue-50 dark:bg-blue-900/30 text-blue-800 dark:text-blue-400 border border-transparent dark:border-blue-800/50 px-4 py-2 rounded-lg font-bold">
-              Głosowań: {/* TODO: fetch votings count */} —
+              {t("deputies.votings")}: {/* TODO: fetch votings count */} —
             </div>
           </div>
         </div>
@@ -82,48 +85,49 @@ function RouteComponent() {
       {/* Moduł Społecznościowy */}
       <div className="pt-8 border-t border-gray-200 dark:border-slate-800">
         <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
-          Społeczność
+          {t("deputies.community")}
         </h2>
 
         {isAuthenticated ? (
           <div className="bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-2xl p-6 shadow-sm mb-8 transition-colors">
             <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4">
-              Dodaj swoją opinię
+              {t("deputies.addOpinion")}
             </h3>
             <textarea
               value={commentText}
               onChange={(e) => setCommentText(e.target.value)}
               className="w-full bg-gray-50 dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-xl p-4 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-maroon-800 dark:focus:ring-maroon-600 transition-colors resize-none"
               rows={4}
-              placeholder="Co sądzisz o ostatnich działaniach tego posła?"
+              placeholder={t("deputies.commentPlaceholder")}
             ></textarea>
             <div className="mt-4 flex justify-end gap-4">
               <button
                 onClick={() => setCommentText("")}
                 className="bg-gray-200 dark:bg-slate-700 text-gray-800 dark:text-gray-200 font-bold py-2 px-4 rounded-full hover:opacity-90 transition-colors"
               >
-                Anuluj
+                {t("deputies.cancel")}
               </button>
               <button
                 onClick={handleSubmit}
                 disabled={isPosting}
                 className="bg-maroon-800 dark:bg-maroon-700 text-white font-bold py-2.5 px-6 rounded-full hover:bg-maroon-900 dark:hover:bg-maroon-600 transition-colors cursor-pointer shadow-md"
               >
-                {isPosting ? "Wysyłanie..." : "Opublikuj komentarz"}
+                {isPosting
+                  ? t("deputies.posting")
+                  : t("deputies.publishComment")}
               </button>
             </div>
           </div>
         ) : (
           <div className="bg-gray-50 dark:bg-slate-900/50 border border-gray-200 dark:border-slate-700 rounded-2xl p-8 shadow-sm mb-8 flex flex-col items-center justify-center transition-colors">
             <p className="text-gray-500 dark:text-gray-400 mb-4 text-center">
-              Musisz być zalogowanym obywatelem, aby wziąć udział w debacie i
-              oceniać posłów.
+              {t("deputies.loginToParticipate")}
             </p>
             <button
-              onClick={() => login(`/deputies/${deputyId}`)}
+              onClick={() => void login(`/deputies/${deputyId}`)}
               className="bg-maroon-800 dark:bg-maroon-700 text-white font-bold py-2.5 px-8 rounded-full hover:bg-maroon-900 dark:hover:bg-maroon-600 transition-colors cursor-pointer shadow-md"
             >
-              Zaloguj się przez Keycloak
+              {t("deputies.loginWithKeycloak")}
             </button>
           </div>
         )}
@@ -131,7 +135,7 @@ function RouteComponent() {
         <div className="space-y-4">
           {commentsLoading ? (
             <div className="text-center text-gray-500">
-              Wczytywanie komentarzy...
+              {t("deputies.loadingComments")}
             </div>
           ) : (
             (comments as any[]).map((c) => (
@@ -142,7 +146,7 @@ function RouteComponent() {
                 <div className="flex justify-between items-start">
                   <div>
                     <div className="font-bold text-gray-900 dark:text-white">
-                      {c.author_name ?? "Anonim"}
+                      {c.author_name ?? t("deputies.anonymous")}
                     </div>
                     <div className="text-sm text-gray-500 dark:text-gray-400">
                       {new Date(c.created_at ?? Date.now()).toLocaleString()}
@@ -189,7 +193,8 @@ function RouteComponent() {
                         }}
                         className="text-xs text-red-600"
                       >
-                        Usuń {pendingDeletes[c.id] ? "..." : ""}
+                        {t("deputies.delete")}{" "}
+                        {pendingDeletes[c.id] ? "..." : ""}
                       </button>
                     )}
                   </div>

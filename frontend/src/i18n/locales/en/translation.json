@@ -1,0 +1,239 @@
+{
+  "common": {
+    "loading": "Loading...",
+    "appName": "SejmInsight",
+    "searchPlaceholder": "Search in SejmInsight..."
+  },
+  "nav": {
+    "profile": "Profile",
+    "accountSettings": "Account settings",
+    "theme": "Theme",
+    "logout": "Log out",
+    "login": "Log in",
+    "register": "Register",
+    "language": "Language"
+  },
+  "theme": {
+    "light": "Light",
+    "system": "System",
+    "dark": "Dark"
+  },
+  "auth": {
+    "noEmail": "No email"
+  },
+  "admin": {
+    "title": "Admin panel",
+    "onlyForAdmin": "This page is visible only to users with the ADMIN role.",
+    "actionsTitle": "Administrative actions",
+    "actionsDesc": "Here you can add data synchronization, role management, etc.",
+    "syncDeputies": {
+      "title": "Sync deputies",
+      "desc": "Triggers backend synchronization of deputies data.",
+      "pending": "Syncing…",
+      "success": "Started ✅",
+      "idle": "Run sync",
+      "errorFallback": "Couldn't start deputies synchronization"
+    },
+    "syncVotings": {
+      "title": "Sync votings",
+      "desc": "Triggers backend synchronization of votings data.",
+      "pending": "Syncing…",
+      "success": "Started ✅",
+      "idle": "Run sync",
+      "errorFallback": "Couldn't start votings synchronization"
+    },
+    "moderation": {
+      "title": "Comment moderation",
+      "desc": "Table placeholder for approving comments flagged as potentially offensive.",
+      "author": "Author",
+      "content": "Content",
+      "date": "Date",
+      "signals": "Signals",
+      "actions": "Actions",
+      "contentPlaceholder": "(placeholder comment content)",
+      "approve": "Approve",
+      "reject": "Reject",
+      "placeholderTitle": "Placeholder"
+    }
+  },
+  "initLoading": {
+    "title": "Initializing session",
+    "message": "Checking your login and configuring the environment..."
+  },
+  "about": {
+    "title": "About the SejmInsight project",
+    "body": "SejmInsight is a modern analytics and community platform that creates space for public debate. Our goal is transparency and providing tools that allow every citizen to evaluate the actions of their representatives.",
+    "notice": "The project is in an early stage of development. Features such as login and aggregation of data from the Sejm API are being rolled out gradually."
+  },
+  "home": {
+    "title": "Analytics Dashboard",
+    "subtitle": "Key events and statistics of the Polish Sejm's 10th term.",
+    "charts": {
+      "attendanceTitle": "Average attendance of parliamentary clubs (%)"
+    },
+    "cards": {
+      "mostActiveDeputies": "Most active deputies",
+      "listLoading": "List loaded from the API..."
+    }
+  },
+  "deputies": {
+    "catalogTitle": "Deputies catalog",
+    "catalogSubtitle": "Browse, filter and check MPs' statistics.",
+    "searchPlaceholder": "Search by last name...",
+    "loading": "Loading...",
+    "loadingDeputy": "Loading deputy...",
+    "parliamentaryClubMock": "Parliamentary Club (Mock)",
+    "attendance": "Attendance",
+    "votings": "Votings",
+    "community": "Community",
+    "addOpinion": "Share your opinion",
+    "commentPlaceholder": "What do you think about this deputy's recent actions?",
+    "cancel": "Cancel",
+    "posting": "Sending...",
+    "publishComment": "Post comment",
+    "loginToParticipate": "You must be logged in as a citizen to join the discussion and rate deputies.",
+    "loginWithKeycloak": "Log in with Keycloak",
+    "loadingComments": "Loading comments...",
+    "anonymous": "Anonymous",
+    "delete": "Delete"
+  },
+  "pagination": {
+    "pageSize": "Page size:",
+    "prev": "Prev",
+    "next": "Next",
+    "page": "Page"
+  },
+  "debates": {
+    "printNo": "Print no.",
+    "titleForId": "Debate title for ID: {{id}}",
+    "descriptionPlaceholder": "Here you'll find a detailed description and analysis of the debate subject. This area will be integrated in the future with the Polish Sejm API, providing an outline of the bill, links to official documents and a list of amendments.",
+    "community": "Community",
+    "yourVoice": "Your voice in the debate",
+    "commentPlaceholder": "Share your substantive opinion about this bill...",
+    "publishComment": "Post comment",
+    "loginToParticipate": "You must be logged in as a citizen to participate in the legislative debate.",
+    "opinionsPlaceholder": "A paginated list of citizens' substantive opinions will appear here...",
+    "index": {
+      "title": "Debates & Bills",
+      "subtitle": "Join the discussion about the latest legislative proposals. Your opinions help build social insight.",
+      "postsSuffix": "opinions",
+      "items": {
+        "budget": {
+          "description": "Draft budget bill for 2026. Analysis of spending on defense and education."
+        },
+        "health": {
+          "description": "Changes to the health contribution and funding for county hospitals."
+        },
+        "vote": {
+          "description": "Vote on a motion of no confidence for the Minister of Digitization."
+        }
+      }
+    }
+  },
+  "sidebar": {
+    "home": "Home",
+    "deputies": "Deputies",
+    "debates": "Debates & Bills",
+    "about": "About",
+    "admin": "Administration"
+  },
+  "authPages": {
+    "register": {
+      "title": "Create an account",
+      "subtitle": "Register in SejmInsight. After creating an account, you'll return to the login page.",
+      "firstName": "First name",
+      "lastName": "Last name",
+      "email": "Email",
+      "cta": "Register",
+      "submitting": "Creating account…",
+      "alreadyHaveAccount": "Already have an account? Log in",
+      "successRedirect": "Account created. Redirecting to login…",
+      "errorGeneric": "Couldn't create the account. Please try again."
+    },
+    "login": {
+      "heroTitle": "Your voice matters at the heart of parliament",
+      "heroSubtitle": "Join the SejmInsight community, comment on votes, rate deputies, and help build a healthier political culture.",
+      "cta": "Join the democratic intelligence",
+      "features": {
+        "discussTitle": "Discuss bills",
+        "discussDesc": "Your voice in the public debate can have a real impact on shaping the law.",
+        "rateTitle": "Rate deputies",
+        "rateDesc": "Check attendance, activity, and vote for trust in your representatives.",
+        "analyzeTitle": "Create analyses",
+        "analyzeDesc": "Share your knowledge and create in-depth reports about state politics."
+      },
+      "socialAnalysisTitle": "Real-time social analysis",
+      "social": {
+        "sentimentTitle": "Civic sentiment",
+        "sentimentDesc": "Share your knowledge and create in-depth reports about state politics.",
+        "transparencyTitle": "Transparency",
+        "transparencyDesc": "No more political games in the shadows. Every decision is under the community's lens."
+      },
+      "mock": {
+        "minutesAgo": "2 min ago",
+        "votes": "124 votes",
+        "replies": "42 replies",
+        "quote": "\"Analysis of the digitization bill shows that real budget savings won't appear until 2026. Did anyone else notice this clause in Art. 14?\""
+      },
+      "footer": {
+        "privacyPolicy": "Privacy policy",
+        "terms": "Terms",
+        "contact": "Contact",
+        "copyright": "© 2026 SejmInsight. Democratic Intelligence."
+      }
+    }
+  },
+  "profile": {
+    "title": "Your Profile",
+    "subtitle": "Manage your personal data and permissions in the system.",
+    "defaultFullName": "SejmInsight user",
+    "noSpecialRole": "No special role",
+    "roles": {
+      "citizen": "Citizen",
+      "analyst": "Analyst",
+      "admin": "Administrator"
+    },
+    "accountDetails": {
+      "title": "Account details",
+      "username": "Username",
+      "status": "Status",
+      "activeSso": "Active (SSO)"
+    },
+    "activity": {
+      "title": "Your activity",
+      "comingSoon": "Comment history coming soon..."
+    },
+    "settings": {
+      "title": "Settings",
+      "subtitle": "Configure your profile and preferences here.",
+      "sections": {
+        "profile": "Profile",
+        "notifications": "Notifications",
+        "privacyFacade": "Privacy (facade)",
+        "accountActions": "Account actions"
+      },
+      "avatar": "Av",
+      "displayName": {
+        "label": "Display name",
+        "help": "What other users see."
+      },
+      "notifications": {
+        "email": "Email",
+        "help": "Receive notifications about activity."
+      },
+      "privacy": {
+        "desc": "Privacy options will be available here. This is just a view — features will arrive later.",
+        "manageVisibility": "Manage visibility"
+      },
+      "save": {
+        "pending": "Saving...",
+        "saved": "Saved",
+        "idle": "Save changes"
+      },
+      "actions": {
+        "changePassword": "Change password",
+        "deactivateFacade": "Deactivate account (facade)"
+      }
+    }
+  }
+}

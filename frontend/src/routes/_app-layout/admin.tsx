@@ -2,6 +2,7 @@ import { adminGuard } from "@/auth/adminGuard";
 import { syncDeputies, syncVotings } from "@/api/admin";
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 export const Route = createFileRoute("/_app-layout/admin")({
   beforeLoad: adminGuard,
@@ -9,6 +10,8 @@ export const Route = createFileRoute("/_app-layout/admin")({
 });
 
 function RouteComponent() {
+  const { t } = useTranslation();
+
   const [syncDeputiesState, setSyncDeputiesState] = useState<
     "idle" | "loading" | "success" | "error"
   >("idle");
@@ -26,9 +29,7 @@ function RouteComponent() {
       window.setTimeout(() => setSyncDeputiesState("idle"), 2500);
     } catch (e: any) {
       setSyncDeputiesState("error");
-      setLastError(
-        String(e?.message ?? "Nie udało się uruchomić synchronizacji posłów"),
-      );
+      setLastError(String(e?.message ?? t("admin.syncDeputies.errorFallback")));
     }
   };
 
@@ -41,9 +42,7 @@ function RouteComponent() {
       window.setTimeout(() => setSyncVotingsState("idle"), 2500);
     } catch (e: any) {
       setSyncVotingsState("error");
-      setLastError(
-        String(e?.message ?? "Nie udało się uruchomić synchronizacji głosowań"),
-      );
+      setLastError(String(e?.message ?? t("admin.syncVotings.errorFallback")));
     }
   };
 
@@ -51,20 +50,19 @@ function RouteComponent() {
     <div className="p-8 max-w-5xl mx-auto space-y-6">
       <div>
         <h1 className="text-3xl font-extrabold text-gray-900 dark:text-white font-[Manrope]">
-          Panel administratora
+          {t("admin.title")}
         </h1>
         <p className="text-gray-600 dark:text-gray-400 mt-2">
-          To jest strona widoczna tylko dla użytkowników z rolą ADMIN.
+          {t("admin.onlyForAdmin")}
         </p>
       </div>
 
       <div className="bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-3xl p-6 shadow-sm">
         <h2 className="text-xl font-bold text-gray-900 dark:text-white">
-          Akcje administracyjne
+          {t("admin.actionsTitle")}
         </h2>
         <p className="mt-2 text-gray-600 dark:text-gray-400">
-          W tym miejscu możesz dodać synchronizację danych, zarządzanie rolami,
-          itd.
+          {t("admin.actionsDesc")}
         </p>
 
         {lastError ? (
@@ -76,10 +74,10 @@ function RouteComponent() {
         <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="rounded-2xl border border-gray-200 dark:border-slate-700 p-4">
             <div className="font-semibold text-gray-900 dark:text-white">
-              Sync posłów
+              {t("admin.syncDeputies.title")}
             </div>
             <div className="text-sm text-gray-600 dark:text-gray-400 mt-1">
-              Uruchamia backendowy sync danych posłów.
+              {t("admin.syncDeputies.desc")}
             </div>
             <button
               onClick={runSyncDeputies}
@@ -87,18 +85,18 @@ function RouteComponent() {
               className="mt-3 px-4 py-2 rounded-xl font-bold text-white bg-maroon-800 hover:bg-maroon-900 dark:bg-maroon-700 dark:hover:bg-maroon-600 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
             >
               {syncDeputiesState === "loading"
-                ? "Synchronizacja…"
+                ? t("admin.syncDeputies.pending")
                 : syncDeputiesState === "success"
-                  ? "Uruchomiono ✅"
-                  : "Uruchom sync"}
+                  ? t("admin.syncDeputies.success")
+                  : t("admin.syncDeputies.idle")}
             </button>
           </div>
           <div className="rounded-2xl border border-gray-200 dark:border-slate-700 p-4">
             <div className="font-semibold text-gray-900 dark:text-white">
-              Sync głosowań
+              {t("admin.syncVotings.title")}
             </div>
             <div className="text-sm text-gray-600 dark:text-gray-400 mt-1">
-              Uruchamia backendowy sync danych głosowań.
+              {t("admin.syncVotings.desc")}
             </div>
             <button
               onClick={runSyncVotings}
@@ -106,10 +104,10 @@ function RouteComponent() {
               className="mt-3 px-4 py-2 rounded-xl font-bold text-white bg-maroon-800 hover:bg-maroon-900 dark:bg-maroon-700 dark:hover:bg-maroon-600 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
             >
               {syncVotingsState === "loading"
-                ? "Synchronizacja…"
+                ? t("admin.syncVotings.pending")
                 : syncVotingsState === "success"
-                  ? "Uruchomiono ✅"
-                  : "Uruchom sync"}
+                  ? t("admin.syncVotings.success")
+                  : t("admin.syncVotings.idle")}
             </button>
           </div>
         </div>
@@ -117,22 +115,21 @@ function RouteComponent() {
 
       <div className="bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-3xl p-6 shadow-sm">
         <h2 className="text-xl font-bold text-gray-900 dark:text-white">
-          Moderacja komentarzy
+          {t("admin.moderation.title")}
         </h2>
         <p className="mt-2 text-gray-600 dark:text-gray-400">
-          Placeholder tabeli do zatwierdzania komentarzy oznaczonych jako
-          potencjalnie obraźliwe.
+          {t("admin.moderation.desc")}
         </p>
 
         <div className="mt-5 overflow-x-auto">
           <table className="min-w-full text-sm">
             <thead>
               <tr className="text-left text-gray-600 dark:text-gray-300 border-b border-gray-200 dark:border-slate-700">
-                <th className="py-3 pr-4">Autor</th>
-                <th className="py-3 pr-4">Treść</th>
-                <th className="py-3 pr-4">Data</th>
-                <th className="py-3 pr-4">Sygnały</th>
-                <th className="py-3 pr-4">Akcje</th>
+                <th className="py-3 pr-4">{t("admin.moderation.author")}</th>
+                <th className="py-3 pr-4">{t("admin.moderation.content")}</th>
+                <th className="py-3 pr-4">{t("admin.moderation.date")}</th>
+                <th className="py-3 pr-4">{t("admin.moderation.signals")}</th>
+                <th className="py-3 pr-4">{t("admin.moderation.actions")}</th>
               </tr>
             </thead>
             <tbody>
@@ -146,7 +143,7 @@ function RouteComponent() {
                   </td>
                   <td className="py-3 pr-4 min-w-88">
                     <span className="text-gray-500 dark:text-gray-400 italic">
-                      (placeholder treści komentarza)
+                      {t("admin.moderation.contentPlaceholder")}
                     </span>
                   </td>
                   <td className="py-3 pr-4 whitespace-nowrap text-gray-500 dark:text-gray-400">
@@ -163,17 +160,17 @@ function RouteComponent() {
                         type="button"
                         className="px-3 py-1.5 rounded-lg bg-emerald-700 hover:bg-emerald-800 text-white font-bold transition-colors"
                         disabled
-                        title="Placeholder"
+                        title={t("admin.moderation.placeholderTitle")}
                       >
-                        Zatwierdź
+                        {t("admin.moderation.approve")}
                       </button>
                       <button
                         type="button"
                         className="px-3 py-1.5 rounded-lg bg-red-700 hover:bg-red-800 text-white font-bold transition-colors"
                         disabled
-                        title="Placeholder"
+                        title={t("admin.moderation.placeholderTitle")}
                       >
-                        Odrzuć
+                        {t("admin.moderation.reject")}
                       </button>
                     </div>
                   </td>

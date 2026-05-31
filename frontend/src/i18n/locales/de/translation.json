@@ -1,0 +1,239 @@
+{
+  "common": {
+    "loading": "Wird geladen...",
+    "appName": "SejmInsight",
+    "searchPlaceholder": "In SejmInsight suchen..."
+  },
+  "nav": {
+    "profile": "Profil",
+    "accountSettings": "Kontoeinstellungen",
+    "theme": "Design",
+    "logout": "Abmelden",
+    "login": "Anmelden",
+    "register": "Registrieren",
+    "language": "Sprache"
+  },
+  "theme": {
+    "light": "Hell",
+    "system": "System",
+    "dark": "Dunkel"
+  },
+  "auth": {
+    "noEmail": "Keine E-Mail"
+  },
+  "admin": {
+    "title": "Admin-Panel",
+    "onlyForAdmin": "Diese Seite ist nur für Nutzer mit der Rolle ADMIN sichtbar.",
+    "actionsTitle": "Administrative Aktionen",
+    "actionsDesc": "Hier kannst du Datensynchronisierung, Rollenverwaltung usw. hinzufügen.",
+    "syncDeputies": {
+      "title": "Abgeordnete synchronisieren",
+      "desc": "Startet die Backend-Synchronisierung der Abgeordnetendaten.",
+      "pending": "Synchronisierung…",
+      "success": "Gestartet ✅",
+      "idle": "Sync starten",
+      "errorFallback": "Synchronisierung der Abgeordneten konnte nicht gestartet werden"
+    },
+    "syncVotings": {
+      "title": "Abstimmungen synchronisieren",
+      "desc": "Startet die Backend-Synchronisierung der Abstimmungsdaten.",
+      "pending": "Synchronisierung…",
+      "success": "Gestartet ✅",
+      "idle": "Sync starten",
+      "errorFallback": "Synchronisierung der Abstimmungen konnte nicht gestartet werden"
+    },
+    "moderation": {
+      "title": "Kommentar-Moderation",
+      "desc": "Tabellen-Placeholder zum Bestätigen von Kommentaren, die als potenziell beleidigend markiert wurden.",
+      "author": "Autor",
+      "content": "Inhalt",
+      "date": "Datum",
+      "signals": "Signale",
+      "actions": "Aktionen",
+      "contentPlaceholder": "(Placeholder für Kommentarinhalt)",
+      "approve": "Bestätigen",
+      "reject": "Ablehnen",
+      "placeholderTitle": "Placeholder"
+    }
+  },
+  "initLoading": {
+    "title": "Sitzung wird initialisiert",
+    "message": "Ich prüfe deinen Login und konfiguriere die Umgebung..."
+  },
+  "about": {
+    "title": "Über das Projekt SejmInsight",
+    "body": "SejmInsight ist eine moderne Analyse- und Community-Plattform, die Raum für öffentliche Debatten schafft. Unser Ziel ist Transparenz und die Bereitstellung von Werkzeugen, mit denen jeder Bürger die Handlungen seiner Vertreter bewerten kann.",
+    "notice": "Das Projekt befindet sich in einer frühen Entwicklungsphase. Funktionen wie Login oder die Aggregation von Daten aus der Sejm-API werden schrittweise eingeführt."
+  },
+  "home": {
+    "title": "Analyse-Dashboard",
+    "subtitle": "Wichtige Ereignisse und Statistiken des polnischen Sejm der 10. Wahlperiode.",
+    "charts": {
+      "attendanceTitle": "Durchschnittliche Anwesenheit der Fraktionen (%)"
+    },
+    "cards": {
+      "mostActiveDeputies": "Aktivste Abgeordnete",
+      "listLoading": "Liste wird aus der API geladen..."
+    }
+  },
+  "deputies": {
+    "catalogTitle": "Abgeordnetenverzeichnis",
+    "catalogSubtitle": "Durchsuchen, filtern und Statistiken der Abgeordneten ansehen.",
+    "searchPlaceholder": "Nach Nachnamen suchen...",
+    "loading": "Wird geladen...",
+    "loadingDeputy": "Abgeordneter wird geladen...",
+    "parliamentaryClubMock": "Parlamentsklub (Mock)",
+    "attendance": "Anwesenheit",
+    "votings": "Abstimmungen",
+    "community": "Community",
+    "addOpinion": "Deine Meinung hinzufügen",
+    "commentPlaceholder": "Was hältst du von den letzten Aktivitäten dieses Abgeordneten?",
+    "cancel": "Abbrechen",
+    "posting": "Wird gesendet...",
+    "publishComment": "Kommentar veröffentlichen",
+    "loginToParticipate": "Du musst als Bürger angemeldet sein, um an der Diskussion teilzunehmen und Abgeordnete zu bewerten.",
+    "loginWithKeycloak": "Mit Keycloak anmelden",
+    "loadingComments": "Kommentare werden geladen...",
+    "anonymous": "Anonym",
+    "delete": "Löschen"
+  },
+  "pagination": {
+    "pageSize": "Seitengröße:",
+    "prev": "Zurück",
+    "next": "Weiter",
+    "page": "Seite"
+  },
+  "debates": {
+    "printNo": "Drucksache Nr.",
+    "titleForId": "Debattentitel für ID: {{id}}",
+    "descriptionPlaceholder": "Hier findest du eine detaillierte Beschreibung und Analyse des Debattenthemas. Dieser Bereich wird künftig mit der Sejm-API integriert und bietet eine Übersicht des Gesetzesentwurfs, Links zu offiziellen Dokumenten und eine Liste der Änderungen.",
+    "community": "Community",
+    "yourVoice": "Deine Stimme in der Debatte",
+    "commentPlaceholder": "Teile deine sachliche Meinung zu diesem Gesetzentwurf...",
+    "publishComment": "Kommentar veröffentlichen",
+    "loginToParticipate": "Du musst als Bürger angemeldet sein, um an der legislativen Debatte teilzunehmen.",
+    "opinionsPlaceholder": "Eine paginierte Liste sachlicher Meinungen der Bürger erscheint hier...",
+    "index": {
+      "title": "Debatten & Gesetze",
+      "subtitle": "Beteilige dich an der Diskussion über die neuesten Gesetzesvorhaben. Deine Meinungen helfen, gesellschaftliche Einblicke aufzubauen.",
+      "postsSuffix": "Meinungen",
+      "items": {
+        "budget": {
+          "description": "Entwurf des Haushaltsgesetzes für 2026. Analyse der Ausgaben für Verteidigung und Bildung."
+        },
+        "health": {
+          "description": "Änderungen beim Krankenversicherungsbeitrag sowie Förderung von Kreiskrankenhäusern."
+        },
+        "vote": {
+          "description": "Abstimmung über ein Misstrauensvotum gegen den Minister für Digitalisierung."
+        }
+      }
+    }
+  },
+  "sidebar": {
+    "home": "Startseite",
+    "deputies": "Abgeordnete",
+    "debates": "Debatten & Gesetze",
+    "about": "Über uns",
+    "admin": "Administration"
+  },
+  "authPages": {
+    "register": {
+      "title": "Konto erstellen",
+      "subtitle": "Registriere dich bei SejmInsight. Nach dem Erstellen eines Kontos kehrst du zur Anmeldung zurück.",
+      "firstName": "Vorname",
+      "lastName": "Nachname",
+      "email": "E-Mail",
+      "cta": "Registrieren",
+      "submitting": "Konto wird erstellt…",
+      "alreadyHaveAccount": "Schon ein Konto? Anmelden",
+      "successRedirect": "Konto erstellt. Weiterleitung zur Anmeldung…",
+      "errorGeneric": "Konto konnte nicht erstellt werden. Bitte versuche es erneut."
+    },
+    "login": {
+      "heroTitle": "Deine Meinung zählt im Herzen des Parlaments",
+      "heroSubtitle": "Werde Teil der SejmInsight-Community, kommentiere Abstimmungen, bewerte Abgeordnete und fördere politische Kultur.",
+      "cta": "Werde Teil der demokratischen Intelligenz",
+      "features": {
+        "discussTitle": "Über Gesetze diskutieren",
+        "discussDesc": "Deine Stimme in der öffentlichen Debatte kann die Gesetzgebung real beeinflussen.",
+        "rateTitle": "Abgeordnete bewerten",
+        "rateDesc": "Prüfe Anwesenheit, Aktivität und stimme über das Vertrauen in deine Vertreter ab.",
+        "analyzeTitle": "Analysen erstellen",
+        "analyzeDesc": "Teile dein Wissen und erstelle tiefgehende Berichte über Staatspolitik."
+      },
+      "socialAnalysisTitle": "Soziale Analyse in Echtzeit",
+      "social": {
+        "sentimentTitle": "Bürgerstimmung",
+        "sentimentDesc": "Teile dein Wissen und erstelle tiefgehende Berichte über Staatspolitik.",
+        "transparencyTitle": "Transparenz",
+        "transparencyDesc": "Schluss mit politischen Spielen im Schatten. Jede Entscheidung steht unter Beobachtung der Community."
+      },
+      "mock": {
+        "minutesAgo": "vor 2 Minuten",
+        "votes": "124 Stimmen",
+        "replies": "42 Antworten",
+        "quote": "\"Die Analyse des Digitalisierungs-Gesetzes zeigt, dass echte Einsparungen für den Haushalt erst 2026 auftreten. Hat noch jemand diese Klausel in Art. 14 bemerkt?\""
+      },
+      "footer": {
+        "privacyPolicy": "Datenschutzrichtlinie",
+        "terms": "Nutzungsbedingungen",
+        "contact": "Kontakt",
+        "copyright": "© 2026 SejmInsight. Demokratische Intelligenz."
+      }
+    }
+  },
+  "profile": {
+    "title": "Dein Profil",
+    "subtitle": "Verwalte deine Daten und Berechtigungen im System.",
+    "defaultFullName": "SejmInsight-Nutzer",
+    "noSpecialRole": "Keine besondere Rolle",
+    "roles": {
+      "citizen": "Bürger",
+      "analyst": "Analyst",
+      "admin": "Administrator"
+    },
+    "accountDetails": {
+      "title": "Kontodetails",
+      "username": "Benutzername",
+      "status": "Status",
+      "activeSso": "Aktiv (SSO)"
+    },
+    "activity": {
+      "title": "Deine Aktivität",
+      "comingSoon": "Kommentarverlauf kommt bald..."
+    },
+    "settings": {
+      "title": "Einstellungen",
+      "subtitle": "Konfiguriere hier dein Profil und deine Präferenzen.",
+      "sections": {
+        "profile": "Profil",
+        "notifications": "Benachrichtigungen",
+        "privacyFacade": "Privatsphäre (Fassade)",
+        "accountActions": "Kontoaktionen"
+      },
+      "avatar": "Av",
+      "displayName": {
+        "label": "Anzeigename",
+        "help": "Was andere Nutzer sehen."
+      },
+      "notifications": {
+        "email": "E-Mail",
+        "help": "Erhalte Benachrichtigungen über Aktivitäten."
+      },
+      "privacy": {
+        "desc": "Privatsphäre-Optionen werden hier verfügbar sein. Das ist nur eine Ansicht — Funktionen folgen später.",
+        "manageVisibility": "Sichtbarkeit verwalten"
+      },
+      "save": {
+        "pending": "Wird gespeichert...",
+        "saved": "Gespeichert",
+        "idle": "Änderungen speichern"
+      },
+      "actions": {
+        "changePassword": "Passwort ändern",
+        "deactivateFacade": "Konto deaktivieren (Fassade)"
+      }
+    }
+  }
+}

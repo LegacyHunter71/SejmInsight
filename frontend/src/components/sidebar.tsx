@@ -1,5 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { useAuth } from "@/auth/AuthProvider";
+import { useTranslation } from "react-i18next";
 
 type SidebarLinkProps = {
   to: string;
@@ -22,6 +23,7 @@ function SidebarLink({ to, text }: SidebarLinkProps) {
 }
 
 export default function Sidebar() {
+  const { t } = useTranslation();
   const { isAuthenticated, keycloak } = useAuth();
   const roles = keycloak.realmAccess?.roles || [];
   const isAdmin =
@@ -31,11 +33,11 @@ export default function Sidebar() {
     <aside className="h-full w-1/4 max-w-70 bg-gray-50/50 dark:bg-slate-900/50 border-r border-gray-200 dark:border-slate-800 flex flex-col p-4 overflow-y-auto transition-colors">
       {/* Główna nawigacja */}
       <nav className="flex flex-col space-y-1">
-        <SidebarLink to="/" text="Strona główna" />
-        <SidebarLink to="/deputies" text="Posłowie" />
-        <SidebarLink to="/debates" text="Debaty i Ustawy" />
-        <SidebarLink to="/about" text="O nas" />
-        {isAdmin ? <SidebarLink to="/admin" text="Administracja" /> : null}
+        <SidebarLink to="/" text={t("sidebar.home")} />
+        <SidebarLink to="/deputies" text={t("sidebar.deputies")} />
+        <SidebarLink to="/debates" text={t("sidebar.debates")} />
+        <SidebarLink to="/about" text={t("sidebar.about")} />
+        {isAdmin ? <SidebarLink to="/admin" text={t("sidebar.admin")} /> : null}
       </nav>
     </aside>
   );

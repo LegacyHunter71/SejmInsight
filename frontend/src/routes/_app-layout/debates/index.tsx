@@ -1,42 +1,42 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useTranslation } from "react-i18next";
 
 export const Route = createFileRoute("/_app-layout/debates/")({
   component: RouteComponent,
 });
 
-const mockDebates = [
-  {
-    id: 1,
-    title: "#UstawaBudżetowa",
-    description:
-      "Projekt ustawy budżetowej na rok 2026. Analiza wydatków na obronność i edukację.",
-    posts: "12.5k",
-  },
-  {
-    id: 2,
-    title: "#ReformaZdrowia",
-    description:
-      "Zmiany w składce zdrowotnej oraz dofinansowanie szpitali powiatowych.",
-    posts: "8.2k",
-  },
-  {
-    id: 3,
-    title: "#Głosowanie234",
-    description: "Głosowanie nad wotum nieufności dla Ministra Cyfryzacji.",
-    posts: "5.1k",
-  },
-];
-
 function RouteComponent() {
+  const { t } = useTranslation();
+
+  const mockDebates = [
+    {
+      id: 1,
+      title: "#UstawaBudżetowa",
+      description: t("debates.index.items.budget.description"),
+      posts: "12.5k",
+    },
+    {
+      id: 2,
+      title: "#ReformaZdrowia",
+      description: t("debates.index.items.health.description"),
+      posts: "8.2k",
+    },
+    {
+      id: 3,
+      title: "#Głosowanie234",
+      description: t("debates.index.items.vote.description"),
+      posts: "5.1k",
+    },
+  ];
+
   return (
     <div className="p-8 space-y-8 w-full">
       <div>
         <h1 className="text-3xl font-extrabold text-gray-900 dark:text-white font-[Manrope]">
-          Debaty i Ustawy
+          {t("debates.index.title")}
         </h1>
         <p className="text-gray-600 dark:text-gray-400 mt-2">
-          Dołącz do dyskusji na temat najnowszych projektów legislacyjnych.
-          Twoje opinie pomagają budować wgląd społeczny.
+          {t("debates.index.subtitle")}
         </p>
       </div>
 
@@ -58,7 +58,7 @@ function RouteComponent() {
                 </p>
               </div>
               <span className="bg-gray-100 dark:bg-slate-700 text-gray-600 dark:text-gray-300 text-xs font-bold px-3 py-1 rounded-full whitespace-nowrap">
-                {item.posts} opinii
+                {item.posts} {t("debates.index.postsSuffix")}
               </span>
             </div>
           </Link>
