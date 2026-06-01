@@ -15,4 +15,8 @@ public interface CommentFacade {
     LikeResult toggleLike(UUID commentId);
 
     void deleteComment(UUID commentId);
+
+    List<AdminCommentDto> getPendingComments();
+
+    void moderateComment(UUID commentId, ModerationStatus status);
 }

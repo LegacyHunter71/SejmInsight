@@ -1,5 +1,6 @@
 package com.parliament.internal;
 
+import com.parliament.api.ModerationStatus;
 import com.parliament.deputy.internal.Deputy;
 import jakarta.persistence.*;
 import lombok.*;
@@ -45,6 +46,11 @@ class Comment {
 
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    @Builder.Default
+    private ModerationStatus moderationStatus = ModerationStatus.PENDING;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "author_id", insertable = false, updatable = false)

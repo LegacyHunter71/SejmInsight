@@ -1,0 +1,2 @@
+ALTER TABLE comments
+    ADD COLUMN moderation_status VARCHAR(20) NOT NULL DEFAULT 'APPROVED';

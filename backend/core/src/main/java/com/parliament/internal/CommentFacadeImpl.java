@@ -1,9 +1,11 @@
 package com.parliament.internal;
 
+import com.parliament.api.AdminCommentDto;
 import com.parliament.api.CommentCreateRequest;
 import com.parliament.api.CommentDto;
 import com.parliament.api.CommentFacade;
 import com.parliament.api.LikeResult;
+import com.parliament.api.ModerationStatus;
 import com.parliament.exception.CommentNotFoundException;
 import com.parliament.exception.IamAuthenticationException;
 import com.parliament.security.UserContext;
@@ -25,11 +27,15 @@ class CommentFacadeImpl implements CommentFacade {
 
     private final CommentRepository commentRepository;
     private final CommentLikeRepository commentLikeRepository;
+    private final ModerationClient moderationClient;
 
     @Override
     @Transactional
     public void addComment(Integer deputyId, Integer term, Integer proceedingNo, Integer votingNo,
                            CommentCreateRequest request) {
+        ModerationStatus status = moderationClient.isSafe(request.content())
+                ? ModerationStatus.APPROVED : ModerationStatus.PENDING;
+
         Comment comment = Comment.builder()
                 .deputyId(deputyId)
                 .voteTerm(term)
@@ -37,6 +43,7 @@ class CommentFacadeImpl implements CommentFacade {
                 .votingNo(votingNo)
                 .content(request.content())
                 .authorId(UserContext.getUserId())
+                .moderationStatus(status)
                 .build();
         commentRepository.save(comment);
     }
@@ -51,6 +58,9 @@ class CommentFacadeImpl implements CommentFacade {
             throw new IllegalStateException("Cannot reply to a reply");
         }
 
+        ModerationStatus status = moderationClient.isSafe(request.content())
+                ? ModerationStatus.APPROVED : ModerationStatus.PENDING;
+
         Comment reply = Comment.builder()
                 .deputyId(parent.getDeputyId())
                 .voteTerm(parent.getVoteTerm())
@@ -59,6 +69,7 @@ class CommentFacadeImpl implements CommentFacade {
                 .content(request.content())
                 .authorId(UserContext.getUserId())
                 .parentId(parentId)
+                .moderationStatus(status)
                 .build();
         commentRepository.save(reply);
     }
@@ -67,15 +78,16 @@ class CommentFacadeImpl implements CommentFacade {
     @Transactional(readOnly = true)
     public List<CommentDto> getComments(Integer deputyId, Integer term, Integer proceedingNo, Integer votingNo) {
         List<Comment> topLevel = commentRepository
-                .findByDeputyIdAndVoteTermAndProceedingNoAndVotingNoAndParentIdIsNull(
-                        deputyId, term, proceedingNo, votingNo);
+                .findByDeputyIdAndVoteTermAndProceedingNoAndVotingNoAndParentIdIsNullAndModerationStatus(
+                        deputyId, term, proceedingNo, votingNo, ModerationStatus.APPROVED);
 
         if (topLevel.isEmpty()) {
             return List.of();
         }
 
         List<UUID> topLevelIds = topLevel.stream().map(Comment::getId).toList();
-        List<Comment> replies = commentRepository.findByParentIdIn(topLevelIds);
+        List<Comment> replies = commentRepository.findByParentIdInAndModerationStatus(
+                topLevelIds, ModerationStatus.APPROVED);
 
         Set<UUID> allIds = Stream.concat(topLevel.stream(), replies.stream())
                 .map(Comment::getId)
@@ -125,6 +137,41 @@ class CommentFacadeImpl implements CommentFacade {
 
         comment.setDeletedAt(LocalDateTime.now());
         commentRepository.save(comment);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<AdminCommentDto> getPendingComments() {
+        return commentRepository.findByModerationStatus(ModerationStatus.PENDING).stream()
+                .map(this::toAdminDto)
+                .toList();
+    }
+
+    @Override
+    @Transactional
+    public void moderateComment(UUID commentId, ModerationStatus status) {
+        Comment comment = commentRepository.findById(commentId)
+                .orElseThrow(() -> new CommentNotFoundException(commentId));
+        comment.setModerationStatus(status);
+        commentRepository.save(comment);
+    }
+
+    private AdminCommentDto toAdminDto(Comment c) {
+        UserEntity author = c.getAuthor();
+        String authorName = author != null ? author.getFirstName() + " " + author.getLastName() : null;
+        return new AdminCommentDto(
+                c.getId().toString(),
+                c.getContent(),
+                c.getAuthorId().toString(),
+                authorName,
+                c.getCreatedAt(),
+                c.getModerationStatus(),
+                c.getDeputyId(),
+                c.getVoteTerm(),
+                c.getProceedingNo(),
+                c.getVotingNo(),
+                c.getParentId() != null ? c.getParentId().toString() : null
+        );
     }
 
     private CommentDto toDto(Comment c, List<Comment> replies, Map<UUID, Long> likeCounts) {
