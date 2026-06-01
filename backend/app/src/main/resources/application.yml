@@ -49,15 +49,15 @@ server:
 parliament:
   url: ${SEJM_API_URL:https://api.sejm.gov.pl/sejm/}
   term: ${SEJM_API_TERM:term10}
-
-openai:
-  api-key: ${OPENAI_API_KEY:}
   iam:
     keycloak:
       server-url: ${KC_SERVER_URL:https://sejm-insight.duckdns.org/auth}
       realm: ${KC_REALM:parliament-realm}
       admin-client-id: ${KC_ADMIN_CLIENT_ID:parliament-admin-client}
       admin-client-secret: ${KC_ADMIN_CLIENT_SECRET:TUTAJ_WKLEJ_SECRET_Z_KEYCLOAKA}
+
+openai:
+  api-key: ${OPENAI_API_KEY:}
 
 springdoc:
   api-docs:
