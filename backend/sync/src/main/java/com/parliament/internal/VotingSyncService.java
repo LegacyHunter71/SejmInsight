@@ -26,8 +26,9 @@ public class VotingSyncService {
     private String apiTerm;
 
     public void syncLast100Votings() {
+        final int limit = 150;
         log.info("=========================================================");
-        log.info("Rozpoczynam zaktualizowaną synchronizację 100 najnowszych głosowań...");
+        log.info("Rozpoczynam zaktualizowaną synchronizację {} najnowszych głosowań...", limit);
         log.info("Konfiguracja apiTerm: {}", apiTerm);
         log.info("=========================================================");
 
@@ -80,14 +81,14 @@ public class VotingSyncService {
                         if (h.votingNumber() != null) {
                             votingsToSync.add(new FlatVotingReference(p.sitting(), h.votingNumber()));
                         }
-                        if (votingsToSync.size() >= 100) break;
+                        if (votingsToSync.size() >= limit) break;
                     }
                 } else {
                     log.warn("<- Posiedzenie nr {} nie zawiera żadnych głosowań.", p.sitting());
                 }
 
-                log.info("Aktualny stan koszyka do pobrania: {} / 100", votingsToSync.size());
-                if (votingsToSync.size() >= 100) break;
+                log.info("Aktualny stan koszyka do pobrania: {} / {}", votingsToSync.size(), limit);
+                if (votingsToSync.size() >= limit) break;
             }
 
             if (votingsToSync.isEmpty()) {
