@@ -2,6 +2,8 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
 import { z } from "zod";
 
+import parliamentInsideImg from "@/assets/images/parliament_inside.jpg";
+
 export const Route = createFileRoute("/_auth-layout/startPage")({
   validateSearch: z.object({
     redirect: z.string().optional(),
@@ -16,7 +18,7 @@ function RouteComponent() {
     <div className="transition-colors duration-200 text-slate-900 dark:text-slate-100 h-full overflow-y-auto">
       <div className="absolute inset-0 -z-100 max-h-[60vh]">
         <img
-          src="src/assets/images/parliament_inside.jpg"
+          src={parliamentInsideImg}
           alt="background"
           className="w-full h-full object-cover opacity-60"
         />
