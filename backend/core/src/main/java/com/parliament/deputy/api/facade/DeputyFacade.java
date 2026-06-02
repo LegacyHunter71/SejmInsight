@@ -11,6 +11,8 @@ public interface DeputyFacade {
 
     void syncDeputies(List<DeputySyncRequest> requests);
 
+    void recalculateAttendance();
+
     Page<DeputyListItemDto> findDeputies(String name, String club, String districtName,
                                          Boolean active, Pageable pageable);
 }

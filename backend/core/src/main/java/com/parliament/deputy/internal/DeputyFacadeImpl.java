@@ -3,6 +3,8 @@ package com.parliament.deputy.internal;
 import com.parliament.deputy.api.dto.DeputyListItemDto;
 import com.parliament.deputy.api.dto.DeputySyncRequest;
 import com.parliament.deputy.api.facade.DeputyFacade;
+import com.parliament.internal.VoteResultRepository;
+import com.parliament.internal.VoteResultRepository.DeputyAttendanceProjection;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,6 +23,7 @@ import java.util.stream.Collectors;
 class DeputyFacadeImpl implements DeputyFacade {
 
     private final DeputyRepository repository;
+    private final VoteResultRepository voteResultRepository;
 
     @Override
     public void syncDeputies(List<DeputySyncRequest> requests) {
@@ -34,6 +37,28 @@ class DeputyFacadeImpl implements DeputyFacade {
                     return deputy;
                 }).toList();
         repository.saveAll(toSave);
+    }
+
+    @Override
+    public void recalculateAttendance() {
+        Map<Integer, DeputyAttendanceProjection> statsMap = voteResultRepository.findAttendanceStats()
+                .stream()
+                .collect(Collectors.toMap(DeputyAttendanceProjection::getDeputyId, s -> s));
+
+        List<Deputy> deputies = repository.findAll();
+        deputies.forEach(d -> {
+            DeputyAttendanceProjection s = statsMap.get(d.getId());
+            if (s != null && s.getTotal() > 0) {
+                d.setTotalVotings(s.getTotal().intValue());
+                d.setPresentVotings(s.getPresentCount().intValue());
+                d.setAttendanceRate(s.getPresentCount() * 100.0 / s.getTotal());
+            } else {
+                d.setTotalVotings(0);
+                d.setPresentVotings(0);
+                d.setAttendanceRate(0.0);
+            }
+        });
+        repository.saveAll(deputies);
     }
 
     @Override
