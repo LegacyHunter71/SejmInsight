@@ -83,7 +83,7 @@ function DeputiesList({ page, size, searchQuery, setPage, setSize }: { page: num
                 {deputy.club} • {deputy.district_name ?? deputy.districtName}
               </p>
               <div className="mt-4 text-sm font-semibold text-emerald-700 dark:text-emerald-400">
-                Frekwencja: {deputy.attendance_rate ?? deputy.attendanceRate}%
+                Frekwencja: {deputy.attendance_rate ?? deputy.attendanceRate}% • Głosowań: {deputy.presentVotings ?? deputy.present_votings}
               </div>
             </Link>
           ))

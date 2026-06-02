@@ -25,7 +25,7 @@ export async function getDeputies(params?: PageableParams & { name?: string; clu
         districtName: d.districtName ?? d.district_name,
         active: d.active,
         attendanceRate: d.attendanceRate ?? d.attendance_rate,
-        votings: d.votings,
+        presentVotings: d.present_votings,
         // keep original in case it's needed
         __raw: d,
     });
