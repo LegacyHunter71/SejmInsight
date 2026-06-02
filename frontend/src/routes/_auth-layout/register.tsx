@@ -1,6 +1,7 @@
 import { registerUser } from "@/api/users";
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { z } from "zod";
 
 export const Route = createFileRoute("/_auth-layout/register" as any)({
@@ -17,7 +18,8 @@ type FormState = {
 };
 
 function RouteComponent() {
-  const navigate = useNavigate();
+  const { t } = useTranslation();
+
   const search = Route.useSearch();
   const redirect = ("redirect" in search ? search.redirect : undefined) as
     | string
@@ -45,17 +47,11 @@ function RouteComponent() {
       });
 
       setSuccess(true);
-
-      // After successful registration, send user to login (Keycloak login still used for auth)
-      void navigate({
-        to: "/login",
-        search: redirect ? { redirect } : undefined,
-      });
     } catch (e: any) {
       const msg =
         e?.details?.message ??
         e?.message ??
-        "Nie udało się utworzyć konta. Spróbuj ponownie.";
+        t("authPages.register.errorGeneric");
       setError(String(msg));
     } finally {
       setIsSubmitting(false);
@@ -67,11 +63,10 @@ function RouteComponent() {
       <main className="mt-16">
         <section className="max-w-2xl mx-auto px-6 pt-16 pb-24">
           <h1 className="text-4xl font-[Manrope] font-extrabold tracking-tight text-maroon-800 dark:text-maroon-200">
-            Załóż konto
+            {t("authPages.register.title")}
           </h1>
           <p className="mt-3 text-slate-600 dark:text-slate-300">
-            Zarejestruj się w SejmInsight. Po utworzeniu konta wrócisz do
-            logowania.
+            {t("authPages.register.subtitle")}
           </p>
 
           <form
@@ -81,7 +76,7 @@ function RouteComponent() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <label className="space-y-2">
                 <span className="text-sm font-semibold text-slate-700 dark:text-slate-200">
-                  Imię
+                  {t("authPages.register.firstName")}
                 </span>
                 <input
                   value={form.firstName}
@@ -96,7 +91,7 @@ function RouteComponent() {
 
               <label className="space-y-2">
                 <span className="text-sm font-semibold text-slate-700 dark:text-slate-200">
-                  Nazwisko
+                  {t("authPages.register.lastName")}
                 </span>
                 <input
                   value={form.lastName}
@@ -112,7 +107,7 @@ function RouteComponent() {
 
             <label className="space-y-2 block">
               <span className="text-sm font-semibold text-slate-700 dark:text-slate-200">
-                Email
+                {t("authPages.register.email")}
               </span>
               <input
                 type="email"
@@ -134,7 +129,7 @@ function RouteComponent() {
 
             {success && (
               <div className="rounded-lg border border-emerald-300/60 bg-emerald-50/70 dark:bg-emerald-950/40 p-3 text-sm text-emerald-800 dark:text-emerald-200">
-                Konto utworzone. Przekierowanie do logowania…
+                {t("authPages.register.successNextSteps")}
               </div>
             )}
 
@@ -144,15 +139,17 @@ function RouteComponent() {
                 className="hero-gradient text-white px-6 py-3 rounded-xl font-bold hover:opacity-90 transition-all active:scale-95 duration-200 shadow-lg shadow-maroon-800/20 disabled:opacity-60 disabled:cursor-not-allowed"
                 type="submit"
               >
-                {isSubmitting ? "Tworzenie konta…" : "Zarejestruj się"}
+                {isSubmitting
+                  ? t("authPages.register.submitting")
+                  : t("authPages.register.cta")}
               </button>
 
               <Link
-                to="/login"
+                to="/startPage"
                 search={redirect ? { redirect } : undefined}
                 className="text-sm font-semibold text-slate-600 dark:text-slate-300 hover:text-blue-700 dark:hover:text-blue-400 hover:underline"
               >
-                Masz już konto? Zaloguj się
+                {t("authPages.register.alreadyHaveAccount")}
               </Link>
             </div>
           </form>

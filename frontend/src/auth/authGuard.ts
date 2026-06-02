@@ -5,7 +5,7 @@ export const authGuard = async ({ location }: { location: any }) => {
   // Keycloak.authenticated jest booleanem
   if (!keycloak.authenticated) {
     throw redirect({
-      to: "/login",
+      to: "/startPage",
       search: {
         redirect: location.href,
       },

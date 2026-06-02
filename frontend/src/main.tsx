@@ -3,11 +3,13 @@ import { createRouter, RouterProvider } from "@tanstack/react-router";
 import { createRoot } from "react-dom/client";
 
 import "./styles/shared.css";
+import "./i18n";
 
 import { AuthProvider, useAuth } from "./auth/AuthProvider";
 import { routeTree } from "./routeTree.gen";
 import { StrictMode } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { useTranslation } from "react-i18next";
 
 const queryClient = new QueryClient();
 
@@ -30,8 +32,9 @@ declare module "@tanstack/react-router" {
 
 function App() {
   const auth = useAuth();
+  const { t } = useTranslation();
 
-  if (auth.isLoading) return <div>Loading...</div>;
+  if (auth.isLoading) return <div>{t("common.loading")}</div>;
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -45,5 +48,5 @@ createRoot(document.getElementById("root")!).render(
     <AuthProvider>
       <App />
     </AuthProvider>
-  </StrictMode>
+  </StrictMode>,
 );

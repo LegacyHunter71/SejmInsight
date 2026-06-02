@@ -2,8 +2,11 @@
 
 import SejmInsightLogo from "@/assets/icons/sejminsight_logo.svg?react";
 import HeaderProfileMenu from "./headerProfileMenu";
+import { useTranslation } from "react-i18next";
 
 export default function Header() {
+  const { t } = useTranslation();
+
   return (
     <header className="sticky top-0 z-50 w-full h-16 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-gray-200 dark:border-slate-800 flex items-center justify-between px-4 transition-colors">
       {/* Lewa strona - Logo wyrównane z Sidebar */}
@@ -34,7 +37,7 @@ export default function Header() {
           </div>
           <input
             type="text"
-            placeholder="Szukaj w SejmInsight..."
+            placeholder={t("common.searchPlaceholder")}
             className="block w-full pl-10 pr-3 py-2 border border-gray-200 dark:border-slate-700 rounded-full leading-5 bg-gray-100 dark:bg-slate-800 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-white focus:outline-none focus:bg-white dark:focus:bg-slate-900 focus:border-maroon-800 dark:focus:border-maroon-600 focus:ring-1 focus:ring-maroon-800 dark:focus:ring-maroon-600 transition-all sm:text-sm"
           />
         </div>

@@ -11,9 +11,9 @@ import Keycloak, { type KeycloakConfig } from "keycloak-js";
 import { useTheme } from "@/hooks/useTheme";
 
 const keycloakConfig: KeycloakConfig = {
-  url: import.meta.env.VITE_KEYCLOAK_URL,
-  realm: import.meta.env.VITE_KEYCLOAK_REALM,
-  clientId: import.meta.env.VITE_KEYCLOAK_CLIENT_ID,
+  url: "https://sejm-insight.duckdns.org/auth",
+  realm: "parliament-realm",
+  clientId: "parliament-client",
 };
 
 // Tworzymy instancję singletona poza komponentem

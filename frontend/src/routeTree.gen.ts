@@ -12,16 +12,14 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as AuthLayoutRouteImport } from './routes/_auth-layout'
 import { Route as AppLayoutRouteImport } from './routes/_app-layout'
 import { Route as AppLayoutIndexRouteImport } from './routes/_app-layout/index'
+import { Route as AuthLayoutStartPageRouteImport } from './routes/_auth-layout/startPage'
 import { Route as AuthLayoutRegisterRouteImport } from './routes/_auth-layout/register'
-import { Route as AuthLayoutLoginRouteImport } from './routes/_auth-layout/login'
 import { Route as AppLayoutAdminRouteImport } from './routes/_app-layout/admin'
 import { Route as AppLayoutAboutRouteImport } from './routes/_app-layout/about'
 import { Route as AppLayoutProfileIndexRouteImport } from './routes/_app-layout/profile/index'
 import { Route as AppLayoutDeputiesIndexRouteImport } from './routes/_app-layout/deputies/index'
-import { Route as AppLayoutDebatesIndexRouteImport } from './routes/_app-layout/debates/index'
 import { Route as AppLayoutProfileSettingsRouteImport } from './routes/_app-layout/profile/settings'
 import { Route as AppLayoutDeputiesDeputyIdRouteImport } from './routes/_app-layout/deputies/$deputyId'
-import { Route as AppLayoutDebatesDebateIdRouteImport } from './routes/_app-layout/debates/$debateId'
 
 const AuthLayoutRoute = AuthLayoutRouteImport.update({
   id: '/_auth-layout',
@@ -36,14 +34,14 @@ const AppLayoutIndexRoute = AppLayoutIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AppLayoutRoute,
 } as any)
+const AuthLayoutStartPageRoute = AuthLayoutStartPageRouteImport.update({
+  id: '/startPage',
+  path: '/startPage',
+  getParentRoute: () => AuthLayoutRoute,
+} as any)
 const AuthLayoutRegisterRoute = AuthLayoutRegisterRouteImport.update({
   id: '/register',
   path: '/register',
-  getParentRoute: () => AuthLayoutRoute,
-} as any)
-const AuthLayoutLoginRoute = AuthLayoutLoginRouteImport.update({
-  id: '/login',
-  path: '/login',
   getParentRoute: () => AuthLayoutRoute,
 } as any)
 const AppLayoutAdminRoute = AppLayoutAdminRouteImport.update({
@@ -66,11 +64,6 @@ const AppLayoutDeputiesIndexRoute = AppLayoutDeputiesIndexRouteImport.update({
   path: '/deputies/',
   getParentRoute: () => AppLayoutRoute,
 } as any)
-const AppLayoutDebatesIndexRoute = AppLayoutDebatesIndexRouteImport.update({
-  id: '/debates/',
-  path: '/debates/',
-  getParentRoute: () => AppLayoutRoute,
-} as any)
 const AppLayoutProfileSettingsRoute =
   AppLayoutProfileSettingsRouteImport.update({
     id: '/profile/settings',
@@ -83,23 +76,15 @@ const AppLayoutDeputiesDeputyIdRoute =
     path: '/deputies/$deputyId',
     getParentRoute: () => AppLayoutRoute,
   } as any)
-const AppLayoutDebatesDebateIdRoute =
-  AppLayoutDebatesDebateIdRouteImport.update({
-    id: '/debates/$debateId',
-    path: '/debates/$debateId',
-    getParentRoute: () => AppLayoutRoute,
-  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof AppLayoutIndexRoute
   '/about': typeof AppLayoutAboutRoute
   '/admin': typeof AppLayoutAdminRoute
-  '/login': typeof AuthLayoutLoginRoute
   '/register': typeof AuthLayoutRegisterRoute
-  '/debates/$debateId': typeof AppLayoutDebatesDebateIdRoute
+  '/startPage': typeof AuthLayoutStartPageRoute
   '/deputies/$deputyId': typeof AppLayoutDeputiesDeputyIdRoute
   '/profile/settings': typeof AppLayoutProfileSettingsRoute
-  '/debates/': typeof AppLayoutDebatesIndexRoute
   '/deputies/': typeof AppLayoutDeputiesIndexRoute
   '/profile/': typeof AppLayoutProfileIndexRoute
 }
@@ -107,12 +92,10 @@ export interface FileRoutesByTo {
   '/': typeof AppLayoutIndexRoute
   '/about': typeof AppLayoutAboutRoute
   '/admin': typeof AppLayoutAdminRoute
-  '/login': typeof AuthLayoutLoginRoute
   '/register': typeof AuthLayoutRegisterRoute
-  '/debates/$debateId': typeof AppLayoutDebatesDebateIdRoute
+  '/startPage': typeof AuthLayoutStartPageRoute
   '/deputies/$deputyId': typeof AppLayoutDeputiesDeputyIdRoute
   '/profile/settings': typeof AppLayoutProfileSettingsRoute
-  '/debates': typeof AppLayoutDebatesIndexRoute
   '/deputies': typeof AppLayoutDeputiesIndexRoute
   '/profile': typeof AppLayoutProfileIndexRoute
 }
@@ -122,13 +105,11 @@ export interface FileRoutesById {
   '/_auth-layout': typeof AuthLayoutRouteWithChildren
   '/_app-layout/about': typeof AppLayoutAboutRoute
   '/_app-layout/admin': typeof AppLayoutAdminRoute
-  '/_auth-layout/login': typeof AuthLayoutLoginRoute
   '/_auth-layout/register': typeof AuthLayoutRegisterRoute
+  '/_auth-layout/startPage': typeof AuthLayoutStartPageRoute
   '/_app-layout/': typeof AppLayoutIndexRoute
-  '/_app-layout/debates/$debateId': typeof AppLayoutDebatesDebateIdRoute
   '/_app-layout/deputies/$deputyId': typeof AppLayoutDeputiesDeputyIdRoute
   '/_app-layout/profile/settings': typeof AppLayoutProfileSettingsRoute
-  '/_app-layout/debates/': typeof AppLayoutDebatesIndexRoute
   '/_app-layout/deputies/': typeof AppLayoutDeputiesIndexRoute
   '/_app-layout/profile/': typeof AppLayoutProfileIndexRoute
 }
@@ -138,12 +119,10 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/admin'
-    | '/login'
     | '/register'
-    | '/debates/$debateId'
+    | '/startPage'
     | '/deputies/$deputyId'
     | '/profile/settings'
-    | '/debates/'
     | '/deputies/'
     | '/profile/'
   fileRoutesByTo: FileRoutesByTo
@@ -151,12 +130,10 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/admin'
-    | '/login'
     | '/register'
-    | '/debates/$debateId'
+    | '/startPage'
     | '/deputies/$deputyId'
     | '/profile/settings'
-    | '/debates'
     | '/deputies'
     | '/profile'
   id:
@@ -165,13 +142,11 @@ export interface FileRouteTypes {
     | '/_auth-layout'
     | '/_app-layout/about'
     | '/_app-layout/admin'
-    | '/_auth-layout/login'
     | '/_auth-layout/register'
+    | '/_auth-layout/startPage'
     | '/_app-layout/'
-    | '/_app-layout/debates/$debateId'
     | '/_app-layout/deputies/$deputyId'
     | '/_app-layout/profile/settings'
-    | '/_app-layout/debates/'
     | '/_app-layout/deputies/'
     | '/_app-layout/profile/'
   fileRoutesById: FileRoutesById
@@ -204,18 +179,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppLayoutIndexRouteImport
       parentRoute: typeof AppLayoutRoute
     }
+    '/_auth-layout/startPage': {
+      id: '/_auth-layout/startPage'
+      path: '/startPage'
+      fullPath: '/startPage'
+      preLoaderRoute: typeof AuthLayoutStartPageRouteImport
+      parentRoute: typeof AuthLayoutRoute
+    }
     '/_auth-layout/register': {
       id: '/_auth-layout/register'
       path: '/register'
       fullPath: '/register'
       preLoaderRoute: typeof AuthLayoutRegisterRouteImport
-      parentRoute: typeof AuthLayoutRoute
-    }
-    '/_auth-layout/login': {
-      id: '/_auth-layout/login'
-      path: '/login'
-      fullPath: '/login'
-      preLoaderRoute: typeof AuthLayoutLoginRouteImport
       parentRoute: typeof AuthLayoutRoute
     }
     '/_app-layout/admin': {
@@ -246,13 +221,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppLayoutDeputiesIndexRouteImport
       parentRoute: typeof AppLayoutRoute
     }
-    '/_app-layout/debates/': {
-      id: '/_app-layout/debates/'
-      path: '/debates'
-      fullPath: '/debates/'
-      preLoaderRoute: typeof AppLayoutDebatesIndexRouteImport
-      parentRoute: typeof AppLayoutRoute
-    }
     '/_app-layout/profile/settings': {
       id: '/_app-layout/profile/settings'
       path: '/profile/settings'
@@ -267,13 +235,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppLayoutDeputiesDeputyIdRouteImport
       parentRoute: typeof AppLayoutRoute
     }
-    '/_app-layout/debates/$debateId': {
-      id: '/_app-layout/debates/$debateId'
-      path: '/debates/$debateId'
-      fullPath: '/debates/$debateId'
-      preLoaderRoute: typeof AppLayoutDebatesDebateIdRouteImport
-      parentRoute: typeof AppLayoutRoute
-    }
   }
 }
 
@@ -281,10 +242,8 @@ interface AppLayoutRouteChildren {
   AppLayoutAboutRoute: typeof AppLayoutAboutRoute
   AppLayoutAdminRoute: typeof AppLayoutAdminRoute
   AppLayoutIndexRoute: typeof AppLayoutIndexRoute
-  AppLayoutDebatesDebateIdRoute: typeof AppLayoutDebatesDebateIdRoute
   AppLayoutDeputiesDeputyIdRoute: typeof AppLayoutDeputiesDeputyIdRoute
   AppLayoutProfileSettingsRoute: typeof AppLayoutProfileSettingsRoute
-  AppLayoutDebatesIndexRoute: typeof AppLayoutDebatesIndexRoute
   AppLayoutDeputiesIndexRoute: typeof AppLayoutDeputiesIndexRoute
   AppLayoutProfileIndexRoute: typeof AppLayoutProfileIndexRoute
 }
@@ -293,10 +252,8 @@ const AppLayoutRouteChildren: AppLayoutRouteChildren = {
   AppLayoutAboutRoute: AppLayoutAboutRoute,
   AppLayoutAdminRoute: AppLayoutAdminRoute,
   AppLayoutIndexRoute: AppLayoutIndexRoute,
-  AppLayoutDebatesDebateIdRoute: AppLayoutDebatesDebateIdRoute,
   AppLayoutDeputiesDeputyIdRoute: AppLayoutDeputiesDeputyIdRoute,
   AppLayoutProfileSettingsRoute: AppLayoutProfileSettingsRoute,
-  AppLayoutDebatesIndexRoute: AppLayoutDebatesIndexRoute,
   AppLayoutDeputiesIndexRoute: AppLayoutDeputiesIndexRoute,
   AppLayoutProfileIndexRoute: AppLayoutProfileIndexRoute,
 }
@@ -306,13 +263,13 @@ const AppLayoutRouteWithChildren = AppLayoutRoute._addFileChildren(
 )
 
 interface AuthLayoutRouteChildren {
-  AuthLayoutLoginRoute: typeof AuthLayoutLoginRoute
   AuthLayoutRegisterRoute: typeof AuthLayoutRegisterRoute
+  AuthLayoutStartPageRoute: typeof AuthLayoutStartPageRoute
 }
 
 const AuthLayoutRouteChildren: AuthLayoutRouteChildren = {
-  AuthLayoutLoginRoute: AuthLayoutLoginRoute,
   AuthLayoutRegisterRoute: AuthLayoutRegisterRoute,
+  AuthLayoutStartPageRoute: AuthLayoutStartPageRoute,
 }
 
 const AuthLayoutRouteWithChildren = AuthLayoutRoute._addFileChildren(

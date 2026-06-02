@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import { useAuth } from "@/auth/AuthProvider";
 import { useTheme } from "@/hooks/useTheme";
@@ -12,6 +13,7 @@ import "@/utils/nav";
 export default function HeaderProfileMenu() {
   const { userProfile, isAuthenticated, logout, login } = useAuth();
   const { theme, setTheme } = useTheme();
+  const { t, i18n } = useTranslation();
 
   const [open, setOpen] = useState<boolean>(false);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -68,7 +70,7 @@ export default function HeaderProfileMenu() {
                       {displayName}
                     </span>
                     <span className="text-sm text-gray-500 dark:text-gray-400 truncate">
-                      {userProfile?.email || "Brak email"}
+                      {userProfile?.email || t("auth.noEmail")}
                     </span>
                   </div>
                 </div>
@@ -91,7 +93,7 @@ export default function HeaderProfileMenu() {
                         d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"
                       />
                     </svg>
-                    Profil
+                    {t("nav.profile")}
                   </Link>
 
                   <Link
@@ -117,13 +119,13 @@ export default function HeaderProfileMenu() {
                         d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
                       />
                     </svg>
-                    Ustawienia konta
+                    {t("nav.accountSettings")}
                   </Link>
                 </div>
 
                 <div className="p-3 border-t border-gray-100 dark:border-slate-700">
                   <span className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2 block px-1">
-                    Motyw
+                    {t("nav.theme")}
                   </span>
                   <div className="flex bg-gray-100 dark:bg-slate-900 rounded-lg p-1 gap-1">
                     <button
@@ -133,7 +135,7 @@ export default function HeaderProfileMenu() {
                           ? "bg-white dark:bg-slate-700 shadow-sm text-gray-900 dark:text-white"
                           : "text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
                       }`}
-                      title="Jasny"
+                      title={t("theme.light")}
                     >
                       <svg
                         className="w-4 h-4"
@@ -156,7 +158,7 @@ export default function HeaderProfileMenu() {
                           ? "bg-white dark:bg-slate-700 shadow-sm text-gray-900 dark:text-white"
                           : "text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
                       }`}
-                      title="Systemowy"
+                      title={t("theme.system")}
                     >
                       <svg
                         className="w-4 h-4"
@@ -179,7 +181,7 @@ export default function HeaderProfileMenu() {
                           ? "bg-white dark:bg-slate-700 shadow-sm text-gray-900 dark:text-white"
                           : "text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
                       }`}
-                      title="Ciemny"
+                      title={t("theme.dark")}
                     >
                       <svg
                         className="w-4 h-4"
@@ -194,6 +196,62 @@ export default function HeaderProfileMenu() {
                           d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"
                         />
                       </svg>
+                    </button>
+                  </div>
+                </div>
+
+                <div className="p-3 border-t border-gray-100 dark:border-slate-700">
+                  <span className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2 block px-1">
+                    {t("nav.language")}
+                  </span>
+                  <div className="flex bg-gray-100 dark:bg-slate-900 rounded-lg p-1 gap-1">
+                    <button
+                      onClick={() => void i18n.changeLanguage("pl")}
+                      className={`flex-1 flex justify-center py-2 rounded-md transition-colors cursor-pointer ${
+                        i18n.resolvedLanguage === "pl"
+                          ? "bg-white dark:bg-slate-700 shadow-sm text-gray-900 dark:text-white"
+                          : "text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
+                      }`}
+                      title="Polski"
+                      type="button"
+                    >
+                      PL
+                    </button>
+                    <button
+                      onClick={() => void i18n.changeLanguage("en")}
+                      className={`flex-1 flex justify-center py-2 rounded-md transition-colors cursor-pointer ${
+                        i18n.resolvedLanguage === "en"
+                          ? "bg-white dark:bg-slate-700 shadow-sm text-gray-900 dark:text-white"
+                          : "text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
+                      }`}
+                      title="English"
+                      type="button"
+                    >
+                      EN
+                    </button>
+                    <button
+                      onClick={() => void i18n.changeLanguage("de")}
+                      className={`flex-1 flex justify-center py-2 rounded-md transition-colors cursor-pointer ${
+                        i18n.resolvedLanguage === "de"
+                          ? "bg-white dark:bg-slate-700 shadow-sm text-gray-900 dark:text-white"
+                          : "text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
+                      }`}
+                      title="Deutsch"
+                      type="button"
+                    >
+                      DE
+                    </button>
+                    <button
+                      onClick={() => void i18n.changeLanguage("uk")}
+                      className={`flex-1 flex justify-center py-2 rounded-md transition-colors cursor-pointer ${
+                        i18n.resolvedLanguage === "uk"
+                          ? "bg-white dark:bg-slate-700 shadow-sm text-gray-900 dark:text-white"
+                          : "text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
+                      }`}
+                      title="Українська"
+                      type="button"
+                    >
+                      UA
                     </button>
                   </div>
                 </div>
@@ -217,7 +275,7 @@ export default function HeaderProfileMenu() {
                         d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
                       />
                     </svg>
-                    Wyloguj się
+                    {t("nav.logout")}
                   </button>
                 </div>
               </div>
@@ -226,7 +284,7 @@ export default function HeaderProfileMenu() {
                 <div className="p-2">
                   <button
                     className="w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-slate-700 rounded-xl transition-colors flex items-center gap-3 cursor-pointer"
-                    onClick={() => login()}
+                    onClick={() => void login()}
                     type="button"
                   >
                     <svg
@@ -242,7 +300,7 @@ export default function HeaderProfileMenu() {
                         d="M11 16l4-4m0 0l-4-4m4 4H3m6 4v1a3 3 0 003 3h6a3 3 0 003-3V7a3 3 0 00-3-3h-6a3 3 0 00-3 3v1"
                       />
                     </svg>
-                    Zaloguj się
+                    {t("nav.login")}
                   </button>
                   <Link
                     to="/register"
@@ -261,7 +319,7 @@ export default function HeaderProfileMenu() {
                         d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"
                       />
                     </svg>
-                    Zarejestruj się
+                    {t("nav.register")}
                   </Link>
                 </div>
               </div>

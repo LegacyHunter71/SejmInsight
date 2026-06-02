@@ -1,12 +1,15 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState, type Dispatch, type SetStateAction } from "react";
 import { useDeputies } from "@/hooks/useDeputies";
+import { useTranslation } from "react-i18next";
 
 export const Route = createFileRoute("/_app-layout/deputies/")({
   component: RouteComponent,
 });
 
 function RouteComponent() {
+  const { t } = useTranslation();
+
   const [page, setPage] = useState(0);
   const [size, setSize] = useState(18);
   const [searchTerm, setSearchTerm] = useState("");
@@ -27,16 +30,16 @@ function RouteComponent() {
       <div className="flex flex-col md:flex-row md:justify-between md:items-end gap-4">
         <div>
           <h1 className="text-3xl font-extrabold text-gray-900 dark:text-white font-[Manrope]">
-            Katalog Posłów
+            {t("deputies.catalogTitle")}
           </h1>
           <p className="text-gray-600 dark:text-gray-400 mt-2">
-            Przeglądaj, filtruj i sprawdzaj statystyki parlamentarzystów.
+            {t("deputies.catalogSubtitle")}
           </p>
         </div>
         <div className="w-full md:w-1/3">
           <input
             type="text"
-            placeholder="Szukaj po nazwisku..."
+            placeholder={t("deputies.searchPlaceholder")}
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="w-full px-4 py-2 border border-gray-300 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-maroon-800 dark:focus:ring-maroon-600 focus:outline-none transition-colors"
@@ -44,18 +47,43 @@ function RouteComponent() {
         </div>
       </div>
 
-      <DeputiesList page={page} size={size} searchQuery={searchQuery} setPage={setPage} setSize={setSize} />
+      <DeputiesList
+        page={page}
+        size={size}
+        searchQuery={searchQuery}
+        setPage={setPage}
+        setSize={setSize}
+      />
     </div>
   );
 }
 
-function DeputiesList({ page, size, searchQuery, setPage, setSize }: { page: number; size: number; searchQuery: string; setPage: Dispatch<SetStateAction<number>>; setSize: Dispatch<SetStateAction<number>> }) {
+function DeputiesList({
+  page,
+  size,
+  searchQuery,
+  setPage,
+  setSize,
+}: {
+  page: number;
+  size: number;
+  searchQuery: string;
+  setPage: Dispatch<SetStateAction<number>>;
+  setSize: Dispatch<SetStateAction<number>>;
+}) {
+  const { t } = useTranslation();
   const params = { page, size, sort: ["lastName"], name: searchQuery } as any;
   const { data: deputiesPage, isLoading } = useDeputies(params);
 
-  const list = Array.isArray(deputiesPage) ? deputiesPage : deputiesPage?.content ?? [];
-  const totalPages = Array.isArray(deputiesPage) ? 0 : deputiesPage?.totalPages ?? 0;
-  const currentPage = Array.isArray(deputiesPage) ? page : deputiesPage?.number ?? page;
+  const list = Array.isArray(deputiesPage)
+    ? deputiesPage
+    : (deputiesPage?.content ?? []);
+  const totalPages = Array.isArray(deputiesPage)
+    ? 0
+    : (deputiesPage?.total_pages ?? 0);
+  const currentPage = Array.isArray(deputiesPage)
+    ? page
+    : (deputiesPage?.number ?? page);
 
   console.log("DeputiesPage Data:", deputiesPage);
 
@@ -63,7 +91,9 @@ function DeputiesList({ page, size, searchQuery, setPage, setSize }: { page: num
     <>
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
         {isLoading ? (
-          <div className="col-span-1 md:col-span-2 xl:col-span-3 text-center text-gray-500">Wczytywanie...</div>
+          <div className="col-span-1 md:col-span-2 xl:col-span-3 text-center text-gray-500">
+            {t("deputies.loading")}
+          </div>
         ) : (
           list.map((deputy: any) => (
             <Link
@@ -77,13 +107,15 @@ function DeputiesList({ page, size, searchQuery, setPage, setSize }: { page: num
                 {(deputy.last_name ?? deputy.lastName)?.charAt(0)}
               </div>
               <h3 className="text-xl font-bold text-gray-900 dark:text-white group-hover:text-maroon-800 dark:group-hover:text-maroon-400 transition-colors">
-                {deputy.first_name ?? deputy.firstName} {deputy.last_name ?? deputy.lastName}
+                {deputy.first_name ?? deputy.firstName}{" "}
+                {deputy.last_name ?? deputy.lastName}
               </h3>
               <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
                 {deputy.club} • {deputy.district_name ?? deputy.districtName}
               </p>
               <div className="mt-4 text-sm font-semibold text-emerald-700 dark:text-emerald-400">
-                Frekwencja: {deputy.attendance_rate ?? deputy.attendanceRate}% • Głosowań: {deputy.presentVotings ?? deputy.present_votings}
+                {t("deputies.attendance")}:{" "}
+                {deputy.attendance_rate ?? deputy.attendanceRate}%
               </div>
             </Link>
           ))
@@ -92,18 +124,38 @@ function DeputiesList({ page, size, searchQuery, setPage, setSize }: { page: num
 
       <div className="flex items-center justify-between mt-6">
         <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300">
-          <span>Rozmiar strony:</span>
-          <select value={size} onChange={(e) => setSize(Number(e.target.value))} className="px-2 py-1 rounded">
+          <span>{t("pagination.pageSize")}</span>
+          <select
+            value={size}
+            onChange={(e) => setSize(Number(e.target.value))}
+            className="px-2 py-1 rounded"
+          >
             {[9, 18, 36].map((s) => (
-              <option key={s} value={s}>{s}</option>
+              <option key={s} value={s}>
+                {s}
+              </option>
             ))}
           </select>
         </div>
 
         <div className="flex items-center gap-4">
-          <button onClick={() => setPage((p) => Math.max(0, p - 1))} disabled={currentPage <= 0} className="px-3 py-2 bg-gray-200 dark:bg-slate-700 rounded">Prev</button>
-          <div className="text-sm text-gray-700 dark:text-gray-300">Strona {currentPage + 1} / {totalPages || 1}</div>
-          <button onClick={() => setPage((p) => p + 1)} disabled={totalPages ? currentPage + 1 >= totalPages : false} className="px-3 py-2 bg-gray-200 dark:bg-slate-700 rounded">Next</button>
+          <button
+            onClick={() => setPage((p) => Math.max(0, p - 1))}
+            disabled={currentPage <= 0}
+            className="px-3 py-2 bg-gray-200 dark:bg-slate-700 rounded"
+          >
+            {t("pagination.prev")}
+          </button>
+          <div className="text-sm text-gray-700 dark:text-gray-300">
+            {t("pagination.page")} {currentPage + 1} / {totalPages || 1}
+          </div>
+          <button
+            onClick={() => setPage((p) => p + 1)}
+            disabled={totalPages ? currentPage + 1 >= totalPages : false}
+            className="px-3 py-2 bg-gray-200 dark:bg-slate-700 rounded"
+          >
+            {t("pagination.next")}
+          </button>
         </div>
       </div>
     </>

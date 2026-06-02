@@ -2,10 +2,12 @@ import SejmInsightLogo from "@/assets/icons/sejminsight_logo.svg?react";
 import { useAuth } from "@/auth/AuthProvider";
 import { useTheme } from "@/hooks/useTheme";
 import { Link } from "@tanstack/react-router";
+import { useTranslation } from "react-i18next";
 
 export default function AuthNavBar() {
   const { login } = useAuth();
   const { theme, setTheme } = useTheme();
+  const { t, i18n } = useTranslation();
 
   return (
     <div className="fixed top-0 z-50 w-screen h-16 border-b border-b-gray-300/50 dark:border-b-slate-800/60 flex items-center justify-between px-4 bg-slate-100/70 dark:bg-slate-950/60 backdrop-blur">
@@ -16,6 +18,56 @@ export default function AuthNavBar() {
         </span>
       </div>
       <div className="flex items-center gap-4">
+        <div className="flex bg-gray-200/50 dark:bg-slate-800/50 rounded-lg p-1 gap-1">
+          <button
+            onClick={() => void i18n.changeLanguage("pl")}
+            className={`flex justify-center px-2 py-2 rounded-md transition-colors cursor-pointer text-xs font-bold ${
+              i18n.resolvedLanguage === "pl"
+                ? "bg-white dark:bg-slate-700 shadow-sm text-gray-900 dark:text-white"
+                : "text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
+            }`}
+            title="Polski"
+            type="button"
+          >
+            PL
+          </button>
+          <button
+            onClick={() => void i18n.changeLanguage("en")}
+            className={`flex justify-center px-2 py-2 rounded-md transition-colors cursor-pointer text-xs font-bold ${
+              i18n.resolvedLanguage === "en"
+                ? "bg-white dark:bg-slate-700 shadow-sm text-gray-900 dark:text-white"
+                : "text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
+            }`}
+            title="English"
+            type="button"
+          >
+            EN
+          </button>
+          <button
+            onClick={() => void i18n.changeLanguage("de")}
+            className={`flex justify-center px-2 py-2 rounded-md transition-colors cursor-pointer text-xs font-bold ${
+              i18n.resolvedLanguage === "de"
+                ? "bg-white dark:bg-slate-700 shadow-sm text-gray-900 dark:text-white"
+                : "text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
+            }`}
+            title="Deutsch"
+            type="button"
+          >
+            DE
+          </button>
+          <button
+            onClick={() => void i18n.changeLanguage("uk")}
+            className={`flex justify-center px-2 py-2 rounded-md transition-colors cursor-pointer text-xs font-bold ${
+              i18n.resolvedLanguage === "uk"
+                ? "bg-white dark:bg-slate-700 shadow-sm text-gray-900 dark:text-white"
+                : "text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
+            }`}
+            title="Українська"
+            type="button"
+          >
+            UA
+          </button>
+        </div>
         <div className="flex bg-gray-200/50 dark:bg-slate-800/50 rounded-lg p-1 gap-1 mr-2 sm:flex">
           <button
             onClick={() => setTheme("light")}
@@ -24,7 +76,7 @@ export default function AuthNavBar() {
                 ? "bg-white dark:bg-slate-700 shadow-sm text-gray-900 dark:text-white"
                 : "text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
             }`}
-            title="Jasny"
+            title={t("theme.light")}
           >
             <svg
               className="w-4 h-4"
@@ -47,7 +99,7 @@ export default function AuthNavBar() {
                 ? "bg-white dark:bg-slate-700 shadow-sm text-gray-900 dark:text-white"
                 : "text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
             }`}
-            title="Systemowy"
+            title={t("theme.system")}
           >
             <svg
               className="w-4 h-4"
@@ -70,7 +122,7 @@ export default function AuthNavBar() {
                 ? "bg-white dark:bg-slate-700 shadow-sm text-gray-900 dark:text-white"
                 : "text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
             }`}
-            title="Ciemny"
+            title={t("theme.dark")}
           >
             <svg
               className="w-4 h-4"
@@ -88,16 +140,16 @@ export default function AuthNavBar() {
           </button>
         </div>
         <button
-          onClick={() => login()}
+          onClick={() => void login()}
           className="text-slate-700 dark:text-slate-200 font-medium hover:text-blue-700 dark:hover:text-blue-400 px-4 py-2 transition-all active:scale-95 duration-200 hover:cursor-pointer"
         >
-          Zaloguj się
+          {t("nav.login")}
         </button>
         <Link
           to="/register"
           className="hero-gradient text-white px-6 py-2 rounded-xl font-bold hover:opacity-90 transition-all active:scale-95 duration-200 shadow-lg shadow-maroon-800/20 hover:cursor-pointer"
         >
-          Zarejestruj się
+          {t("nav.register")}
         </Link>
       </div>
     </div>

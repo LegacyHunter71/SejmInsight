@@ -4,642 +4,771 @@
  */
 
 export interface paths {
-    "/iam/register": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /** Rejestracja */
-        post: operations["register"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+  "/iam/register": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/deputies/{deputyId}/votings/{term}/{proceedingNo}/{votingNo}/comments": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get: operations["getComments"];
-        put?: never;
-        post: operations["addComment"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    get?: never;
+    put?: never;
+    /** Rejestracja */
+    post: operations["register"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/deputies/{deputy_id}/votings/{term}/{proceeding_no}/{voting_no}/comments": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/comments/{commentId}/replies": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post: operations["addReply"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    get: operations["getComments"];
+    put?: never;
+    post: operations["addComment"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/comments/{comment_id}/replies": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/comments/{commentId}/likes": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post: operations["toggleLike"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    get?: never;
+    put?: never;
+    post: operations["addReply"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/comments/{comment_id}/likes": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/admin/sync/votings": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post: operations["triggerVotingSync"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    get?: never;
+    put?: never;
+    post: operations["toggleLike"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/admin/sync/votings": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/admin/sync/deputies": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post: operations["triggerDeputySync"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    get?: never;
+    put?: never;
+    post: operations["triggerVotingSync"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/admin/sync/deputies": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/iam/users/{userId}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        delete: operations["deleteUser"];
-        options?: never;
-        head?: never;
-        patch: operations["updateProfile"];
-        trace?: never;
+    get?: never;
+    put?: never;
+    post: operations["triggerDeputySync"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/admin/comments/{comment_id}/reject": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/iam/users/{userId}/role": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch: operations["changeRole"];
-        trace?: never;
+    get?: never;
+    put?: never;
+    post: operations["rejectComment"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/admin/comments/{comment_id}/approve": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/iam/me": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get: operations["getCurrentUser"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    get?: never;
+    put?: never;
+    post: operations["approveComment"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/iam/users/{user_id}": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/deputies": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get: operations["getDeputies"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    get?: never;
+    put?: never;
+    post?: never;
+    delete: operations["deleteUser"];
+    options?: never;
+    head?: never;
+    patch: operations["updateProfile"];
+    trace?: never;
+  };
+  "/iam/users/{user_id}/role": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/deputies/{deputyId}/votings": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get: operations["getDeputyVotings"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    get?: never;
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch: operations["changeRole"];
+    trace?: never;
+  };
+  "/iam/me": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/comments/{commentId}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        delete: operations["deleteComment"];
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    get: operations["getCurrentUser"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/deputies": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
+    get: operations["getDeputies"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/deputies/{deputy_id}/votings": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: operations["getDeputyVotings"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/admin/comments/pending": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: operations["getPendingComments"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/comments/{comment_id}": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post?: never;
+    delete: operations["deleteComment"];
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
 }
 export type webhooks = Record<string, never>;
 export interface components {
-    schemas: {
-        UserCreateRequest: {
-            email: string;
-            firstName: string;
-            lastName: string;
-        };
-        CommentCreateRequest: {
-            content: string;
-        };
-        LikeResult: {
-            /** Format: int64 */
-            likeCount?: number;
-            liked?: boolean;
-        };
-        UserProfileUpdate: {
-            firstName: string;
-            lastName: string;
-        };
-        UserDto: {
-            id?: string;
-            username?: string;
-            email?: string;
-            roles?: string[];
-        };
-        Pageable: {
-            /** Format: int32 */
-            page?: number;
-            /** Format: int32 */
-            size?: number;
-            sort?: string[];
-        };
-        DeputyListItemDto: {
-            /** Format: int32 */
-            id?: number;
-            firstName?: string;
-            lastName?: string;
-            club?: string;
-            districtName?: string;
-            active?: boolean;
-            /** Format: double */
-            attendanceRate?: number;
-        };
-        PageDeputyListItemDto: {
-            /** Format: int32 */
-            totalPages?: number;
-            /** Format: int64 */
-            totalElements?: number;
-            first?: boolean;
-            last?: boolean;
-            /** Format: int32 */
-            numberOfElements?: number;
-            pageable?: components["schemas"]["PageableObject"];
-            /** Format: int32 */
-            size?: number;
-            content?: components["schemas"]["DeputyListItemDto"][];
-            /** Format: int32 */
-            number?: number;
-            sort?: components["schemas"]["SortObject"];
-            empty?: boolean;
-        };
-        PageableObject: {
-            unpaged?: boolean;
-            /** Format: int32 */
-            pageNumber?: number;
-            paged?: boolean;
-            /** Format: int32 */
-            pageSize?: number;
-            /** Format: int64 */
-            offset?: number;
-            sort?: components["schemas"]["SortObject"];
-        };
-        SortObject: {
-            unsorted?: boolean;
-            sorted?: boolean;
-            empty?: boolean;
-        };
-        PageVotingDto: {
-            /** Format: int32 */
-            totalPages?: number;
-            /** Format: int64 */
-            totalElements?: number;
-            first?: boolean;
-            last?: boolean;
-            /** Format: int32 */
-            numberOfElements?: number;
-            pageable?: components["schemas"]["PageableObject"];
-            /** Format: int32 */
-            size?: number;
-            content?: components["schemas"]["VotingDto"][];
-            /** Format: int32 */
-            number?: number;
-            sort?: components["schemas"]["SortObject"];
-            empty?: boolean;
-        };
-        VotingDto: {
-            votingId?: string;
-            /** Format: int32 */
-            voteTerm?: number;
-            /** Format: int32 */
-            proceedingNo?: number;
-            /** Format: int32 */
-            votingNo?: number;
-            title?: string;
-            /** @enum {string} */
-            vote?: "YES" | "NO" | "ABSTAIN" | "NOT_VOTED" | "ABSENT";
-            present?: boolean;
-        };
-        CommentDto: {
-            id?: string;
-            content?: string;
-            authorId?: string;
-            authorName?: string;
-            /** Format: int64 */
-            likeCount?: number;
-            replies?: components["schemas"]["CommentDto"][];
-            /** Format: date-time */
-            createdAt?: string;
-            deleted?: boolean;
-        };
+  schemas: {
+    UserCreateRequest: {
+      email: string;
+      firstName: string;
+      lastName: string;
     };
-    responses: never;
-    parameters: never;
-    requestBodies: never;
-    headers: never;
-    pathItems: never;
+    CommentCreateRequest: {
+      content: string;
+    };
+    LikeResult: {
+      /** Format: int64 */
+      like_count?: number;
+      liked?: boolean;
+    };
+    UserProfileUpdate: {
+      first_name: string;
+      last_name: string;
+    };
+    UserDto: {
+      id?: string;
+      username?: string;
+      email?: string;
+      roles?: string[];
+    };
+    Pageable: {
+      /** Format: int32 */
+      page?: number;
+      /** Format: int32 */
+      size?: number;
+      sort?: string[];
+    };
+    DeputyListItemDto: {
+      /** Format: int32 */
+      id?: number;
+      first_name?: string;
+      last_name?: string;
+      club?: string;
+      district_name?: string;
+      active?: boolean;
+      /** Format: double */
+      attendance_rate?: number;
+      /** Format: int32 */
+      present_votings?: number;
+    };
+    PageDeputyListItemDto: {
+      /** Format: int32 */
+      total_pages?: number;
+      /** Format: int64 */
+      total_elements?: number;
+      /** Format: int32 */
+      number_of_elements?: number;
+      first?: boolean;
+      last?: boolean;
+      pageable?: components["schemas"]["PageableObject"];
+      /** Format: int32 */
+      size?: number;
+      content?: components["schemas"]["DeputyListItemDto"][];
+      /** Format: int32 */
+      number?: number;
+      sort?: components["schemas"]["SortObject"];
+      empty?: boolean;
+    };
+    PageableObject: {
+      /** Format: int32 */
+      page_number?: number;
+      unpaged?: boolean;
+      paged?: boolean;
+      /** Format: int32 */
+      page_size?: number;
+      /** Format: int64 */
+      offset?: number;
+      sort?: components["schemas"]["SortObject"];
+    };
+    SortObject: {
+      unsorted?: boolean;
+      sorted?: boolean;
+      empty?: boolean;
+    };
+    PageVotingDto: {
+      /** Format: int32 */
+      total_pages?: number;
+      /** Format: int64 */
+      total_elements?: number;
+      /** Format: int32 */
+      number_of_elements?: number;
+      first?: boolean;
+      last?: boolean;
+      pageable?: components["schemas"]["PageableObject"];
+      /** Format: int32 */
+      size?: number;
+      content?: components["schemas"]["VotingDto"][];
+      /** Format: int32 */
+      number?: number;
+      sort?: components["schemas"]["SortObject"];
+      empty?: boolean;
+    };
+    VotingDto: {
+      voting_id?: string;
+      /** Format: int32 */
+      vote_term?: number;
+      /** Format: int32 */
+      proceeding_no?: number;
+      /** Format: int32 */
+      voting_no?: number;
+      title?: string;
+      /** @enum {string} */
+      vote?: "YES" | "NO" | "ABSTAIN" | "NOT_VOTED" | "ABSENT";
+      present?: boolean;
+    };
+    CommentDto: {
+      id?: string;
+      content?: string;
+      author_id?: string;
+      author_name?: string;
+      /** Format: int64 */
+      like_count?: number;
+      replies?: components["schemas"]["CommentDto"][];
+      /** Format: date-time */
+      created_at?: string;
+      deleted?: boolean;
+    };
+    AdminCommentDto: {
+      id?: string;
+      content?: string;
+      author_id?: string;
+      author_name?: string;
+      /** Format: date-time */
+      created_at?: string;
+      /** @enum {string} */
+      moderation_status?: "PENDING" | "APPROVED" | "REJECTED";
+      /** Format: int32 */
+      deputy_id?: number;
+      /** Format: int32 */
+      vote_term?: number;
+      /** Format: int32 */
+      proceeding_no?: number;
+      /** Format: int32 */
+      voting_no?: number;
+      parent_id?: string;
+    };
+  };
+  responses: never;
+  parameters: never;
+  requestBodies: never;
+  headers: never;
+  pathItems: never;
 }
 export type $defs = Record<string, never>;
 export interface operations {
-    register: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["UserCreateRequest"];
-            };
-        };
-        responses: {
-            /** @description Created */
-            201: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
+  register: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    getComments: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                deputyId: number;
-                term: number;
-                proceedingNo: number;
-                votingNo: number;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["CommentDto"][];
-                };
-            };
-        };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["UserCreateRequest"];
+      };
     };
-    addComment: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                deputyId: number;
-                term: number;
-                proceedingNo: number;
-                votingNo: number;
-            };
-            cookie?: never;
+    responses: {
+      /** @description Created */
+      201: {
+        headers: {
+          [name: string]: unknown;
         };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["CommentCreateRequest"];
-            };
-        };
-        responses: {
-            /** @description Created */
-            201: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
+        content?: never;
+      };
     };
-    addReply: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                commentId: string;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["CommentCreateRequest"];
-            };
-        };
-        responses: {
-            /** @description Created */
-            201: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
+  };
+  getComments: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        deputy_id: number;
+        term: number;
+        proceeding_no: number;
+        voting_no: number;
+      };
+      cookie?: never;
     };
-    toggleLike: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                commentId: string;
-            };
-            cookie?: never;
+    requestBody?: never;
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
         };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["LikeResult"];
-                };
-            };
+        content: {
+          "*/*": components["schemas"]["CommentDto"][];
         };
+      };
     };
-    triggerVotingSync: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
+  };
+  addComment: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        deputy_id: number;
+        term: number;
+        proceeding_no: number;
+        voting_no: number;
+      };
+      cookie?: never;
     };
-    triggerDeputySync: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["CommentCreateRequest"];
+      };
     };
-    deleteUser: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                userId: string;
-            };
-            cookie?: never;
+    responses: {
+      /** @description Created */
+      201: {
+        headers: {
+          [name: string]: unknown;
         };
-        requestBody?: never;
-        responses: {
-            /** @description No Content */
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
+        content?: never;
+      };
     };
-    updateProfile: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                userId: string;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["UserProfileUpdate"];
-            };
-        };
-        responses: {
-            /** @description No Content */
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
+  };
+  addReply: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        comment_id: string;
+      };
+      cookie?: never;
     };
-    changeRole: {
-        parameters: {
-            query: {
-                newRole: "CITIZEN" | "ANALYST" | "ADMIN";
-            };
-            header?: never;
-            path: {
-                userId: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description No Content */
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["CommentCreateRequest"];
+      };
     };
-    getCurrentUser: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
+    responses: {
+      /** @description Created */
+      201: {
+        headers: {
+          [name: string]: unknown;
         };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["UserDto"];
-                };
-            };
-        };
+        content?: never;
+      };
     };
-    getDeputies: {
-        parameters: {
-            query: {
-                name?: string;
-                club?: string;
-                districtName?: string;
-                active?: boolean;
-                pageable: components["schemas"]["Pageable"];
-            };
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["PageDeputyListItemDto"];
-                };
-            };
-        };
+  };
+  toggleLike: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        comment_id: string;
+      };
+      cookie?: never;
     };
-    getDeputyVotings: {
-        parameters: {
-            query: {
-                vote?: "YES" | "NO" | "ABSTAIN" | "NOT_VOTED" | "ABSENT";
-                title?: string;
-                pageable: components["schemas"]["Pageable"];
-            };
-            header?: never;
-            path: {
-                deputyId: number;
-            };
-            cookie?: never;
+    requestBody?: never;
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
         };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["PageVotingDto"];
-                };
-            };
+        content: {
+          "*/*": components["schemas"]["LikeResult"];
         };
+      };
     };
-    deleteComment: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                commentId: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description No Content */
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
+  };
+  triggerVotingSync: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
+    requestBody?: never;
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  triggerDeputySync: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  rejectComment: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        comment_id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description No Content */
+      204: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  approveComment: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        comment_id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description No Content */
+      204: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  deleteUser: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        user_id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description No Content */
+      204: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  updateProfile: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        user_id: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["UserProfileUpdate"];
+      };
+    };
+    responses: {
+      /** @description No Content */
+      204: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  changeRole: {
+    parameters: {
+      query: {
+        new_role: "CITIZEN" | "ANALYST" | "ADMIN";
+      };
+      header?: never;
+      path: {
+        user_id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description No Content */
+      204: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  getCurrentUser: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "*/*": components["schemas"]["UserDto"];
+        };
+      };
+    };
+  };
+  getDeputies: {
+    parameters: {
+      query: {
+        name?: string;
+        club?: string;
+        district_name?: string;
+        active?: boolean;
+        pageable: components["schemas"]["Pageable"];
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "*/*": components["schemas"]["PageDeputyListItemDto"];
+        };
+      };
+    };
+  };
+  getDeputyVotings: {
+    parameters: {
+      query: {
+        vote?: "YES" | "NO" | "ABSTAIN" | "NOT_VOTED" | "ABSENT";
+        title?: string;
+        pageable: components["schemas"]["Pageable"];
+      };
+      header?: never;
+      path: {
+        deputy_id: number;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "*/*": components["schemas"]["PageVotingDto"];
+        };
+      };
+    };
+  };
+  getPendingComments: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "*/*": components["schemas"]["AdminCommentDto"][];
+        };
+      };
+    };
+  };
+  deleteComment: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        comment_id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description No Content */
+      204: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
 }

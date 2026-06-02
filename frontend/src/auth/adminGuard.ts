@@ -4,7 +4,7 @@ import { keycloak } from "./AuthProvider";
 export const adminGuard = async ({ location }: { location: any }) => {
   if (!keycloak.authenticated) {
     throw redirect({
-      to: "/login",
+      to: "/startPage",
       search: {
         redirect: location.href,
       },
