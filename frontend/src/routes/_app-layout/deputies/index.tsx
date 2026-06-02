@@ -113,9 +113,13 @@ function DeputiesList({
               <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
                 {deputy.club} • {deputy.district_name ?? deputy.districtName}
               </p>
-              <div className="mt-4 text-sm font-semibold text-emerald-700 dark:text-emerald-400">
-                {t("deputies.attendance")}:{" "}
-                {deputy.attendance_rate ?? deputy.attendanceRate}%
+              <div className="flex flex-row gap-4">
+                <div className="mt-4 text-sm font-semibold text-emerald-700 dark:text-emerald-400">
+                  {t("deputies.attendance")}: {deputy.attendanceRate}%
+                </div>
+                <div className="mt-4 text-sm font-semibold text-blue-800 dark:text-blue-400">
+                  {t("deputies.votings")}: {deputy.presentVotings ?? "—"}
+                </div>
               </div>
             </Link>
           ))
