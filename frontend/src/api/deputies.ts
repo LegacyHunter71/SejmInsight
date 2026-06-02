@@ -89,6 +89,7 @@ export async function getDeputyById(deputyId: number) {
         districtName: d.districtName ?? d.district_name,
         active: d.active,
         attendanceRate: d.attendanceRate ?? d.attendance_rate,
+        presentVotings: d.presentVotings ?? d.present_votings,
         __raw: d,
     });
 

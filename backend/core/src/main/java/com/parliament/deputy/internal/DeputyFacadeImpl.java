@@ -51,7 +51,7 @@ class DeputyFacadeImpl implements DeputyFacade {
             if (s != null && s.getTotal() > 0) {
                 d.setTotalVotings(s.getTotal().intValue());
                 d.setPresentVotings(s.getPresentCount().intValue());
-                d.setAttendanceRate(s.getPresentCount() * 100.0 / s.getTotal());
+                d.setAttendanceRate(Math.round(s.getPresentCount() * 10000.0 / s.getTotal()) / 100.0);
             } else {
                 d.setTotalVotings(0);
                 d.setPresentVotings(0);
