@@ -44,15 +44,20 @@
     },
     "moderation": {
       "title": "Comment moderation",
-      "desc": "Table placeholder for approving comments flagged as potentially offensive.",
+      "desc": "Please indicate whether the comments below may be offensive.",
+      "loading": "Loading pending comments...",
+      "loadError": "Failed to load pending comments.",
       "author": "Author",
       "content": "Content",
       "date": "Date",
       "signals": "Signals",
+      "metadata": "Metadata",
       "actions": "Actions",
       "contentPlaceholder": "(placeholder comment content)",
       "approve": "Approve",
+      "processing": "Processing…",
       "reject": "Reject",
+      "actionError": "Error while performing action. Please try again.",
       "placeholderTitle": "Placeholder"
     }
   },
@@ -147,7 +152,7 @@
       "cta": "Register",
       "submitting": "Creating account…",
       "alreadyHaveAccount": "Already have an account? Log in",
-      "successRedirect": "Account created. Redirecting to login…",
+      "successNextSteps": "Account created. Next, proceed to login and change your password.",
       "errorGeneric": "Couldn't create the account. Please try again."
     },
     "login": {

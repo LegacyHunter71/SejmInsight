@@ -80,7 +80,7 @@ function DeputiesList({
     : (deputiesPage?.content ?? []);
   const totalPages = Array.isArray(deputiesPage)
     ? 0
-    : (deputiesPage?.totalPages ?? 0);
+    : (deputiesPage?.total_pages ?? 0);
   const currentPage = Array.isArray(deputiesPage)
     ? page
     : (deputiesPage?.number ?? page);

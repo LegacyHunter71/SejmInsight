@@ -76,7 +76,7 @@ function RouteComponent() {
               {t("deputies.attendance")}: {deputyData?.attendanceRate ?? "—"}%
             </div>
             <div className="bg-blue-50 dark:bg-blue-900/30 text-blue-800 dark:text-blue-400 border border-transparent dark:border-blue-800/50 px-4 py-2 rounded-lg font-bold">
-              {t("deputies.votings")}: {/* TODO: fetch votings count */} —
+              {t("deputies.votings")}: {deputyData?.presentVotings ?? "—"}
             </div>
           </div>
         </div>

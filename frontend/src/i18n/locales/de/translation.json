@@ -44,15 +44,20 @@
     },
     "moderation": {
       "title": "Kommentar-Moderation",
-      "desc": "Tabellen-Placeholder zum Bestätigen von Kommentaren, die als potenziell beleidigend markiert wurden.",
+      "desc": "Bitte geben Sie an, ob die folgenden Kommentare anstößig sein könnten.",
+      "loading": "Warte auf Kommentare...",
+      "loadError": "Konnte wartende Kommentare nicht laden.",
       "author": "Autor",
       "content": "Inhalt",
       "date": "Datum",
       "signals": "Signale",
+      "metadata": "Metadaten",
       "actions": "Aktionen",
       "contentPlaceholder": "(Placeholder für Kommentarinhalt)",
       "approve": "Bestätigen",
+      "processing": "Verarbeite…",
       "reject": "Ablehnen",
+      "actionError": "Fehler beim Ausführen der Aktion. Bitte erneut versuchen.",
       "placeholderTitle": "Placeholder"
     }
   },
@@ -147,7 +152,7 @@
       "cta": "Registrieren",
       "submitting": "Konto wird erstellt…",
       "alreadyHaveAccount": "Schon ein Konto? Anmelden",
-      "successRedirect": "Konto erstellt. Weiterleitung zur Anmeldung…",
+      "successNextSteps": "Konto erstellt. Melden Sie sich nun an und ändern Sie Ihr Passwort.",
       "errorGeneric": "Konto konnte nicht erstellt werden. Bitte versuche es erneut."
     },
     "login": {

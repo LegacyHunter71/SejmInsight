@@ -35,7 +35,6 @@ export default function Sidebar() {
       <nav className="flex flex-col space-y-1">
         <SidebarLink to="/" text={t("sidebar.home")} />
         <SidebarLink to="/deputies" text={t("sidebar.deputies")} />
-        <SidebarLink to="/debates" text={t("sidebar.debates")} />
         <SidebarLink to="/about" text={t("sidebar.about")} />
         {isAdmin ? <SidebarLink to="/admin" text={t("sidebar.admin")} /> : null}
       </nav>

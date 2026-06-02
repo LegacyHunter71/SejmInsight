@@ -1,7 +1,13 @@
 import { adminGuard } from "@/auth/adminGuard";
-import { syncDeputies, syncVotings } from "@/api/admin";
+import {
+  syncDeputies,
+  syncVotings,
+  getPendingComments,
+  approveComment,
+  rejectComment,
+} from "@/api/admin";
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 export const Route = createFileRoute("/_app-layout/admin")({
@@ -19,6 +25,14 @@ function RouteComponent() {
     "idle" | "loading" | "success" | "error"
   >("idle");
   const [lastError, setLastError] = useState<string | null>(null);
+  const [pendingComments, setPendingComments] = useState<
+    | import("@/generated/api-types").components["schemas"]["AdminCommentDto"][]
+    | null
+  >(null);
+  const [pendingLoading, setPendingLoading] = useState<boolean>(false);
+  const [actionLoading, setActionLoading] = useState<Record<string, boolean>>(
+    {},
+  );
 
   const runSyncDeputies = async () => {
     setLastError(null);
@@ -46,8 +60,27 @@ function RouteComponent() {
     }
   };
 
+  // Load pending comments
+  const loadPending = async () => {
+    setLastError(null);
+    setPendingLoading(true);
+    try {
+      const list = await getPendingComments();
+      setPendingComments(list ?? []);
+    } catch (e: any) {
+      setLastError(String(e?.message ?? t("admin.moderation.loadError")));
+    } finally {
+      setPendingLoading(false);
+    }
+  };
+
+  // load on mount
+  useEffect(() => {
+    void loadPending();
+  }, []);
+
   return (
-    <div className="p-8 max-w-5xl mx-auto space-y-6">
+    <div className="p-8 max-w-7xl mx-auto space-y-6">
       <div>
         <h1 className="text-3xl font-extrabold text-gray-900 dark:text-white font-[Manrope]">
           {t("admin.title")}
@@ -122,62 +155,140 @@ function RouteComponent() {
         </p>
 
         <div className="mt-5 overflow-x-auto">
-          <table className="min-w-full text-sm">
-            <thead>
-              <tr className="text-left text-gray-600 dark:text-gray-300 border-b border-gray-200 dark:border-slate-700">
-                <th className="py-3 pr-4">{t("admin.moderation.author")}</th>
-                <th className="py-3 pr-4">{t("admin.moderation.content")}</th>
-                <th className="py-3 pr-4">{t("admin.moderation.date")}</th>
-                <th className="py-3 pr-4">{t("admin.moderation.signals")}</th>
-                <th className="py-3 pr-4">{t("admin.moderation.actions")}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {[1, 2, 3].map((row) => (
-                <tr
-                  key={row}
-                  className="border-b border-gray-100 dark:border-slate-700/60 text-gray-800 dark:text-gray-100"
-                >
-                  <td className="py-3 pr-4 font-semibold whitespace-nowrap">
-                    @uzytkownik{row}
-                  </td>
-                  <td className="py-3 pr-4 min-w-88">
-                    <span className="text-gray-500 dark:text-gray-400 italic">
-                      {t("admin.moderation.contentPlaceholder")}
-                    </span>
-                  </td>
-                  <td className="py-3 pr-4 whitespace-nowrap text-gray-500 dark:text-gray-400">
-                    2026-05-31 12:0{row}
-                  </td>
-                  <td className="py-3 pr-4 whitespace-nowrap">
-                    <span className="inline-flex items-center rounded-full bg-amber-100 dark:bg-amber-900/30 text-amber-800 dark:text-amber-200 px-2.5 py-1 text-xs font-bold">
-                      score: {row * 12}
-                    </span>
-                  </td>
-                  <td className="py-3 pr-4 whitespace-nowrap">
-                    <div className="flex gap-2">
-                      <button
-                        type="button"
-                        className="px-3 py-1.5 rounded-lg bg-emerald-700 hover:bg-emerald-800 text-white font-bold transition-colors"
-                        disabled
-                        title={t("admin.moderation.placeholderTitle")}
-                      >
-                        {t("admin.moderation.approve")}
-                      </button>
-                      <button
-                        type="button"
-                        className="px-3 py-1.5 rounded-lg bg-red-700 hover:bg-red-800 text-white font-bold transition-colors"
-                        disabled
-                        title={t("admin.moderation.placeholderTitle")}
-                      >
-                        {t("admin.moderation.reject")}
-                      </button>
-                    </div>
-                  </td>
+          {pendingLoading ? (
+            <div className="text-center text-gray-500">
+              {t("admin.moderation.loading")}
+            </div>
+          ) : (
+            <table className="min-w-full text-sm">
+              <thead>
+                <tr className="text-left text-gray-600 dark:text-gray-300 border-b border-gray-200 dark:border-slate-700">
+                  <th className="py-3 pr-4">{t("admin.moderation.author")}</th>
+                  <th className="py-3 pr-4">{t("admin.moderation.content")}</th>
+                  <th className="py-3 pr-4">{t("admin.moderation.date")}</th>
+                  <th className="py-3 pr-4">
+                    {t("admin.moderation.metadata")}
+                  </th>
+                  <th className="py-3 pr-4">{t("admin.moderation.actions")}</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {(pendingComments || []).map((c) => (
+                  <tr
+                    key={c.id}
+                    className="border-b border-gray-100 dark:border-slate-700/60 text-gray-800 dark:text-gray-100"
+                  >
+                    <td className="py-3 pr-4 font-semibold whitespace-nowrap">
+                      {c.author_name || c.author_id || "-"}
+                    </td>
+                    <td className="py-3 pr-4 min-w-88">
+                      <div className="text-gray-800 dark:text-gray-100">
+                        {c.content}
+                      </div>
+                    </td>
+                    <td className="py-3 pr-4 whitespace-nowrap text-gray-500 dark:text-gray-400">
+                      {c.created_at
+                        ? new Date(c.created_at).toLocaleString()
+                        : "-"}
+                    </td>
+                    <td className="py-3 pr-4 whitespace-nowrap">
+                      <div className="flex flex-col gap-1">
+                        {c.deputy_id != null && (
+                          <span className="text-xs text-gray-500 dark:text-gray-400">
+                            Poseł ID: {c.deputy_id}
+                          </span>
+                        )}
+                        {c.vote_term != null && (
+                          <span className="text-xs text-gray-500 dark:text-gray-400">
+                            Głosowanie: {c.vote_term} / {c.proceeding_no} /{" "}
+                            {c.voting_no}
+                          </span>
+                        )}
+                        {c.parent_id && (
+                          <span className="text-xs text-gray-500 dark:text-gray-400">
+                            W odpowiedzi na: {c.parent_id}
+                          </span>
+                        )}
+                        <span className="text-xs font-medium px-2 py-0.5 rounded bg-gray-100 dark:bg-slate-700 w-fit mt-1 text-gray-700 dark:text-gray-300">
+                          Status: {c.moderation_status ?? "PENDING"}
+                        </span>
+                      </div>
+                    </td>
+                    <td className="py-3 pr-4 whitespace-nowrap">
+                      <div className="flex gap-2">
+                        <button
+                          type="button"
+                          onClick={async () => {
+                            if (!c.id) return;
+                            setActionLoading((s) => ({ ...s, [c.id!]: true }));
+                            setLastError(null);
+                            try {
+                              await approveComment(c.id!);
+                              setPendingComments((prev) =>
+                                (prev || []).filter((x) => x.id !== c.id),
+                              );
+                            } catch (e: any) {
+                              setLastError(
+                                String(
+                                  e?.message ??
+                                    t("admin.moderation.actionError"),
+                                ),
+                              );
+                            } finally {
+                              setActionLoading((s) => ({
+                                ...s,
+                                [c.id!]: false,
+                              }));
+                            }
+                          }}
+                          className="px-3 py-1.5 rounded-lg bg-emerald-700 hover:bg-emerald-800 text-white font-bold transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+                          disabled={actionLoading[c.id ?? ""]}
+                          title={t("admin.moderation.approve")}
+                        >
+                          {actionLoading[c.id ?? ""]
+                            ? t("admin.moderation.processing")
+                            : t("admin.moderation.approve")}
+                        </button>
+                        <button
+                          type="button"
+                          onClick={async () => {
+                            if (!c.id) return;
+                            setActionLoading((s) => ({ ...s, [c.id!]: true }));
+                            setLastError(null);
+                            try {
+                              await rejectComment(c.id!);
+                              setPendingComments((prev) =>
+                                (prev || []).filter((x) => x.id !== c.id),
+                              );
+                            } catch (e: any) {
+                              setLastError(
+                                String(
+                                  e?.message ??
+                                    t("admin.moderation.actionError"),
+                                ),
+                              );
+                            } finally {
+                              setActionLoading((s) => ({
+                                ...s,
+                                [c.id!]: false,
+                              }));
+                            }
+                          }}
+                          className="px-3 py-1.5 rounded-lg bg-red-700 hover:bg-red-800 text-white font-bold transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+                          disabled={actionLoading[c.id ?? ""]}
+                          title={t("admin.moderation.reject")}
+                        >
+                          {actionLoading[c.id ?? ""]
+                            ? t("admin.moderation.processing")
+                            : t("admin.moderation.reject")}
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
         </div>
       </div>
     </div>

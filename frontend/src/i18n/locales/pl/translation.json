@@ -44,15 +44,20 @@
     },
     "moderation": {
       "title": "Moderacja komentarzy",
-      "desc": "Placeholder tabeli do zatwierdzania komentarzy oznaczonych jako potencjalnie obraźliwe.",
+      "desc": "Określ, czy poniższe komentarze mogą być obraźliwe.",
+      "loading": "Wczytywanie listy...",
+      "loadError": "Nie udało się wczytać komentarzy oczekujących.",
       "author": "Autor",
       "content": "Treść",
       "date": "Data",
       "signals": "Sygnały",
+      "metadata": "Metadane",
       "actions": "Akcje",
       "contentPlaceholder": "(placeholder treści komentarza)",
       "approve": "Zatwierdź",
+      "processing": "Przetwarzanie…",
       "reject": "Odrzuć",
+      "actionError": "Błąd podczas wykonania akcji. Spróbuj ponownie.",
       "placeholderTitle": "Placeholder"
     }
   },
@@ -147,7 +152,7 @@
       "cta": "Zarejestruj się",
       "submitting": "Tworzenie konta…",
       "alreadyHaveAccount": "Masz już konto? Zaloguj się",
-      "successRedirect": "Konto utworzone. Przekierowanie do logowania…",
+      "successNextSteps": "Konto utworzone. Następnie przejdź do logowania i zmień swoje hasło.",
       "errorGeneric": "Nie udało się utworzyć konta. Spróbuj ponownie."
     },
     "login": {

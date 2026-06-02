@@ -1,5 +1,5 @@
 import { registerUser } from "@/api/users";
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { z } from "zod";
@@ -20,7 +20,6 @@ type FormState = {
 function RouteComponent() {
   const { t } = useTranslation();
 
-  const navigate = useNavigate();
   const search = Route.useSearch();
   const redirect = ("redirect" in search ? search.redirect : undefined) as
     | string
@@ -48,12 +47,6 @@ function RouteComponent() {
       });
 
       setSuccess(true);
-
-      // After successful registration, send user to login (Keycloak login still used for auth)
-      void navigate({
-        to: "/startPage",
-        search: redirect ? { redirect } : undefined,
-      });
     } catch (e: any) {
       const msg =
         e?.details?.message ??
@@ -136,7 +129,7 @@ function RouteComponent() {
 
             {success && (
               <div className="rounded-lg border border-emerald-300/60 bg-emerald-50/70 dark:bg-emerald-950/40 p-3 text-sm text-emerald-800 dark:text-emerald-200">
-                {t("authPages.register.successRedirect")}
+                {t("authPages.register.successNextSteps")}
               </div>
             )}
 
