@@ -140,6 +140,7 @@ jobs:
             PGADMIN_PASS=${{ secrets.PGADMIN_PASS }}
             DOMAIN=${{ vars.DOMAIN }}
             KC_REALM=${{ vars.KC_REALM }}
+            OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}
             GITHUB_REPOSITORY_LOWER=$IMAGE_LOWER
             EOF
 
