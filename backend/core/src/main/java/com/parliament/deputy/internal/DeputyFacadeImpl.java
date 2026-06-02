@@ -76,7 +76,7 @@ class DeputyFacadeImpl implements DeputyFacade {
 
     private DeputyListItemDto toListItemDto(Deputy d) {
         return new DeputyListItemDto(d.getId(), d.getFirstName(), d.getLastName(),
-                d.getClub(), d.getDistrictName(), d.getActive(), d.getAttendanceRate());
+                d.getClub(), d.getDistrictName(), d.getActive(), d.getAttendanceRate(), d.getTotalVotings());
     }
 
     private Deputy createNew(Integer id) {

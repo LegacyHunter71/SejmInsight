@@ -7,5 +7,6 @@ public record DeputyListItemDto(
         String club,
         String districtName,
         Boolean active,
-        Double attendanceRate
+        Double attendanceRate,
+        Integer votings
 ) {}
