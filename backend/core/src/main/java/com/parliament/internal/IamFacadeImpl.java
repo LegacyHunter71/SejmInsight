@@ -45,7 +45,8 @@ class IamFacadeImpl implements IamFacade {
         kcUser.setFirstName(request.firstName());
         kcUser.setLastName(request.lastName());
         kcUser.setEnabled(true);
-        kcUser.setEmailVerified(true);
+        
+        kcUser.setEmailVerified(false);
 
         CredentialRepresentation credential = new CredentialRepresentation();
         credential.setType(CredentialRepresentation.PASSWORD);
@@ -72,7 +73,10 @@ class IamFacadeImpl implements IamFacade {
                 .build();
 
         userRepository.save(localUser);
-        log.info("User registered and synced: {}", kcId);
+
+        keycloak.realm(realm).users().get(kcId).sendVerifyEmail();
+
+        log.info("User registered, synced and verification email sent: {}", kcId);
     }
 
     @Override
